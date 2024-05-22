@@ -2,29 +2,29 @@ namespace Orbit
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             //Registrando controllers e views como serviços
-            builder.Services.AddControllersWithViews();
+            _ = builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+            WebApplication app = builder.Build();
 
             //Habilitando página de erros para desenvolvedor
             if (app.Environment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                _ = app.UseDeveloperExceptionPage();
             }
 
             //Habilitando middleware para lidar com requisicoes por arquivos estaticos
-            app.UseStaticFiles();
+            _ = app.UseStaticFiles();
 
             //Habilitando roteamento
-            app.UseRouting();
+            _ = app.UseRouting();
 
             //Mapeando endpoints para metodos IAction com rota padrão
-            app.MapDefaultControllerRoute();
+            _ = app.MapDefaultControllerRoute();
 
             app.Run();
 
