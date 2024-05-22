@@ -1,4 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
+
+//Registrando controllers e views como serviços
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 //Habilitando página de erros para desenvolvedor
