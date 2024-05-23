@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orbit", "Orbit\Orbit.csproj", "{741F574A-B9DC-436E-AE90-B0B2A8737877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orbit.Domain", "Orbit.Domain\Orbit.Domain.csproj", "{809969C7-7ED0-44D4-A94D-8ED871BD8B86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orbit.Domain", "Orbit.Domain\Orbit.Domain.csproj", "{809969C7-7ED0-44D4-A94D-8ED871BD8B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orbit.Infrastructure", "Orbit.Infrastructure\Orbit.Infrastructure.csproj", "{E449B688-BFB9-4F43-9AF5-C7C1A02D33C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{809969C7-7ED0-44D4-A94D-8ED871BD8B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{809969C7-7ED0-44D4-A94D-8ED871BD8B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{809969C7-7ED0-44D4-A94D-8ED871BD8B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E449B688-BFB9-4F43-9AF5-C7C1A02D33C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E449B688-BFB9-4F43-9AF5-C7C1A02D33C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E449B688-BFB9-4F43-9AF5-C7C1A02D33C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E449B688-BFB9-4F43-9AF5-C7C1A02D33C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
