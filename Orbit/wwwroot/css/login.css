@@ -41,13 +41,12 @@ header {
     height:50%;
 }
 
-.container .text-exibition p{
-    color:white;
-    letter-spacing:1.5px;
-    font-size:1.3em;
-    width:200px;
-    text-align:justify;
-}
+    .container .text-exibition p {
+        color: white;
+        letter-spacing: 1.5px;
+        font-size: 2.5em;
+        width: 375px;
+    }
 
 footer{
     background: linear-gradient(to right, #7BF5E6, #25B0A0);
@@ -67,16 +66,16 @@ footer{
     padding:20px;
     background-color: white;
     border-radius: 50px;
-    border: 1px solid black;
     font-size:1.75em;
     transition:.4s;
     cursor:pointer;
+    outline:none;
+    border:none;
 }
 
     .btn:hover {
         background-color: #25B0A0;
         color: white;
-        border-color:white;
     }
 
 .modal-background {
@@ -92,9 +91,6 @@ footer{
 }
 
 
-.modal-background, .div-signIn, .div-login {
-    display: none; /* Isso garantirá que elas comecem escondidas */
-}
 
 .hidden {
     display: none;
@@ -113,4 +109,209 @@ body.modal-open {
 }
 
 
+.content{
+    border:1px solid white;
+    width:50%;
+    height:75%;
+    box-shadow:4px 0px 12px white;
+    background-color:black;
+    padding:30px;
+    position:relative;
+}
 
+.content .div-signIn {
+display: flex;
+justify-content: space-evenly;
+flex-direction: column;
+}
+
+.content .div-signIn .first-step .top-header {
+display: flex;
+}
+
+.content .div-signIn .first-step .form-title {
+font-size: 2em;
+letter-spacing: 1.5px;
+color: white;
+margin: 3% auto;
+        }
+
+.content .div-signIn .first-step .form-btn .icons {
+width: 20px;
+}
+
+.content .div-signIn .first-step .form-btn {
+        background: transparent;
+        padding: 10px;
+        border: none;
+        outline: none;
+}
+
+ .content .div-signIn .first-step .form-name {
+width: 100%;
+padding: 10px;
+}
+
+.content .div-signIn .first-step .form-name .sub-title {
+color: white;
+font-size: 2em;
+font-weight: 500;
+}
+
+.content .div-signIn .first-step .form-name div {
+width: 100%;
+margin-top: 4%;
+}
+
+.content .div-signIn .first-step .form-name div label {
+display: block;
+color: white;
+font-size: 1.5em;
+letter-spacing: 1.5px;
+font-weight: 400;
+margin: 2% 0;
+user-select: none;
+}
+
+.content .div-signIn .form-name .inputs{
+    width:100%;
+    font-size:1.5em;
+    font-weight:300;
+    border:none;
+    border-bottom:1px solid white;
+    outline:none;
+    background:transparent;
+    color:white;
+}
+
+.content .div-signIn .form-name .birthday-inputs{
+    width:25%;
+    font-size:1.5em;
+    font-weight:300;
+    border:none;
+    border-bottom:1px solid white;
+    outline:none;
+    background:transparent;
+    color:white;
+}
+
+    .content .div-signIn .form-name .birthday-inputs::placeholder {
+        color: white;
+        font-weight: 300;
+    }
+
+
+    .content .div-signIn .first-step .form-name .birthday-container input:last-child,
+    .content .form-name .birthday-container input:nth-child(3) {
+        margin-left: 5%;
+    }
+
+    .content .div-signIn .first-step .form-name .next-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+.content .div-signIn .first-step .form-name .next-container .next-btn {
+padding: 20px;
+width: 50%;
+background-color: #7BF5E6;
+font-size: 1.875em;
+color:white;
+border-radius:32px;
+border:none;
+outline:none;
+}
+
+
+    .content .div-signIn .last-step .top-header {
+        display: flex;
+    }
+
+    .content .div-signIn .last-step .form-title {
+        font-size: 2em;
+        letter-spacing: 1.5px;
+        color: white;
+        margin: 3% auto;
+    }
+
+    .content .div-signIn .last-step .form-btn .icons {
+        width: 20px;
+    }
+
+    .content .div-signIn .last-step .form-btn {
+        background: transparent;
+        padding: 10px;
+        border: none;
+        outline: none;
+    }
+
+    .content .div-signIn .last-step .form-password {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .content .div-signIn .last-step .form-password .sub-title {
+        color: white;
+        font-size: 2em;
+        font-weight: 500;
+    }
+
+    .content .div-signIn .last-step .form-password div {
+        width: 100%;
+        margin-top: 4%;
+    }
+
+    .content .div-signIn .last-step .form-password div label {
+        display: block;
+        color: white;
+        font-size: 1.5em;
+        letter-spacing: 1.5px;
+        font-weight: 400;
+        margin: 2% 0;
+        user-select: none;
+    }
+
+    .content .div-signIn .last-step .form-password .inputs {
+        width: 100%;
+        font-size: 1.5em;
+        font-weight: 300;
+        border: none;
+        border-bottom: 1px solid white;
+        outline: none;
+        background: transparent;
+        color: white;
+    }
+
+    .content .div-signIn .last-step .form-password .next-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .content .div-signIn .last-step .form-password .next-container .next-btn {
+            padding: 20px;
+            width: 50%;
+            background-color: #7BF5E6;
+            font-size: 1.875em;
+            color: white;
+            border-radius: 32px;
+            border: none;
+            outline: none;
+        }
+
+.content .div-signIn .last-step .form-password .terms-and-conditions{
+    margin-top:0;
+    display:flex;
+    align-items:center;
+}
+
+.content .div-signIn .last-step .form-password .terms-and-conditions label{
+    font-size:0.875em;
+    margin-left:1%;
+}
+
+    .content .div-signIn .last-step .form-password .terms-and-conditions a{
+        color:white;
+        font-style:italic;
+        cursor:pointer;
+    }
