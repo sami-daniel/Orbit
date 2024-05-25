@@ -31,27 +31,27 @@
         /// </summary>
         /// <param name="entity">Entidade a ser adicionada.</param>
         /// <returns>Tarefa representando a operação assíncrona, indicando se a adição foi bem-sucedida (true) ou não (false).</returns>
-        Task<bool> AddAsync(TEntity entity);
+        Task AddAsync(TEntity entity);
 
         /// <summary>
         /// Adiciona uma coleção de entidades ao repositório assincronamente.
         /// </summary>
         /// <param name="entities">Coleção de entidades a serem adicionadas.</param>
         /// <returns>Tarefa representando a operação assíncrona, indicando se a adição em lote foi bem-sucedida (true) ou não (false).</returns>
-        Task<bool> AddRangeAsync(IEnumerable<TEntity> entities);
+        Task AddRangeAsync(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Remove uma entidade do repositório assincronamente.
         /// </summary>
         /// <param name="entity">Entidade a ser removida.</param>
         /// <returns>Tarefa representando a operação assíncrona, indicando se a remoção foi bem-sucedida (true) ou não (false).</returns>
-        Task<bool> RemoveAsync(TEntity entity);
+        Task RemoveAsync(TEntity entity);
 
         /// <summary>
         /// Remove uma coleção de entidades do repositório assincronamente.
         /// </summary>
         /// <param name="entities">Coleção de entidades a serem removidas.</param>
         /// <returns>Tarefa representando a operação assíncrona, indicando se a remoção em lote foi bem-sucedida (true) ou não (false).</returns>
-        Task<bool> RemoveRangeAsync(IEnumerable<TEntity> entities);
+        Task RemoveRangeAsync(IEnumerable<TEntity> entities);
     }
 }
