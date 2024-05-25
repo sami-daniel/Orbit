@@ -2,7 +2,6 @@
 using Orbit.Domain.Entities;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories.Interfaces;
-using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories.Implementations
 {

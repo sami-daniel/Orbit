@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Orbit.Infrastructure.Repositories.Interfaces;
-using System;
 using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories

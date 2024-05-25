@@ -9,7 +9,7 @@ namespace Orbit.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context;
         public IUserRepository User { get; private set; }
-        public UnitOfWork(ApplicationDbContext context, IConfiguration configuration) 
+        public UnitOfWork(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             User = new UserRepository(context, configuration);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Orbit.Domain.Entities;
+﻿namespace Orbit.Domain.Entities;
 
 public partial class User
 {
