@@ -5,11 +5,12 @@ namespace Orbit.Infrastructure.Repositories.Implementations
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         public Task<bool> AddAsync(TEntity entity)
+        public Task AddAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddRangeAsync(IEnumerable<TEntity> entities)
+        public Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
             throw new NotImplementedException();
         }
@@ -29,12 +30,12 @@ namespace Orbit.Infrastructure.Repositories.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(TEntity entity)
+        public Task RemoveAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveRangeAsync(IEnumerable<TEntity> entities)
+        public Task RemoveRangeAsync(IEnumerable<TEntity> entities)
         {
             throw new NotImplementedException();
         }
