@@ -1,4 +1,6 @@
-﻿namespace Orbit.Infrastructure.Repositories.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace Orbit.Infrastructure.Repositories.Interfaces
 {
     /// <summary>
     /// Interface genérica para um repositório de entidades.
@@ -24,7 +26,7 @@
         /// </summary>
         /// <param name="predicate">Predicado para filtrar as entidades.</param>
         /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção das entidades encontradas.</returns>
-        Task<IEnumerable<TEntity>> Find(Predicate<TEntity> predicate);
+        Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Adiciona uma entidade ao repositório assincronamente.
