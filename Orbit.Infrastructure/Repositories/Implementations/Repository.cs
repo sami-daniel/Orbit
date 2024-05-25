@@ -25,7 +25,7 @@ namespace Orbit.Infrastructure.Repositories.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetAsync(int id)
+        public async Task<TEntity?> GetAsync(int id)
         {
             throw new NotImplementedException();
         }

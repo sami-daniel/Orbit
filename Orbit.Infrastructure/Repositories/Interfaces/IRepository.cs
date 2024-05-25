@@ -13,7 +13,7 @@ namespace Orbit.Infrastructure.Repositories.Interfaces
         /// </summary>
         /// <param name="id">ID da entidade a ser obtida.</param>
         /// <returns>Tarefa representando a operação assíncrona, resultando na entidade solicitada.</returns>
-        Task<TEntity> GetAsync(int id);
+        Task<TEntity?> GetAsync(int id);
 
         /// <summary>
         /// Obtém todas as entidades presentes no repositório assincronamente.
