@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Orbit.Domain\Orbit.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
