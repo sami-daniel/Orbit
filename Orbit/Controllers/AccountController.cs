@@ -24,6 +24,7 @@ namespace Orbit.Controllers
 
         public async Task<IActionResult> CreateUser(UserAddRequest userAddRequest)
         {
+            userAddRequest.UserDateOfBirth = new DateTime(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 var errors = string.Join(',', ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));

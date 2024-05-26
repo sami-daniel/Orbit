@@ -27,11 +27,25 @@ namespace Orbit.Application.Dtos.Requests
         [Display(Name = "Senha")]
         public string UserPassword { get; set; } = null!;
 
+        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+        [Range(1, 31, ErrorMessage = "O campo {0} deve estar entre 1 e 31.")]
+        [Display(Name = "Dia")]
+        public int Day { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+        [Range(1, 12, ErrorMessage = "O campo {0} deve estar entre 1 e 12.")]
+        [Display(Name = "Mês")]
+        public int Month { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+        [Range(1, 9999, ErrorMessage = "O campo {0} deve estar entre 1 e 9999.")]
+        [Display(Name = "Ano")]
+        public int Year { get; set; }
 
         public User ToUser() => new User
         {
             UserName = UserName,
-            UserDateOfBirth = UserDateOfBirth,
+            UserDateOfBirth = new DateTime(Year, Month, Day),
             UserEmail = UserEmail,
             UserPassword = UserPassword
         };
