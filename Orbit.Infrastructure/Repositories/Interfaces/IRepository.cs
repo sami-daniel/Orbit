@@ -26,7 +26,7 @@ namespace Orbit.Infrastructure.Repositories.Interfaces
         /// </summary>
         /// <param name="predicate">Predicado para filtrar as entidades.</param>
         /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção das entidades encontradas.</returns>
-        Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Adiciona uma entidade ao repositório assincronamente.

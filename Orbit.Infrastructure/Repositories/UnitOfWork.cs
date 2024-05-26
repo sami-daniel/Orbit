@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Orbit.Infrastructure.Data.Contexts;
-using Orbit.Infrastructure.Repositories.Implementations;
+﻿using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories.Interfaces;
 
 namespace Orbit.Infrastructure.Repositories
@@ -9,10 +7,10 @@ namespace Orbit.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context;
         public IUserRepository User { get; private set; }
-        public UnitOfWork(ApplicationDbContext context, IConfiguration configuration)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository userRepository)
         {
             _context = context;
-            User = new UserRepository(context, configuration);
+            User = userRepository;
         }
 
         public int Complete()

@@ -19,4 +19,9 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Orbit.Application\Orbit.Application.csproj" />
+    <ProjectReference Include="..\Orbit.Infrastructure\Orbit.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -8,7 +8,7 @@ public partial class User
 
     public string UserEmail { get; set; } = null!;
 
-    public DateOnly UserDateOfBirth { get; set; }
+    public DateTime UserDateOfBirth { get; set; }
 
     public string UserPassword { get; set; } = null!;
 }

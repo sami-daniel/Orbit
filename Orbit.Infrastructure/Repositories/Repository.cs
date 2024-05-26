@@ -11,7 +11,15 @@ namespace Orbit.Infrastructure.Repositories
 
         public Repository(DbContext context, IConfiguration configuration)
         {
-            if (configuration["AllowedEntityNamespaces"]!.ToString().Split(',').Contains(typeof(TEntity).Namespace))
+            var sectNamespaces = configuration.GetSection("AllowedEntityNamespaces");
+            var namespacesInConfig = new List<string>();
+
+            foreach (var child in sectNamespaces.GetChildren())
+            {
+                namespacesInConfig.Add(child.Path);
+            }
+
+            if (namespacesInConfig.Contains(typeof(TEntity).Namespace!))
             {
                 throw new ArgumentException($"O namespace ${typeof(TEntity).Namespace} não está habilitado!");
             }
@@ -30,7 +38,7 @@ namespace Orbit.Infrastructure.Repositories
             await Context.Set<TEntity>().AddRangeAsync(entities);
         }
 
-        public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             ArgumentNullException.ThrowIfNull(predicate);
             return await Context.Set<TEntity>().Where(predicate).ToListAsync();
