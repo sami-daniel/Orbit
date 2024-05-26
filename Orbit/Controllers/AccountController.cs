@@ -10,13 +10,11 @@ namespace Orbit.Controllers
     {
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ISession _session;
 
-        public AccountController(IUserService userService, IWebHostEnvironment webHostEnvironment, ISession session)
+        public AccountController(IUserService userService, IWebHostEnvironment webHostEnvironment)
         {
             _userService = userService;
             _webHostEnvironment = webHostEnvironment;
-            _session = session;
         }
 
         public IActionResult Index()
@@ -47,7 +45,7 @@ namespace Orbit.Controllers
                 return BadRequest(ex.Message);
             }
 
-            _session.SetObject("User", userReponse);
+            HttpContext.Session.SetObject("User", userReponse);
 
             return RedirectToAction("", "Account");
         }
