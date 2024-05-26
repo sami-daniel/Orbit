@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Orbit.Domain\Orbit.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\Orbit.Infrastructure\Orbit.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

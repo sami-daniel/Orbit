@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Orbit.Application.Interfaces;
+using Orbit.Application.Services;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
@@ -20,11 +23,22 @@ namespace Orbit
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"), 
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0))));
 
+            //Registrando Cokkie de autenticação e configurando-o
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option =>
+                {
+                    option.LoginPath = "/Account/Login";
+                    option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                });
+
+
             //Registrando UserRepository como servico
             _ = builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             //Registrando UnitOfWork como servico
             _ = builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddScoped<IUserService, UserService>();
 
             WebApplication app = builder.Build();
 
@@ -39,6 +53,12 @@ namespace Orbit
 
             //Habilitando roteamento
             _ = app.UseRouting();
+
+            //Habilitando autenticacao
+            _ = app.UseAuthentication();
+
+            //Habilitando autorização
+            _ = app.UseAuthorization();
 
             //Mapeando endpoints para metodos IAction com rota padrão
             _ = app.MapDefaultControllerRoute();
