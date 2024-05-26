@@ -155,13 +155,13 @@ body.modal-open {
   outline: none;
 }
 
- .sub-title {
+.sub-title {
   color: white;
   font-size: 2em;
   font-weight: 500;
 }
 
- .forms div {
+.forms div {
   width: 100%;
   text-align: center;
   margin-top: 4%;
@@ -193,7 +193,7 @@ body.modal-open {
   margin-left: 5%;
 }
 
- .next-container {
+.next-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -208,25 +208,42 @@ body.modal-open {
   border: none;
   outline: none;
   position: absolute;
-    bottom: 10px;
+  bottom: 10px;
 }
 .top-header {
   display: flex;
 }
 
- .forms {
+.forms {
   width: 100%;
   padding: 0 10px 0 10px;
 }
-
-
-
-
 
 div label {
   display: block;
   width: 100px;
   position: relative;
+  color: white;
+  font-size: 1.5em;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  user-select: none;
+}
+
+.pass {
+  display: block;
+  width: 260px;
+  position: relative;
+  left: 5%;
+  color: white;
+  font-size: 1.5em;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  user-select: none;
+}
+
+.termos {
+  display: block;
   color: white;
   font-size: 1.5em;
   letter-spacing: 1.5px;
@@ -258,10 +275,6 @@ div label {
   background: transparent;
   color: white;
 }
-
-
-
-
 
 .content .div-signIn .last-step .form-password .terms-and-conditions {
   margin-top: 0;
