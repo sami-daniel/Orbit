@@ -41,11 +41,11 @@
                         <div class="birthday-container">
                             <label for="birthday">Data de Nascimento</label>
                             <input type="text" name="DayBirthday" id="DayBirthday" placeholder="Dia"
-                                class="birthday-inputs" />
+                                   class="birthday-inputs" />
                             <input type="text" name="MonthBirthday" id="MonthBirthday" placeholder="Mês"
-                                class="birthday-inputs" />
+                                   class="birthday-inputs" />
                             <input type="text" name="YearBirthday" id="YearBirthday" placeholder="Ano"
-                                class="birthday-inputs" />
+                                   class="birthday-inputs" />
                         </div>
                         <div class="next-container">
                             <button class="next-btn" id="nextBtn">Avançar</button>
@@ -74,8 +74,12 @@
                         </div>
                         <div class="terms-and-conditions">
                             <input type="checkbox" required />
-                            <label>Concorda com os nossos termos de políticas e serviços! <a href="#">Termos de política
-                                    e serviços</a></label>
+                            <label>
+                                Concorda com os nossos termos de políticas e serviços! <a href="#">
+                                    Termos de política
+                                    e serviços
+                                </a>
+                            </label>
                         </div>
                         <div class="next-container">
                             <button class="next-btn" id="signInButton">Cadastrar</button>
@@ -112,15 +116,26 @@
 
 
 @section links {
-    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
 }
 
 @section scripts {
-    <script src="~/js/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="~/js/particle.js"></script>
+    <script src="~/js/script.js" asp-append-version="true"></script>
+    <script src="~/js/particle.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+            asp-fallback-src="~libs/particle/js/particle.min.js"
+            asp-fallback-test="window.particleJS"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.validate.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.validate.unobtrusive.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
 }
