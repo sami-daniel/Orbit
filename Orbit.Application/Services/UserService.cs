@@ -40,6 +40,18 @@ namespace Orbit.Application.Services
             return user.ToUserReponse();
         }
 
+        public async Task<IEnumerable<UserReponse>> GetAllUsersAsync()
+        {
+            var users = await _unitOfWork.User.GetAllAsync();
+            var usersResponses = new List<UserReponse>();
+            foreach (var user in users)
+            { 
+                usersResponses.Add(user.ToUserReponse());
+            }
+
+            return usersResponses;
+        }
+
         public async Task<UserReponse?> GetUserByUserIdAsync(int userId)
         {
             if (userId <= 0)

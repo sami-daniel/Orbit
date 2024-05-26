@@ -7,5 +7,6 @@ namespace Orbit.Application.Interfaces
     {
         Task<UserReponse> AddUserAsync(UserAddRequest userAddRequest);
         Task<UserReponse?> GetUserByUserIdAsync(int userId);
+        Task<IEnumerable<UserReponse>> GetAllUsersAsync();
     }
 }

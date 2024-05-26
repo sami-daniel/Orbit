@@ -50,5 +50,26 @@ namespace Orbit.Controllers
 
             return RedirectToAction("", "Account");
         }
+
+        public async Task<IActionResult> Login(string name, string password)
+        {
+            var users = await _userService.GetAllUsersAsync();
+
+            var user = users.FirstOrDefault(user => user.UserName == name);
+
+            if (user == null) 
+            { 
+                return NotFound("Usuario com esse nome nâo foi encontrado!");
+            }
+
+            if (password != user.UserPassword) 
+            {
+                return BadRequest("Senha incorreta!");
+            }
+
+            HttpContext.Session.SetObject("User",user);
+
+            return RedirectToActionPermanent("", "Dashboard");
+        }
     }
 }

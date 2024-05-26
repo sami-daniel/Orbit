@@ -22,7 +22,7 @@
 
 
 
-                <form method="post" class="form-name forms">
+                <form method="post" asp-action="CreateUser" asp-controller="Account" class="form-name forms">
                     <div class="first-step">
                         <div class="top-header">
                             <button class="form-btn" id="closeBtn">
@@ -34,19 +34,19 @@
 
                         <div class="name-container">
                             <label for="name">Nome</label>
-                            <input type="text" required name="name" id="name" class="inputs" />
+                            <input type="text" required name="UserName" id="name" class="inputs" />
                         </div>
                         <div class="email-container">
                             <label for="email">Email</label>
-                            <input type="email" required name="email" id="email" class="inputs" />
+                            <input type="email" required name="UserEmail" id="email" class="inputs" />
                         </div>
                         <div class="birthday-container">
                             <label class="Birthday" for="birthday">Data de Nascimento</label>
-                            <input type="text" name="DayBirthday" id="DayBirthday" placeholder="Dia"
+                            <input type="text" name="Day" id="DayBirthday" placeholder="Dia"
                                 class="birthday-inputs" />
-                            <input type="text" name="MonthBirthday" id="MonthBirthday" placeholder="Mês"
+                            <input type="text" name="Month" id="MonthBirthday" placeholder="Mês"
                                 class="birthday-inputs" />
-                            <input type="text" name="YearBirthday" id="YearBirthday" placeholder="Ano"
+                            <input type="text" name="Year" id="YearBirthday" placeholder="Ano"
                                 class="birthday-inputs" />
                         </div>
                         <div class="next-container">
@@ -68,7 +68,7 @@
 
                         <div class="password-container">
                             <label for="password">Senha</label>
-                            <input type="password" required name="password" id="password" class="inputs" />
+                            <input type="password" required name="UserPassword" id="password" class="inputs" />
                         </div>
                         <div class="password-container">
                             <label class="pass" for="repeatpassword">Repita sua senha</label>
@@ -98,15 +98,15 @@
                 <h2 class="form-title">OrbIt</h2>
             </div>
 
-            <form method="post" class="forms">
+            <form method="post" class="forms" asp-action="Login" asp-controller="Account">
                 <h3 class="sub-title">Faça o login</h3>
                 <div class="name-container">
                     <label for="name-Login">Nome</label>
-                    <input type="text" required name="name-Login" id="name-Login" class="inputs" />
+                    <input type="text" required name="name" id="name-Login" class="inputs" />
                 </div>
                 <div class="Password-container">
                     <label for="Password-Login">Senha</label>
-                    <input type="Password" required name="Password-Login" id="Password-Login" class="inputs" />
+                    <input type="Password" required name="password" id="Password-Login" class="inputs" />
                 </div>
 
                 <div class="next-container">
