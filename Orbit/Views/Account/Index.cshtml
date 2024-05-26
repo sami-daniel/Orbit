@@ -129,10 +129,8 @@
 }
 
 @section scripts {
-    <script src="~/js/script.js" asp-append-version="true"></script>
-    <script src="~/js/particle.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-            asp-fallback-src="~libs/particle/js/particle.min.js"
+            asp-fallback-src="~/libs/particle/js/particles.min.js"
             asp-fallback-test="window.particleJS"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
@@ -143,4 +141,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.validate.unobtrusive.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
+    <script src="~/js/script.js" asp-append-version="true"></script>
+    <script src="~/js/particle.js" asp-append-version="true"></script>
 }
