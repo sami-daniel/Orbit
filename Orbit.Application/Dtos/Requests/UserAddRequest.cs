@@ -21,7 +21,7 @@ namespace Orbit.Application.Dtos.Requests
         [Required(ErrorMessage = "Insira a senha do usuário!")]
         [StringLength(200, ErrorMessage = "A senha do usuário deve ter no máximo 200 caracteres.")]
         public string UserPassword { get; set; } = null!;
-        
+
 
         public User ToUser() => new User
         {

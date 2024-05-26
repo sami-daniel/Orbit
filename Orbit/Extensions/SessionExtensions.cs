@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace AutoMenu.Extensions
+namespace Orbit.Extensions
 {
     public static class SessionExtensions
     {

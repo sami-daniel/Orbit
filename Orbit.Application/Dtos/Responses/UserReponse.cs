@@ -25,19 +25,19 @@ namespace Orbit.Application.Dtos.Responses
 
         public override bool Equals(object? obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
 
-            if(obj.GetType() != typeof(UserReponse))
+            if (obj.GetType() != typeof(UserReponse))
             {
                 return false;
             }
 
             var userResponse = obj as UserReponse;
 #pragma warning disable CS8602
-            return userResponse.UserId == UserId 
+            return userResponse.UserId == UserId
                    && userResponse.UserName == UserName
                    && userResponse.UserEmail == UserEmail
                    && userResponse.UserDateOfBirth == UserDateOfBirth

@@ -26,7 +26,7 @@ namespace Orbit.Application.Services
 
             var users = await _unitOfWork.User.FindAsync(user => user.UserEmail == userAddRequest.UserEmail);
 
-            if(users.Any())
+            if (users.Any())
             {
                 throw new ArgumentException("E-mail já cadastrado anteriormente!");
             }

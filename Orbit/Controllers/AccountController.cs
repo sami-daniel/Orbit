@@ -1,11 +1,8 @@
-﻿using AutoMenu.Extensions;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
-using System.Security.Claims;
+using Orbit.Extensions;
 
 namespace Orbit.Controllers
 {
@@ -51,7 +48,7 @@ namespace Orbit.Controllers
             }
 
             _session.SetObject("User", userReponse);
-            
+
             return RedirectToAction("", "Account");
         }
     }

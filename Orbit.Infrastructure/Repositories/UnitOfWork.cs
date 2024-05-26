@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Orbit.Infrastructure.Data.Contexts;
-using Orbit.Infrastructure.Repositories.Implementations;
+﻿using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories.Interfaces;
 
 namespace Orbit.Infrastructure.Repositories

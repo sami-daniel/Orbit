@@ -20,7 +20,7 @@ namespace Orbit
 
             //Adicionando contexto de banco de dados como serviço
             _ = builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"), 
+            opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0))));
 
             //Registrando Cokkie de autenticação e configurando-o
@@ -40,6 +40,8 @@ namespace Orbit
 
             builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddSession();
+
             WebApplication app = builder.Build();
 
             //Habilitando página de erros para desenvolvedor
@@ -54,11 +56,7 @@ namespace Orbit
             //Habilitando roteamento
             _ = app.UseRouting();
 
-            //Habilitando autenticacao
-            _ = app.UseAuthentication();
-
-            //Habilitando autorização
-            _ = app.UseAuthorization();
+            _ = app.UseSession();
 
             //Mapeando endpoints para metodos IAction com rota padrão
             _ = app.MapDefaultControllerRoute();
