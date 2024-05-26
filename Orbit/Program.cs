@@ -23,14 +23,6 @@ namespace Orbit
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0))));
 
-            //Registrando Cokkie de autenticação e configurando-o
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(option =>
-                {
-                    option.LoginPath = "/Account/Login";
-                    option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                });
-
 
             //Registrando UserRepository como servico
             _ = builder.Services.AddScoped<IUserRepository, UserRepository>();
