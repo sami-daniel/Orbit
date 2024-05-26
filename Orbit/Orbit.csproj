@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Orbit.Application\Orbit.Application.csproj" />
     <ProjectReference Include="..\Orbit.Infrastructure\Orbit.Infrastructure.csproj" />
   </ItemGroup>
 
