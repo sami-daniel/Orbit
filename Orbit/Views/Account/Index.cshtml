@@ -27,7 +27,7 @@
                         <h2 class="form-title">OrbIt</h2>
                     </div>
 
-                    <form class="form-name">
+                    <form method="post" class="form-name forms">
                         <h3 class="sub-title">Crie sua conta</h3>
 
                         <div class="name-container">
@@ -39,7 +39,7 @@
                             <input type="email" required name="email" id="email" class="inputs" />
                         </div>
                         <div class="birthday-container">
-                            <label for="birthday">Data de Nascimento</label>
+                            <label class="Birthday" for="birthday">Data de Nascimento</label>
                             <input type="text" name="DayBirthday" id="DayBirthday" placeholder="Dia"
                                    class="birthday-inputs" />
                             <input type="text" name="MonthBirthday" id="MonthBirthday" placeholder="Mês"
@@ -61,7 +61,7 @@
                         <h2 class="form-title">OrbIt</h2>
                     </div>
 
-                    <form class="form-password">
+                    <form method="post" class="form-password forms">
                         <h3 class="sub-title">Crie sua conta</h3>
 
                         <div class="password-container">
@@ -90,22 +90,27 @@
 
             <div class="div-login" id="divLogin">
                 <div class="top-header">
-                    <button class="form-btn" id="closeBtn">
+                    <button class="form-btn" id="closeBtnLogin">
                         <img src="~/images/xmark-solid.svg" class="icons" />
                     </button>
                     <h2 class="form-title">OrbIt</h2>
                 </div>
 
+                <form method="post" class="forms">
+                    <h3 class="sub-title">Faça o login</h3>
+                    <div class="name-container">
+                        <label for="name-Login">Nome</label>
+                        <input type="text" required name="name-Login" id="name-Login" class="inputs" />
+                    </div>
+                    <div class="Password-container">
+                        <label for="Password-Login">Email</label>
+                        <input type="Password" required name="Password-Login" id="Password-Login" class="inputs" />
+                    </div>
 
-                <div class="name-container">
-                    <label for="name-Login">Nome</label>
-                    <input type="text" required name="name-Login" id="name-Login" class="inputs" />
-                </div>
-                <div class="Password-container">
-                    <label for="Password-Login">Email</label>
-                    <input type="Password" required name="Password-Login" id="Password-Login" class="inputs" />
-                </div>
-
+                    <div class="next-container">
+                        <button class="next-btn" id="LoginButton">Logar</button>
+                    </div>
+                </form>
             </div>
 
         </div>
