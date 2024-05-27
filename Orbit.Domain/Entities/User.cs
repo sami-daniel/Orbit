@@ -1,0 +1,14 @@
+﻿namespace Orbit.Domain.Entities;
+
+public partial class User
+{
+    public int UserId { get; set; }
+
+    public string UserName { get; set; } = null!;
+
+    public string UserEmail { get; set; } = null!;
+
+    public DateTime UserDateOfBirth { get; set; }
+
+    public string UserPassword { get; set; } = null!;
+}

@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title> @*Pegando propriedade Title dinamica da ViewBag e colocando como titulo da página*@
+    @await RenderSectionAsync("links", required: false)
+</head>
+<body>
+    @*Renderiza o corpo da view com esse layout*@
+    @RenderBody()
+
+    @await RenderSectionAsync("scripts", required: false)
+</body>
+</html>
