@@ -243,6 +243,7 @@ div label {
 }
 
 .termos {
+  width: 100% !important;
   display: block;
   color: white;
   font-size: 1.5em;
