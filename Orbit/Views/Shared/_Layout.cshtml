@@ -12,6 +12,7 @@
 <body>
     @*Renderiza o corpo da view com esse layout*@
     @RenderBody()
+
     <header class="Header-basic">
         <div class="Title-search">
             <h1>Otbit</h1>
@@ -24,6 +25,7 @@
         </div>
 
         <nav class="navegation-links">
+            <ul>
             <li><a href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-house-fill" viewBox="0 0 16 16">
@@ -75,6 +77,7 @@
                     <p>Configurações</p>
                 </a>
             </li>
+            </ul>
         </nav>
 
         <div class="account-view">
@@ -85,6 +88,10 @@
     </header>
 
     @await RenderSectionAsync("scripts", required: false)
+    @section links {
+        <link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true">
+    }
+
 </body>
 
 </html>
