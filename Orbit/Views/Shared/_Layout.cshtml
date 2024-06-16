@@ -12,6 +12,7 @@
 <body>
     @*Renderiza o corpo da view com esse layout*@
     @RenderBody()
+    
     <header class="Header-basic">
         <div class="Title-search">
             <h1>Otbit</h1>
@@ -85,6 +86,10 @@
     </header>
 
     @await RenderSectionAsync("scripts", required: false)
+    @section links {
+        <link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true">
+    }
+
 </body>
 
 </html>
