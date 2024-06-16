@@ -51,22 +51,5 @@ namespace Orbit.Application.Services
 
             return usersResponses;
         }
-
-        public async Task<UserReponse?> GetUserByUserIdAsync(int userId)
-        {
-            if (userId <= 0)
-            {
-                return null;
-            }
-
-            var user = await _unitOfWork.User.FindAsync(user => user.UserId == userId);
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            return user.FirstOrDefault(user => user.UserId == userId)?.ToUserReponse();
-        }
     }
 }
