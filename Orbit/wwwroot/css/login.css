@@ -6,8 +6,21 @@
   font-family: "Josefin Sans", sans-serif;
 }
 
+input {
+    font-family: "Josefin Sans", sans-serif !important;
+    font-size: inherit !important;
+    margin-bottom: 10px;
+}
+
+.input-values {
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
 :root {
-  --white: rgb(255, 255, 255);
+    --white: rgb(255, 255, 255);
 }
 
 body {
@@ -168,7 +181,7 @@ body.modal-open {
 }
 
 .content .div-signIn .form-name .birthday-inputs {
-  width: 25%;
+  width: 90%;
   font-size: 1.5em;
   font-weight: 300;
   border: none;

@@ -6,7 +6,8 @@ namespace Orbit.Application.Dtos.Requests
     public class UserAddRequest
     {
         [Required(ErrorMessage = "Insira o nome do usuário!")]
-        [StringLength(100, ErrorMessage = "O nome do usuário deve ter no máximo 100 caracteres.")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "O nome do usuário deve ter no máximo 100 caracteres.")]
+        [RegularExpression(@"^[a-zA-Z0-9_]*$", ErrorMessage = "O nome do usuário só pode conter letras, números e underline.")]
         [Display(Name = "Name")]
         public string UserName { get; set; } = null!;
 

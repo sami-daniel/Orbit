@@ -19,10 +19,7 @@
         <div class="content">
 
             <div class="div-signIn" id="divSignIn">
-
-
-
-                <form method="post" asp-action="CreateUser" asp-controller="Account" class="form-name forms">
+                <form method="post" asp-action="CreateUser" asp-controller="Account" class="form-name forms" id="reg-form">
                     <div class="first-step">
                         <div class="top-header">
                             <button class="form-btn" id="closeBtn">
@@ -42,12 +39,20 @@
                         </div>
                         <div class="birthday-container">
                             <label class="Birthday" for="birthday">Data de Nascimento</label>
-                            <input type="text" name="Day" id="DayBirthday" placeholder="Dia"
-                                class="birthday-inputs" />
-                            <input type="text" name="Month" id="MonthBirthday" placeholder="Mês"
-                                class="birthday-inputs" />
-                            <input type="text" name="Year" id="YearBirthday" placeholder="Ano"
-                                class="birthday-inputs" />
+                            <div class="input-values">
+                                <div>
+                                    <input type="text" name="Day" id="DayBirthday" placeholder="Dia"
+                                           class="birthday-inputs" />
+                                </div>
+                                <div>
+                                    <input type="text" name="Month" id="MonthBirthday" placeholder="Mês"
+                                           class="birthday-inputs" />
+                                </div>
+                                <div>
+                                    <input type="text" name="Year" id="YearBirthday" placeholder="Ano"
+                                           class="birthday-inputs" />
+                                </div>
+                            </div>
                         </div>
                         <div class="next-container">
                             <button class="next-btn" id="nextBtn">Avançar</button>
@@ -60,7 +65,7 @@
                             <button class="form-btn" id="backBtn">
                                 <img src="~/images/arrow-left-solid.svg" class="icons" />
                             </button>
-                            <h2 class="form-title">OrbIt</h2>
+                            <h2 class="form-title">Orbit</h2>
                         </div>
 
 
@@ -89,32 +94,34 @@
                     </div>
                 </form>
             </div>
-        </div>
 
-        <div class="div-login" id="divLogin">
-            <div class="top-header">
-                <button class="form-btn" id="closeBtnLogin">
-                    <img src="~/images/xmark-solid.svg" class="icons" />
-                </button>
-                <h2 class="form-title">OrbIt</h2>
+            <div class="div-login" id="divLogin">
+                <div class="top-header">
+                    <button class="form-btn" id="closeBtnLogin">
+                        <img src="~/images/xmark-solid.svg" class="icons" />
+                    </button>
+                    <h2 class="form-title">OrbIt</h2>
+                </div>
+
+                <form method="post" class="forms" asp-action="Login" asp-controller="Account">
+                    <h3 class="sub-title">Faça o login</h3>
+                    <div class="name-container">
+                        <label for="email-login">Email</label>
+                        <input type="email" required name="email" id="email-login" class="inputs" />
+                    </div>
+                    <div class="Password-container">
+                        <label for="Password-Login">Senha</label>
+                        <input type="Password" required name="password" id="Password-Login" class="inputs" />
+                    </div>
+
+                    <div class="next-container">
+                        <button class="next-btn" id="LoginButton">Logar</button>
+                    </div>
+                </form>
             </div>
-
-            <form method="post" class="forms" asp-action="Login" asp-controller="Account">
-                <h3 class="sub-title">Faça o login</h3>
-                <div class="name-container">
-                    <label for="email-login">Nome</label>
-                    <input type="email" required name="email" id="email-login" class="inputs" />
-                </div>
-                <div class="Password-container">
-                    <label for="Password-Login">Senha</label>
-                    <input type="Password" required name="password" id="Password-Login" class="inputs" />
-                </div>
-
-                <div class="next-container">
-                    <button class="next-btn" id="LoginButton">Logar</button>
-                </div>
-            </form>
         </div>
+
+        
 
     </div>
 
@@ -126,21 +133,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
+     <style>
+         .error{
+             color: red;
+             font-size: 12px;
+             width: 90%;
+         }
+     </style>
 }
 
 @section scripts {
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-        asp-fallback-src="~/libs/particle/js/particles.min.js" asp-fallback-test="window.particleJS"></script>
+            asp-fallback-src="~/libs/particle/js/particles.min.js" asp-fallback-test="window.particleJS"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
-        asp-fallback-src="~/libs/jQuery/js/jquery.validate.min.js"
-        asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
-        asp-fallback-src="~/libs/jQuery/js/jquery.validate.unobtrusive.min.js"
-        asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
+            asp-fallback-src="~/libs/jQuery/js/jquery.validate.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"
+            asp-fallback-src="~/libs/jQuery/js/additional-methods.min.js"
+            asp-fallback-test="window."></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.validate.unobtrusive.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
     <script src="~/js/script.js" asp-append-version="true"></script>
     <script src="~/js/particle.js" asp-append-version="true"></script>
+    <script asp-append-version="true" src="~/js/validate.js"></script>
+    <script asp-append-version="true" src="~/js/behavior.js"></script>
 }
