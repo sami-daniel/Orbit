@@ -24,7 +24,7 @@ namespace Orbit.Controllers
 
         public async Task<IActionResult> CreateUser(UserAddRequest userAddRequest)
         {
-            userAddRequest.UserDateOfBirth = new DateTime(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
+            userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 var errors = string.Join(',', ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
@@ -51,11 +51,11 @@ namespace Orbit.Controllers
             return RedirectToAction("", "Dashboard");
         }
 
-        public async Task<IActionResult> Login(string name, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
             var users = await _userService.GetAllUsersAsync();
 
-            var user = users.FirstOrDefault(user => user.UserName == name);
+            var user = users.FirstOrDefault(user => user.UserEmail == email);
 
             if (user == null) 
             { 
@@ -67,7 +67,7 @@ namespace Orbit.Controllers
                 return BadRequest("Senha incorreta!");
             }
 
-            HttpContext.Session.SetObject("User",user);
+            HttpContext.Session.SetObject("User", user);
 
             return RedirectToActionPermanent("", "Dashboard");
         }

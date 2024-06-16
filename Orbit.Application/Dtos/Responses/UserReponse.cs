@@ -10,11 +10,11 @@ namespace Orbit.Application.Dtos.Responses
 
         public string UserEmail { get; private set; } = null!;
 
-        public DateTime UserDateOfBirth { get; private set; }
+        public DateOnly UserDateOfBirth { get; private set; }
 
         public string UserPassword { get; private set; } = null!;
 
-        public UserReponse(int userId, string userName, string userEmail, DateTime userDateOfBirth, string userPassword)
+        public UserReponse(int userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword)
         {
             UserId = userId;
             UserName = userName;

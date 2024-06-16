@@ -19,7 +19,7 @@ namespace Orbit.Application.Dtos.Requests
         [Required(ErrorMessage = "Insira a data de nascimento do usuário!")]
         [DataType(DataType.Date, ErrorMessage = "Formato de data inválido.")]
         [Display(Name = "Data de Nascimento")]
-        public DateTime UserDateOfBirth { get; set; }
+        public DateOnly UserDateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Insira a senha do usuário!")]
         [StringLength(200, ErrorMessage = "A senha do usuário deve ter no máximo 200 caracteres.")]
@@ -45,7 +45,7 @@ namespace Orbit.Application.Dtos.Requests
         public User ToUser() => new User
         {
             UserName = UserName,
-            UserDateOfBirth = new DateTime(Year, Month, Day),
+            UserDateOfBirth = new DateOnly(Year, Month, Day),
             UserEmail = UserEmail,
             UserPassword = UserPassword
         };
