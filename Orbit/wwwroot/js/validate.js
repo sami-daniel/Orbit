@@ -135,12 +135,6 @@
                 $('#signInButton').submit();
             }
         }
-
-        if (e.which === 27) {
-            event.preventDefault();
-
-            $('#closeBtn').trigger('click');
-        }
     });
 
     backBtn.click(function () {
