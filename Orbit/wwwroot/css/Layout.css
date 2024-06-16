@@ -10,3 +10,13 @@
     background-color: #212121;
     height: 70px;
 }
+
+.Title-search{
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 1fr;
+}
+
+.navegation-links ul{
+    display: flex;
+
+}
