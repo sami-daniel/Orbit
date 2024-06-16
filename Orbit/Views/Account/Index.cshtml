@@ -1,4 +1,8 @@
-﻿<div id="particles-js"></div>
+﻿@{
+    Layout = "";
+}
+
+<div id="particles-js"></div>
 <main class="main-account">
     <header>
         <h2 class="title">OrbIt</h2>
@@ -103,7 +107,7 @@
                     <h2 class="form-title">OrbIt</h2>
                 </div>
 
-                <form method="post" class="forms" asp-action="Login" asp-controller="Account">
+                <form method="post" class="forms" asp-action="Login" asp-controller="Account" id="log-form">
                     <h3 class="sub-title">Faça o login</h3>
                     <div class="name-container">
                         <label for="email-login">Email</label>
@@ -153,12 +157,12 @@
             asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"
             asp-fallback-src="~/libs/jQuery/js/additional-methods.min.js"
-            asp-fallback-test="window."></script>
+            asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.validate.unobtrusive.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
     <script src="~/js/script.js" asp-append-version="true"></script>
     <script src="~/js/particle.js" asp-append-version="true"></script>
-    <script asp-append-version="true" src="~/js/validate.js"></script>
     <script asp-append-version="true" src="~/js/behavior.js"></script>
+    <script asp-append-version="true" src="~/js/validate.js"></script>
 }

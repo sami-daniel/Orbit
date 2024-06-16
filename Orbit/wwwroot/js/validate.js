@@ -87,6 +87,7 @@
     const firstStep = $("#divSignIn").find(".first-step");
     const lastStep = $("#divSignIn").find(".last-step");
     const backBtn = $("#backBtn");
+    let onLastStep = false;
     lastStep.hide();
 
     $('#nextBtn').click(function () {
@@ -96,24 +97,57 @@
             trimmer();
             firstStep.hide();
             lastStep.show();
+            onLastStep = true;
         }
 
     });
 
-    $('#LoginButton').click(function () {
+    $('#signInButton').click(function () {
         event.preventDefault();
 
         if ($('#reg-form').valid()) {
-            document.getElementById("UserPassword").value.trim();
+            document.getElementById('password').value.trim();
         }
 
-        $('#reg-form').submit();
+        $('#signInButton').submit();
+    });
+
+    $(document).keypress(function (e) {
+        if (e.which === 13) {
+            event.preventDefault();
+
+            if (onLastStep) {
+
+                if ($('#reg-form').valid()) {
+                    trimmer();
+                    firstStep.hide();
+                    lastStep.show();
+                    onLastStep = true;
+                }
+            }
+
+            else {
+
+                if ($('#reg-form').valid()) {
+                    document.getElementById('password').value.trim();
+                }
+
+                $('#signInButton').submit();
+            }
+        }
+
+        if (e.which === 27) {
+            event.preventDefault();
+
+            $('#closeBtn').trigger('click');
+        }
     });
 
     backBtn.click(function () {
         event.preventDefault(); // Previne o comportamento padrão de submissão do 
         firstStep.show();
         lastStep.hide();
+        onLastStep = false;
     });
 });
 

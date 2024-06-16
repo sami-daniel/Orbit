@@ -220,8 +220,8 @@ body.modal-open {
   border-radius: 32px;
   border: none;
   outline: none;
-  position: absolute;
   bottom: 10px;
+  margin-bottom: 25px;
 }
 .top-header {
   display: flex;

@@ -25,12 +25,17 @@ namespace Orbit.Application.Services
             }
 
             var users = await _unitOfWork.User.FindAsync(user => user.UserEmail == userAddRequest.UserEmail);
+            var usernames = await _unitOfWork.User.FindAsync(user => user.UserName == userAddRequest.UserName);
 
             if (users.Any())
             {
                 throw new ArgumentException("E-mail já cadastrado anteriormente!");
             }
 
+            if (usernames.Any())
+            {
+                throw new ArgumentException("Username já cadastrado anteriormente!");
+            }
             var user = userAddRequest.ToUser();
 
             await _unitOfWork.User.AddAsync(user);
