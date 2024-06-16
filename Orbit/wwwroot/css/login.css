@@ -20,7 +20,11 @@ input {
 }
 
 :root {
-    --white: rgb(255, 255, 255);
+  --white: rgb(255, 255, 255);
+  --black:rgb(0,0,0);
+  --cianEscuro:rgb(37, 176, 160);
+  --cianClaro:rgb(123, 245, 230);
+  --colorBorder:rgb(255, 255, 255, 0.5);
 }
 
 body {
@@ -77,7 +81,7 @@ canvas {
 }
 
 footer {
-  background: linear-gradient(to right, #7bf5e6, #25b0a0);
+  background: linear-gradient(to right, rgb(123, 245, 230), #25b0a0);
   width: 100%;
   min-height: 12vh;
   display: flex;
@@ -102,7 +106,7 @@ footer {
 }
 
 .btn:hover {
-  background-color: #25b0a0;
+  background-color: rgb(37, 176, 160);
   color: white;
 }
 
