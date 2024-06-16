@@ -1,0 +1,71 @@
+* {
+    box-sizing: border-box;
+    border: 0;
+    padding: 0;
+  }
+  body{
+      margin: 0;
+      border: 0px;
+  }
+  
+  .Perfil-detail{
+      background-color: #212121;
+      border-bottom: 1px solid white;
+  }
+  
+  .perfil-publications{
+      background-color: #212121;
+  }
+  
+  #image-back {
+    width: 100%;
+    height: 200px;
+  }
+  
+  #image-perfil{
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      left: 15%;
+      top: -5%;
+  }
+  
+  .Button-Edit{
+  background-color: black;
+  border: 1px solid white;
+  width: 150px;
+  height: 50px;
+  position: absolute;
+  right: 30px;
+  border-radius: 50px;
+  }
+  
+  .Button-Edit h1{
+      color: white;
+      text-align: center;
+      position: relative;
+      top: -5px;
+  }
+  
+  
+  
+  
+  .div-follows{
+      margin-left: 10%;
+      display: flex;
+      gap: 5px;
+  }
+  
+  
+  
+  .click-functions{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      width: 100%;
+      gap: 10px;
+  }
+  
+  .click-functions h1 {
+      text-align: center  ;
+  }
