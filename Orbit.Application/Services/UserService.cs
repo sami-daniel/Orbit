@@ -50,8 +50,8 @@ namespace Orbit.Application.Services
             var users = await _unitOfWork.User.GetAllAsync();
             var usersResponses = new List<UserReponse>();
             foreach (var user in users)
-            { 
-                usersResponses.Add(user.ToUserResponse()); 
+            {
+                usersResponses.Add(user.ToUserResponse());
             }
 
             return usersResponses;

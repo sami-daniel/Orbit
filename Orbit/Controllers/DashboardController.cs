@@ -10,7 +10,7 @@ namespace Orbit.Controllers
         {
             var user = HttpContext.Session.GetObject<UserReponse>("User");
 
-            if (user == null) 
+            if (user == null)
             {
                 return RedirectToAction("", "Account");
             }
