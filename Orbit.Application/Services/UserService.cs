@@ -42,7 +42,7 @@ namespace Orbit.Application.Services
 
             _unitOfWork.Complete();
 
-            return user.ToUserReponse();
+            return user.ToUserResponse();
         }
 
         public async Task<IEnumerable<UserReponse>> GetAllUsersAsync()
@@ -51,7 +51,7 @@ namespace Orbit.Application.Services
             var usersResponses = new List<UserReponse>();
             foreach (var user in users)
             { 
-                usersResponses.Add(user.ToUserReponse());
+                usersResponses.Add(user.ToUserResponse()); 
             }
 
             return usersResponses;
