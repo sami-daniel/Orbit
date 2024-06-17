@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
 
 namespace Orbit.Infrastructure.Data.Contexts;
@@ -34,59 +36,69 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.UserDateOfBirth).HasColumnName("user_date_of_birth");
             entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
-                .HasColumnName("user_description");
+                .HasColumnName("user_description")
+                .UseCollation("utf8mb4_0900_ai_ci")
+                .HasCharSet("utf8mb4");
             entity.Property(e => e.UserEmail)
                 .HasMaxLength(200)
-                .HasColumnName("user_email");
+                .HasColumnName("user_email")
+                .UseCollation("utf8mb4_0900_ai_ci")
+                .HasCharSet("utf8mb4");
             entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
             entity.Property(e => e.UserName)
                 .HasMaxLength(100)
-                .HasColumnName("user_name");
+                .HasColumnName("user_name")
+                .UseCollation("utf8mb4_0900_ai_ci")
+                .HasCharSet("utf8mb4");
             entity.Property(e => e.UserPassword)
                 .HasMaxLength(200)
-                .HasColumnName("user_password");
+                .HasColumnName("user_password")
+                .UseCollation("utf8mb4_0900_ai_ci")
+                .HasCharSet("utf8mb4");
             entity.Property(e => e.UserProfileName)
                 .HasMaxLength(200)
-                .HasColumnName("user_profile_name");
+                .HasColumnName("user_profile_name")
+                .UseCollation("utf8mb4_0900_ai_ci")
+                .HasCharSet("utf8mb4");
 
-            entity.HasMany(d => d.Followers).WithMany(p => p.Users)
+            entity.HasMany(d => d.FollowedUsers).WithMany(p => p.FollowerUsers)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("FollowerId")
-                        .HasConstraintName("fk_follower_user"),
+                        .HasForeignKey("FollowedUserId")
+                        .HasConstraintName("fk_followed_user"),
                     l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_follower_user1"),
+                        .HasForeignKey("FollowerUserId")
+                        .HasConstraintName("fk_follower_user"),
                     j =>
                     {
-                        j.HasKey("FollowerId", "UserId")
+                        j.HasKey("FollowerUserId", "FollowedUserId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
                         j.ToTable("follower");
-                        j.HasIndex(new[] { "UserId" }, "fk_follower_user1_idx");
-                        j.IndexerProperty<int>("FollowerId").HasColumnName("follower_id");
-                        j.IndexerProperty<int>("UserId").HasColumnName("user_id");
+                        j.HasIndex(new[] { "FollowedUserId" }, "fk_follower_user1_idx");
+                        j.IndexerProperty<uint>("FollowerUserId").HasColumnName("follower_user_id");
+                        j.IndexerProperty<uint>("FollowedUserId").HasColumnName("followed_user_id");
                     });
 
-            entity.HasMany(d => d.Users).WithMany(p => p.Followers)
+            entity.HasMany(d => d.FollowerUsers).WithMany(p => p.FollowedUsers)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_follower_user1"),
-                    l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("FollowerId")
+                        .HasForeignKey("FollowerUserId")
                         .HasConstraintName("fk_follower_user"),
+                    l => l.HasOne<User>().WithMany()
+                        .HasForeignKey("FollowedUserId")
+                        .HasConstraintName("fk_followed_user"),
                     j =>
                     {
-                        j.HasKey("FollowerId", "UserId")
+                        j.HasKey("FollowerUserId", "FollowedUserId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
                         j.ToTable("follower");
-                        j.HasIndex(new[] { "UserId" }, "fk_follower_user1_idx");
-                        j.IndexerProperty<int>("FollowerId").HasColumnName("follower_id");
-                        j.IndexerProperty<int>("UserId").HasColumnName("user_id");
+                        j.HasIndex(new[] { "FollowedUserId" }, "fk_follower_user1_idx");
+                        j.IndexerProperty<uint>("FollowerUserId").HasColumnName("follower_user_id");
+                        j.IndexerProperty<uint>("FollowedUserId").HasColumnName("followed_user_id");
                     });
         });
 

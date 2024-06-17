@@ -8,7 +8,7 @@
 
 <header class="content-top">
     <div class="btn-back">
-        <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow"/>
+        <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow" />
     </div>
     <div class="title-user">
         <span>@Model.UserName</span>
@@ -28,13 +28,22 @@
         <div class="profile-description">
             <h2>@Model.UserName</h2>
             <p>@Html.Raw("@")@Model.UserName</p>
-            <p>Sou programador FULLSTACK, WEBDEVELOPER</p>
+            <p>
+                @if (Model.UserDescription == null)
+                {
+                    <text>➕Adicionar descrição</text>
+                }
+                else
+                {
+                    <text>@Model.UserDescription</text>
+                }
+            </p>
             <div class="profile-followers">
-                <p>Followers <span>0</span></p>
+                <p>Followers <span>@Model.</span></p>
                 <p>Following <span>0</span></p>
             </div>
         </div>
-        
+
         <div class="edit-profile">
             <button class="btn-edit">Edit Profile</button>
         </div>
