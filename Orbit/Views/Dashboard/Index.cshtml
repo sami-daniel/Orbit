@@ -2,40 +2,58 @@
 
 @model UserReponse
 
-<p>
-    Bem vindo @Model.UserName
-</p>
-<main>
-      <article class="Perfil-detail">
-        <div id="image-back"><img src="" alt="" /></div>
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
 
-        <section>
-          <div id="image-perfil"><img src="" alt="" /></div>
-          <div class="Button-Edit"><h1>Editar Perfil</h1></div>
-          <h1 class="name-perfil">s</h1>
-          <h3 class="arroba-perfil">s</h3>
-          <p class="text-perfil-resume">s</p>
-          <div class="div-follows">
-            <h4 class="follow">seguindo</h4>
-            <h4 class="followers">seguidores</h4>
-          </div>
-         
-        </section>
-      </article>
+<header class="content-top">
+    <div class="btn-back">
+        <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow"/>
+    </div>
+    <div class="title-user">
+        <span>@Model.UserName</span>
+    </div>
+</header>
 
-      <article class="perfil-publications">
-        <section class="click-functions">
-          <h1>Publications</h1>
-          <h1>Midias</h1>
-          <h1>Curtidas</h1>
-        </section>
+<div class="background-img">
+    <img src="" alt="" />
+    <span class="text-img">Add an image</span>
+</div>
 
-        <div><!-- as publicaçoes aqui --></div>
-      </article>
-    </main>
+<main class="content-main">
+    <div class="profiles-specs">
+        <div class="profile-img">
+            <img src="~/images/image-profile.png" alt="Image Profile" />
+        </div>
+        <div class="profile-description">
+            <h2>@Model.UserName</h2>
+            <p>@Html.Raw("@")@Model.UserName</p>
+            <p>Sou programador FULLSTACK, WEBDEVELOPER</p>
+            <div class="profile-followers">
+                <p>Followers <span>0</span></p>
+                <p>Following <span>0</span></p>
+            </div>
+        </div>
+        
+        <div class="edit-profile">
+            <button class="btn-edit">Edit Profile</button>
+        </div>
+    </div>
+
+    <div class="navigation-bar">
+        <div class="content-nav">Publications</div>
+        <div class="content-nav">Projects</div>
+        <div class="content-nav">Curriculum</div>
+        <div class="content-nav">Media</div>
+    </div>
+</main>
 
 @section links {
     <link rel="stylesheet" href="~/css/Dasboard.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+          rel="stylesheet">
 }
 
 @section scripts {

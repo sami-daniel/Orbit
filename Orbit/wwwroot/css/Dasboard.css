@@ -1,71 +1,138 @@
 * {
     box-sizing: border-box;
-    border: 0;
     padding: 0;
-  }
-  body{
-      margin: 0;
-      border: 0px;
-  }
-  
-  .Perfil-detail{
-      background-color: #212121;
-      border-bottom: 1px solid white;
-  }
-  
-  .perfil-publications{
-      background-color: #212121;
-  }
-  
-  #image-back {
-    width: 100%;
-    height: 200px;
-  }
-  
-  #image-perfil{
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      position: relative;
-      left: 15%;
-      top: -5%;
-  }
-  
-  .Button-Edit{
-  background-color: black;
-  border: 1px solid white;
-  width: 150px;
-  height: 50px;
-  position: absolute;
-  right: 30px;
-  border-radius: 50px;
-  }
-  
-  .Button-Edit h1{
-      color: white;
-      text-align: center;
-      position: relative;
-      top: -5px;
-  }
-  
-  
-  
-  
-  .div-follows{
-      margin-left: 10%;
-      display: flex;
-      gap: 5px;
-  }
-  
-  
-  
-  .click-functions{
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      width: 100%;
-      gap: 10px;
-  }
-  
-  .click-functions h1 {
-      text-align: center  ;
-  }
+    margin: 0;
+    text-decoration: none;
+    color: white;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+body{
+    background-color:black;
+}
+
+.content-top{
+    border-bottom:1px solid rgb(128, 128, 128, 0.5);
+    display:flex;
+    align-items:center;
+    padding:20px;
+}
+
+.content-top div:last-child{
+    margin-left:5%;
+}
+
+.content-top .btn-back img{
+    width:20px;
+    height:20px;
+    object-fit:cover;
+}
+
+.content-top .title-user{
+    font-size:1.5em;
+    font-weight:500;
+    letter-spacing:2.2px;
+}
+
+.background-img{
+    width:100%;
+    height:30vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:rgba(255,255,255,.5);
+    transition: .4s;
+    cursor:pointer;
+}
+
+.background-img .text-img{
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-weight:800;
+    transition:.4s;
+}
+
+.background-img:hover{
+    background-color:white;
+}
+
+.background-img:hover .text-img{
+    color:black;
+}
+
+.content-main{
+    width:100%;
+    padding:20px;
+}
+
+.content-main .profiles-specs{
+    display:flex;
+    align-items:center;
+    width:100%;
+    padding:10px;
+    position:relative;
+}
+
+.content-main .profiles-specs .edit-profile {
+        position: absolute;
+        right: 0;
+}
+
+.content-main .profiles-specs .edit-profile .btn-edit{
+    background-color:black;
+    border:1px solid white;
+    padding:15px;
+    border-radius:16px;
+    font-size:1.2em;
+    transition:.4s;
+    cursor:pointer;
+
+}
+
+.content-main .profiles-specs .edit-profile .btn-edit:hover{
+    background-color:white;
+    color:black;
+}
+
+.content-main .profiles-specs .profile-img {
+   align-content:start;
+}
+
+.content-main .profiles-specs .profile-img img{
+    width:150px;
+    height:150px;
+    object-fit:cover;
+   
+}
+
+.content-main .profiles-specs .profile-description p{
+    margin-top:2%;
+}
+
+.content-main .profiles-specs .profile-description .profile-followers{
+    margin-top:2%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-main .navigation-bar{
+    margin-top:10%;
+    width:100%;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255, .5);
+}
+
+.content-main .navigation-bar .content-nav {
+    border-right: 1px solid rgba(255,255,255, .5);
+    width:25%;
+    height:100px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:1.5em;
+    font-weight:500;
+    letter-spacing: 1.5px;
+    cursor:pointer;
+}
