@@ -25,29 +25,6 @@ namespace Orbit.Application.Dtos.Responses
 
         public ICollection<UserReponse> Followers { get; private set; } = new List<UserReponse>();
 
-        public UserReponse() { }
-
-        public UserReponse(int userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword)
-        {
-            UserId = userId;
-            UserName = userName;
-            UserEmail = userEmail;
-            UserDateOfBirth = userDateOfBirth;
-            UserPassword = userPassword;
-        }
-
-        public UserReponse(int userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName)
-        {
-            UserId = userId;
-            UserName = userName;
-            UserEmail = userEmail;
-            UserDateOfBirth = userDateOfBirth;
-            UserPassword = userPassword;
-            UserDescription = userDescription;
-            UserImageByteType = userImageByteType;
-            UserProfileName = userProfileName;
-        }
-
         public UserReponse(int userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserReponse> users, ICollection<UserReponse> followers)
         {
             UserId = userId;
