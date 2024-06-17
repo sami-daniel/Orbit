@@ -83,7 +83,7 @@
                             <input type="password" required name="repeatpassword" id="repeatpassword" class="inputs" />
                         </div>
                         <div class="terms-and-conditions">
-                            <input type="checkbox" required />
+                            <input type="checkbox" name="terms" required />
                             <label class="termos">
                                 Concorda com os nossos termos de políticas e serviços! <a href="#">
                                     Termos de política
@@ -148,20 +148,23 @@
 
 @section scripts {
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-            asp-fallback-src="~/libs/particle/js/particles.min.js" asp-fallback-test="window.particleJS"></script>
+            asp-fallback-src="~/libs/particle/js/particles.min.js"
+            asp-fallback-test="window.particleJS"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.validate.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"
-            asp-fallback-src="~/libs/jQuery/js/additional-methods.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.validate.unobtrusive.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"
+            asp-fallback-src="~/libs/jQuery/js/additional-methods.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+
     <script src="~/js/script.js" asp-append-version="true"></script>
     <script src="~/js/particle.js" asp-append-version="true"></script>
-    <script asp-append-version="true" src="~/js/behavior.js"></script>
-    <script asp-append-version="true" src="~/js/validate.js"></script>
+    <script src="~/js/behavior.js" asp-append-version="true"></script>
+    <script src="~/js/validate.js" asp-append-version="true"></script>
 }

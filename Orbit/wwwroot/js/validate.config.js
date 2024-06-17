@@ -57,8 +57,8 @@
                 required: "Insira o nome do usuário!",
                 minlength: "O nome do usuário deve ter no mínimo 5 caracteres.",
                 maxlength: "O nome do usuário deve ter no máximo 100 caracteres.",
-                pattern: "O nome do usuário só pode conter letras, numeros e underline.",
-                remote: "O nome de usúario ja foi cadastro anteriormente! \n Gentileza escolher outro."
+                pattern: "O nome do usuário só pode conter letras, números e underline.",
+                remote: "O nome de usuário já foi cadastrado anteriormente! \nGentileza escolher outro."
             },
             UserEmail: {
                 required: "Insira o email do usuário!",
@@ -70,13 +70,13 @@
                 required: "Insira a senha do usuário!",
                 maxlength: "A senha do usuário deve ter no máximo 200 caracteres.",
                 pattern: "A senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um caractere especial (@$!%*?&) e ter pelo menos 8 caracteres.",
-                equalTo: "#repeatpassword"
+                equalTo: "As senhas não coincidem."
             },
             repeatpassword: {
                 required: "Repita a senha digitada!"
             },
             terms: {
-                required: "Você deve concordar com nossos termos e póliticas de privacidades antes de cadastrar."
+                required: "Você deve concordar com nossos termos e políticas de privacidade antes de cadastrar."
             },
             Day: {
                 required: "O campo Dia é obrigatório.",
@@ -92,73 +92,4 @@
             }
         }
     });
-
-    const firstStep = $("#divSignIn").find(".first-step");
-    const lastStep = $("#divSignIn").find(".last-step");
-    const backBtn = $("#backBtn");
-    let onLastStep = false;
-    lastStep.hide();
-
-    $('#nextBtn').click(function () {
-        event.preventDefault();
-
-        if ($('#reg-form').valid()) {
-            trimmer();
-            firstStep.hide();
-            lastStep.show();
-            onLastStep = true;
-        }
-
-    });
-
-    $('#signInButton').click(function () {
-        event.preventDefault();
-
-        if ($('#reg-form').valid()) {
-            document.getElementById('password').value.trim();
-            $('#reg-form').submit();
-        }
-    });
-
-    $(document).keypress(function (e) {
-        if (e.which === 13) {
-            event.preventDefault();
-
-            if (onLastStep) {
-
-                if ($('#reg-form').valid()) {
-                    trimmer();
-                    firstStep.hide();
-                    lastStep.show();
-                    onLastStep = true;
-                }
-            }
-
-            else {
-
-                if ($('#reg-form').valid()) {
-                    document.getElementById('password').value.trim();
-                    $('#signInButton').submit();
-                }
-
-
-            }
-        }
-    });
-
-    backBtn.click(function () {
-        event.preventDefault(); // Previne o comportamento padrão de submissão do 
-        firstStep.show();
-        lastStep.hide();
-        onLastStep = false;
-    });
 });
-
-function trimmer() {
-    document.getElementById("name").value.trim();
-    document.getElementById("email").value.trim();
-    document.getElementById("DayBirthday").value.trim();
-    document.getElementById("MonthBirthday").value.trim();
-    document.getElementById("YearBirthday").value.trim();
-
-}
