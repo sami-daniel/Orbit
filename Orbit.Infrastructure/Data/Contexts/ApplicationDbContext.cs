@@ -61,44 +61,48 @@ public partial class ApplicationDbContext : DbContext
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
 
-            entity.HasMany(d => d.FollowedUsers).WithMany(p => p.FollowerUsers)
+            entity.HasMany(d => d.Followers).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("FollowedUserId")
-                        .HasConstraintName("fk_followed_user"),
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("follower_ibfk_1"),
                     l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("FollowerUserId")
-                        .HasConstraintName("fk_follower_user"),
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("follower_ibfk_2"),
                     j =>
                     {
-                        j.HasKey("FollowerUserId", "FollowedUserId")
+                        j.HasKey("UserId", "FollowerId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
                         j.ToTable("follower");
-                        j.HasIndex(new[] { "FollowedUserId" }, "fk_follower_user1_idx");
-                        j.IndexerProperty<uint>("FollowerUserId").HasColumnName("follower_user_id");
-                        j.IndexerProperty<uint>("FollowedUserId").HasColumnName("followed_user_id");
+                        j.HasIndex(new[] { "FollowerId" }, "follower_id");
+                        j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
+                        j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
                     });
 
-            entity.HasMany(d => d.FollowerUsers).WithMany(p => p.FollowedUsers)
+            entity.HasMany(d => d.Users).WithMany(p => p.Followers)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("FollowerUserId")
-                        .HasConstraintName("fk_follower_user"),
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("follower_ibfk_2"),
                     l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("FollowedUserId")
-                        .HasConstraintName("fk_followed_user"),
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("follower_ibfk_1"),
                     j =>
                     {
-                        j.HasKey("FollowerUserId", "FollowedUserId")
+                        j.HasKey("UserId", "FollowerId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
                         j.ToTable("follower");
-                        j.HasIndex(new[] { "FollowedUserId" }, "fk_follower_user1_idx");
-                        j.IndexerProperty<uint>("FollowerUserId").HasColumnName("follower_user_id");
-                        j.IndexerProperty<uint>("FollowedUserId").HasColumnName("followed_user_id");
+                        j.HasIndex(new[] { "FollowerId" }, "follower_id");
+                        j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
+                        j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
                     });
         });
 

@@ -1,4 +1,5 @@
-﻿using Orbit.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Orbit.Domain.Entities;
 using System.Collections.ObjectModel;
 
 namespace Orbit.Application.Dtos.Responses
@@ -21,11 +22,11 @@ namespace Orbit.Application.Dtos.Responses
 
         public string? UserProfileName { get; private set; }
 
-        public ICollection<UserReponse> FollowedUsers { get; private set; } = new List<UserReponse>();
+        public virtual ICollection<UserReponse> Followers { get; private set; } = new List<UserReponse>();
 
-        public ICollection<UserReponse> FollowerUsers { get; private set; } = new List<UserReponse>();
+        public virtual ICollection<UserReponse> Users { get; private set; } = new List<UserReponse>();
 
-        public UserReponse(uint userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserReponse> users, ICollection<UserReponse> followers)
+        public UserReponse(uint userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserReponse> followers, ICollection<UserReponse> users)
         {
             UserId = userId;
             UserName = userName;
@@ -35,8 +36,8 @@ namespace Orbit.Application.Dtos.Responses
             UserDescription = userDescription;
             UserImageByteType = userImageByteType;
             UserProfileName = userProfileName;
-            FollowerUsers = followers;
-            FollowedUsers = users;
+            Followers = followers;
+            Users = users;
         }
 
         public override bool Equals(object? obj)
@@ -81,7 +82,7 @@ namespace Orbit.Application.Dtos.Responses
                             userDescription: user.UserDescription,
                             userImageByteType: user.UserImageByteType,
                             userProfileName: user.UserProfileName,
-                            users: new Collection<UserReponse>(user.FollowedUsers.Select(user => user.ToUserResponse()).ToList()),
-                            followers: new Collection<UserReponse>(user.FollowerUsers.Select(user => user.ToUserResponse()).ToList()));
+                            followers: new Collection<UserReponse>(user.Followers.Select(user => user.ToUserResponse()).ToList()),
+                            users: new Collection<UserReponse>(user.Users.Select(user => user.ToUserResponse()).ToList()));
     }
 }
