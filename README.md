@@ -1,5 +1,5 @@
 # Orbit - Rede Social para Profissionais de Tecnologia
-![version](https://img.shields.io/badge/version-1.0-black.svg) <br>
+![version](https://img.shields.io/badge/version-1.1.0-black.svg) <br>
 ![Orbit](https://img.shields.io/badge/Orbit-black.svg)
 
 **Orbit 1.1.0**
