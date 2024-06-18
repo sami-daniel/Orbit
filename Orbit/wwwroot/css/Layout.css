@@ -1,0 +1,27 @@
+* {
+  list-style: none;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.Header-basic{
+    background-color: #212121;
+    height: 70px;
+}
+
+.Title-search{
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 1fr;
+}
+
+.navegation-links ul{
+    display: flex;
+
+}
+
+a{
+    text-decoration: none;
+    color: gray;
+}

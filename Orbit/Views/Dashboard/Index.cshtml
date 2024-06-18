@@ -2,6 +2,77 @@
 
 @model UserReponse
 
-<p>
-    Bem vindo @Model.UserName
-</p>
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
+
+<header class="content-top">
+    <div class="btn-back">
+        <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow" />
+    </div>
+    <div class="title-user">
+        <span>@Model.UserName</span>
+    </div>
+</header>
+
+<div class="background-img">
+    <img src="" alt="" />
+    <span class="text-img">Add an image</span>
+</div>
+
+<main class="content-main">
+    <div class="profiles-specs">
+        <div class="profile-img">
+            <img src="@if(Model.UserImageByteType == null){
+            <text>/images/image-profile.png</text>
+            }
+            else{
+            @Url.Action("GetUserImageAsync", new { username = Model.UserName })
+            }
+            " alt="Image Profile" />
+        </div>
+        <div class="profile-description">
+            <h2>@Model.UserName</h2>
+            <p>@Html.Raw("@")@Model.UserName</p>
+            <p>
+                @if (Model.UserDescription == null)
+                {
+                    <text>➕Adicionar descrição</text>
+                }
+                else
+                {
+                    <text>@Model.UserDescription</text>
+                }
+            </p>
+            <div class="profile-followers">
+                <p>Followers <span>@Model.Followers.Count</span></p>
+                <p>Following <span>@Model.Users.Count</span></p>
+            </div>
+        </div>
+
+        <div class="edit-profile">
+            <button class="btn-edit">Edit Profile</button>
+        </div>
+    </div>
+
+    <div class="navigation-bar">
+        <div class="content-nav">Publications</div>
+        <div class="content-nav">Projects</div>
+        <div class="content-nav">Curriculum</div>
+        <div class="content-nav">Media</div>
+    </div>
+</main>
+
+@section links {
+    <link rel="stylesheet" href="~/css/Dasboard.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+          rel="stylesheet">
+}
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
+}

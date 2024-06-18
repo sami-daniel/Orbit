@@ -6,8 +6,25 @@
   font-family: "Josefin Sans", sans-serif;
 }
 
+input {
+    font-family: "Josefin Sans", sans-serif !important;
+    font-size: inherit !important;
+    margin-bottom: 10px;
+}
+
+.input-values {
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
 :root {
   --white: rgb(255, 255, 255);
+  --black:rgb(0,0,0);
+  --cianEscuro:rgb(37, 176, 160);
+  --cianClaro:rgb(123, 245, 230);
+  --colorBorder:rgb(255, 255, 255, 0.5);
 }
 
 body {
@@ -64,7 +81,7 @@ canvas {
 }
 
 footer {
-  background: linear-gradient(to right, #7bf5e6, #25b0a0);
+  background: linear-gradient(to right, rgb(123, 245, 230), #25b0a0);
   width: 100%;
   min-height: 12vh;
   display: flex;
@@ -89,7 +106,7 @@ footer {
 }
 
 .btn:hover {
-  background-color: #25b0a0;
+  background-color: rgb(37, 176, 160);
   color: white;
 }
 
@@ -168,7 +185,7 @@ body.modal-open {
 }
 
 .content .div-signIn .form-name .birthday-inputs {
-  width: 25%;
+  width: 90%;
   font-size: 1.5em;
   font-weight: 300;
   border: none;
@@ -207,8 +224,8 @@ body.modal-open {
   border-radius: 32px;
   border: none;
   outline: none;
-  position: absolute;
   bottom: 10px;
+  margin-bottom: 25px;
 }
 .top-header {
   display: flex;
@@ -243,6 +260,7 @@ div label {
 }
 
 .termos {
+  width: 100% !important;
   display: block;
   color: white;
   font-size: 1.5em;

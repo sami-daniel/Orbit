@@ -25,19 +25,24 @@ namespace Orbit.Application.Services
             }
 
             var users = await _unitOfWork.User.FindAsync(user => user.UserEmail == userAddRequest.UserEmail);
+            var usernames = await _unitOfWork.User.FindAsync(user => user.UserName == userAddRequest.UserName);
 
             if (users.Any())
             {
                 throw new ArgumentException("E-mail já cadastrado anteriormente!");
             }
 
+            if (usernames.Any())
+            {
+                throw new ArgumentException("Username já cadastrado anteriormente!");
+            }
             var user = userAddRequest.ToUser();
 
             await _unitOfWork.User.AddAsync(user);
 
             _unitOfWork.Complete();
 
-            return user.ToUserReponse();
+            return user.ToUserResponse();
         }
 
         public async Task<IEnumerable<UserReponse>> GetAllUsersAsync()
@@ -45,28 +50,11 @@ namespace Orbit.Application.Services
             var users = await _unitOfWork.User.GetAllAsync();
             var usersResponses = new List<UserReponse>();
             foreach (var user in users)
-            { 
-                usersResponses.Add(user.ToUserReponse());
+            {
+                usersResponses.Add(user.ToUserResponse());
             }
 
             return usersResponses;
-        }
-
-        public async Task<UserReponse?> GetUserByUserIdAsync(int userId)
-        {
-            if (userId <= 0)
-            {
-                return null;
-            }
-
-            var user = await _unitOfWork.User.FindAsync(user => user.UserId == userId);
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            return user.FirstOrDefault(user => user.UserId == userId)?.ToUserReponse();
         }
     }
 }

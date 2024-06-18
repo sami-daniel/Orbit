@@ -24,7 +24,7 @@ namespace Orbit.Controllers
 
         public async Task<IActionResult> CreateUser(UserAddRequest userAddRequest)
         {
-            userAddRequest.UserDateOfBirth = new DateTime(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
+            userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 var errors = string.Join(',', ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
@@ -51,25 +51,64 @@ namespace Orbit.Controllers
             return RedirectToAction("", "Dashboard");
         }
 
-        public async Task<IActionResult> Login(string name, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
             var users = await _userService.GetAllUsersAsync();
 
-            var user = users.FirstOrDefault(user => user.UserName == name);
+            var user = users.FirstOrDefault(user => user.UserEmail == email);
 
-            if (user == null) 
-            { 
+            if (user == null)
+            {
                 return NotFound("Usuario com esse nome nâo foi encontrado!");
             }
 
-            if (password != user.UserPassword) 
+            if (password != user.UserPassword)
             {
                 return BadRequest("Senha incorreta!");
             }
 
-            HttpContext.Session.SetObject("User",user);
+            HttpContext.Session.SetObject("User", user);
 
             return RedirectToActionPermanent("", "Dashboard");
+        }
+
+        [HttpPost]
+        public async Task<bool> CheckEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return true;
+            }
+            var users = await _userService.GetAllUsersAsync();
+
+            var userWithEmail = users.Where(u => u.UserEmail == email);
+
+            if (userWithEmail.Count() > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [HttpPost]
+        public async Task<bool> CheckUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return true;
+            }
+
+            var users = await _userService.GetAllUsersAsync();
+
+            var usersWithID = users.Where(u => u.UserName == username);
+
+            if (usersWithID.Count() > 0)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
