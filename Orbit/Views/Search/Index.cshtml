@@ -6,14 +6,8 @@
         <input type="text" placeholder="Search" id="searchBar" />
         <i class="fa-solid fa-magnifying-glass icon"></i>
     </div>
-    <div class="search-result">
-        <div class="results">Resultado</div>
-        <div class="results">Resultado</div>
-        <div class="results">Resultado</div>
-        <div class="results">Resultado</div>
-        <div class="results">Resultado</div>
-        <div class="results">Resultado</div>
-        <div class="results">Resultado</div>
+    <div class="search-result" id="search-box">
+        
     </div>
 </main>
 
@@ -26,5 +20,9 @@
 }
 
 @section scripts {
-    <script src="https://kit.fontawesome.com/aa34140bff.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/aa34140bff.js" asp-append-version="true" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
+    <script src="~/js/user-search.js" asp-append-version="true"></script>
 }

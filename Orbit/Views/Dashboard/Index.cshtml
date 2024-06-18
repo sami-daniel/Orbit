@@ -23,7 +23,13 @@
 <main class="content-main">
     <div class="profiles-specs">
         <div class="profile-img">
-            <img src="~/images/image-profile.png" alt="Image Profile" />
+            <img src="@if(Model.UserImageByteType == null){
+            <text>/images/image-profile.png</text>
+            }
+            else{
+            @Url.Action("GetUserImageAsync", new { username = Model.UserName })
+            }
+            " alt="Image Profile" />
         </div>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
@@ -66,5 +72,7 @@
 }
 
 @section scripts {
-    <script src="" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
 }
