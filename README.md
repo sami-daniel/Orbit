@@ -2,11 +2,11 @@
 ![version](https://img.shields.io/badge/version-1.0-black.svg) <br>
 ![Orbit](https://img.shields.io/badge/Orbit-black.svg)
 
-**Orbit 1.0**
+**Orbit 1.1.0**
 
 Bem-vindo ao Orbit, uma rede social inovadora projetada para conectar profissionais de tecnologia, incluindo programadores, designers, engenheiros de software, especialistas em TI e outros profissionais do setor. Nosso objetivo é proporcionar um espaço dinâmico e colaborativo onde esses profissionais possam interagir, compartilhar conhecimentos, trabalhar em projetos conjuntos e explorar novas oportunidades de carreira.
 
-Esta é a versão 1.0 do projeto. Atualmente contamos com um sistema de login básico e funcional para a aplicação! 
+Esta é a versão 1.1.0 do projeto. Atualmente contamos com um sistema de login e cadastro, redirecionamento para a página de perfil e pesquisa de usuarios com base no nome
 
 ## Pré-requisitos
 
@@ -54,17 +54,50 @@ dotnet build
 ### Passo 5: Script do banco de dados
 No cmd do MySql ou no MySql Workbench rode o script abaixo:
 ``` MySqlCmd
-drop database if exists orbitdatabase;
-create database if not exists OrbitDatabase;
-use OrbitDatabase;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-create table User(
-user_id int primary key auto_increment not null,
-user_name varchar(100) not null,
-user_email varchar(200) not null,
-user_date_of_birth datetime not null,
-user_password varchar(200) not null
-)engine = InnoDB;
+CREATE SCHEMA IF NOT EXISTS `orbitdatabase` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `orbitdatabase`.`user` (
+  `user_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(100) NOT NULL,
+  `user_email` VARCHAR(200) NOT NULL,
+  `user_date_of_birth` DATE NOT NULL,
+  `user_password` VARCHAR(200) NOT NULL,
+  `user_description` MEDIUMTEXT NULL DEFAULT NULL,
+  `user_image_byte_type` LONGBLOB NULL DEFAULT NULL,
+  `user_profile_name` VARCHAR(200) NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) VISIBLE,
+  UNIQUE INDEX `user_email_UNIQUE` (`user_email` ASC) VISIBLE,
+  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `orbitdatabase`.`follower` (
+  `follower_id` INT(10) UNSIGNED NOT NULL,
+  `user_id` INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`follower_id`, `user_id`),
+  INDEX `fk_follower_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `follower_ibfk_1`
+    FOREIGN KEY (`follower_id`)
+    REFERENCES `orbitdatabase`.`user` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `follower_ibfk_2`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `orbitdatabase`.`user` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ```
 
 ### Passo 6: Salvar string de conexão
