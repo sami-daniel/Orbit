@@ -48,7 +48,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", userReponse);
 
-            return RedirectToAction("", "Dashboard");
+            return RedirectToAction("", "Profile");
         }
 
         public async Task<IActionResult> Login(string email, string password)
@@ -69,7 +69,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", user);
 
-            return RedirectToActionPermanent("", "Dashboard");
+            return RedirectToActionPermanent("", "Profile");
         }
 
         [HttpPost]

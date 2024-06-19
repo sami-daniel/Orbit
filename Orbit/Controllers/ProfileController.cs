@@ -7,11 +7,11 @@ using Orbit.Infrastructure.Data.Contexts;
 
 namespace Orbit.Controllers
 {
-    public class DashboardController : Controller
+    public class ProfileController : Controller
     {
         public readonly IUserService _userService;
 
-        public DashboardController(IUserService userService)
+        public ProfileController(IUserService userService)
         {
             _userService = userService;
         }
