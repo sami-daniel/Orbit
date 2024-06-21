@@ -5,7 +5,7 @@ namespace Orbit.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<UserReponse> AddUserAsync(UserAddRequest userAddRequest);
-        Task<IEnumerable<UserReponse>> GetAllUsersAsync();
+        Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest);
+        Task<IEnumerable<UserResponse>> GetAllUsersAsync();
     }
 }

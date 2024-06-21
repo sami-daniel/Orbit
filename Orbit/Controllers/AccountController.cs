@@ -35,7 +35,7 @@ namespace Orbit.Controllers
                 return BadRequest(ModelState);
             }
 
-            UserReponse userReponse;
+            UserResponse userReponse;
 
             try
             {

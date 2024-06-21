@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Orbit.Application.Dtos.Responses
 {
-    public class UserReponse
+    public class UserResponse
     {
         public uint UserId { get; private set; }
 
@@ -22,11 +22,11 @@ namespace Orbit.Application.Dtos.Responses
 
         public string? UserProfileName { get; private set; }
 
-        public virtual ICollection<UserReponse> Followers { get; private set; } = new List<UserReponse>();
+        public virtual ICollection<UserResponse> Followers { get; private set; } = new List<UserResponse>();
 
-        public virtual ICollection<UserReponse> Users { get; private set; } = new List<UserReponse>();
+        public virtual ICollection<UserResponse> Users { get; private set; } = new List<UserResponse>();
 
-        public UserReponse(uint userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserReponse> followers, ICollection<UserReponse> users)
+        public UserResponse(uint userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserResponse> followers, ICollection<UserResponse> users)
         {
             UserId = userId;
             UserName = userName;
@@ -47,12 +47,12 @@ namespace Orbit.Application.Dtos.Responses
                 return false;
             }
 
-            if (obj.GetType() != typeof(UserReponse))
+            if (obj.GetType() != typeof(UserResponse))
             {
                 return false;
             }
 
-            var userResponse = obj as UserReponse;
+            var userResponse = obj as UserResponse;
 #pragma warning disable CS8602
             return userResponse.UserId == UserId
                    && userResponse.UserName == UserName
@@ -73,8 +73,8 @@ namespace Orbit.Application.Dtos.Responses
 
     public static class UserExtensions
     {
-        public static UserReponse ToUserResponse(this User user) =>
-            new UserReponse(userId: user.UserId,
+        public static UserResponse ToUserResponse(this User user) =>
+            new UserResponse(userId: user.UserId,
                             userName: user.UserName,
                             userEmail: user.UserEmail,
                             userDateOfBirth: user.UserDateOfBirth,
@@ -82,7 +82,7 @@ namespace Orbit.Application.Dtos.Responses
                             userDescription: user.UserDescription,
                             userImageByteType: user.UserImageByteType,
                             userProfileName: user.UserProfileName,
-                            followers: new Collection<UserReponse>(user.Followers.Select(user => user.ToUserResponse()).ToList()),
-                            users: new Collection<UserReponse>(user.Users.Select(user => user.ToUserResponse()).ToList()));
+                            followers: new Collection<UserResponse>(user.Followers.Select(user => user.ToUserResponse()).ToList()),
+                            users: new Collection<UserResponse>(user.Users.Select(user => user.ToUserResponse()).ToList()));
     }
 }

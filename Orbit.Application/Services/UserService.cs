@@ -15,7 +15,7 @@ namespace Orbit.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UserReponse> AddUserAsync(UserAddRequest userAddRequest)
+        public async Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest)
         {
             ArgumentNullException.ThrowIfNull(nameof(userAddRequest));
 
@@ -45,10 +45,10 @@ namespace Orbit.Application.Services
             return user.ToUserResponse();
         }
 
-        public async Task<IEnumerable<UserReponse>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
         {
             var users = await _unitOfWork.User.GetAllAsync();
-            var usersResponses = new List<UserReponse>();
+            var usersResponses = new List<UserResponse>();
             foreach (var user in users)
             {
                 usersResponses.Add(user.ToUserResponse());

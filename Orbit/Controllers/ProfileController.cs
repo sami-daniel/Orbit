@@ -18,7 +18,7 @@ namespace Orbit.Controllers
 
         public IActionResult Index()
         {
-            var user = HttpContext.Session.GetObject<UserReponse>("User");
+            var user = HttpContext.Session.GetObject<UserResponse>("User");
 
             if (user == null)
             {
