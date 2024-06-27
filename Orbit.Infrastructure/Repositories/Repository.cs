@@ -46,7 +46,7 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var a = await Context.Set<TEntity>().ToListAsync(); 
+            var a = await Context.Set<TEntity>().ToListAsync();
             return a;
         }
 

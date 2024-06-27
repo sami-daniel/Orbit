@@ -60,7 +60,7 @@ namespace Orbit.Controllers
             // dupla função
 
             var users = await _userService.GetAllUsersAsync();
-            
+
             UserResponse? user;
 
             if (email.Contains('@'))

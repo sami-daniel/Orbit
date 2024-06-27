@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
 using Orbit.Extensions;
-using Orbit.Infrastructure.Data.Contexts;
 
 namespace Orbit.Controllers
 {
@@ -28,13 +26,13 @@ namespace Orbit.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> GetUserImageAsync (string username)
+        public async Task<IActionResult> GetUserImageAsync(string username)
         {
             var users = await _userService.GetAllUsersAsync();
 
             var user = users.FirstOrDefault(u => u.UserName == username);
 
-            if (user == null || user.UserImageByteType == null) 
+            if (user == null || user.UserImageByteType == null)
             {
                 return NotFound();
             }
@@ -60,6 +58,6 @@ namespace Orbit.Controllers
                     .Select(p => new { UserName = p.UserName, ProfileName = p.UserProfileName, UserImageByteType = p.UserImageByteType });
 
             return Ok(matchProfiles);
-        } 
+        }
     }
 }

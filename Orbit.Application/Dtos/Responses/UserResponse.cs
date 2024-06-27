@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Orbit.Domain.Entities;
+﻿using Orbit.Domain.Entities;
 using System.Collections.ObjectModel;
 
 namespace Orbit.Application.Dtos.Responses
