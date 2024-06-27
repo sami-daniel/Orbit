@@ -93,6 +93,43 @@
         }
     });
 
+    $('#log-form').validate({
+        rules: {
+            email: {
+                required: true
+                /*
+                ,
+                remote: {
+                    url: 'Account/CheckEmail',
+                    type: 'post',
+                    data: {
+                        email: function () {
+                            return $('#email-login').val();
+                        }
+                    }
+                }
+                O endpoint CheckEmail retorna resultados true ou false, como o validator
+                do jQuery requer que seja para o remote retornar mensagens apropriadas de erro.
+                Pórem, o endpoint CheckEmail é preparado para checar se um email já existe, retornando false
+                e true caso contrario. Para esse caso, precisamos que retorne true se o email não existe,
+                para assim o validator retornar a mensagem apropriada
+                */
+            },
+            password: {
+                required: true
+            }
+        },
+        messages: {
+            email: {
+                required: 'Insira o email ou nome de usúario para login!'
+                /*
+                remote: 'Email não cadastrado!'
+                */
+                // FIX ME
+            }
+        }
+    });
+
     const firstStep = $("#divSignIn").find(".first-step");
     const lastStep = $("#divSignIn").find(".last-step");
     const backBtn = $("#backBtn");
@@ -110,6 +147,16 @@
         }
 
     });
+
+    $('#LoginButton').click(function () {
+        event.preventDefault();
+
+        if ($('#log-form').valid()) {
+            document.getElementById("email-login").value.trim();
+            document.getElementById("Password-Login").value.trim();
+            $('#log-form').submit();
+        }
+    })
 
     $('#signInButton').click(function () {
         event.preventDefault();
@@ -160,5 +207,5 @@ function trimmer() {
     document.getElementById("DayBirthday").value.trim();
     document.getElementById("MonthBirthday").value.trim();
     document.getElementById("YearBirthday").value.trim();
-
+   
 }

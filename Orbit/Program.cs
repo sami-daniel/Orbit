@@ -53,7 +53,7 @@ namespace Orbit
             //Não há nescessidade de redirecionar do Index do controlador Home para o Profile,
             //uma vez que ele nã executa ação alguma
             _ = app.MapControllerRoute(name: "default", 
-                                       pattern: "{controller=Profile}/{action=Index}");
+                                       pattern: "{controller=Account}/{action=Index}");
 
             app.Run();
 

@@ -51,19 +51,25 @@ namespace Orbit.Controllers
             return RedirectToAction("", "Profile");
         }
 
-        public async Task<IActionResult> Login(string loginInput, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
+            // ERRATA: O atributo email pode assumir dois valores - email ou username
+            // porem, para o model binder realizar a vinculação de dados, o nome do
+            // parametro não pode ser diferente do atributo name do campo do formulario
+            // na página, então o nome do parametro permanece inalterado, assumindo sua
+            // dupla função
+
             var users = await _userService.GetAllUsersAsync();
             
             UserResponse? user;
 
-            if (loginInput.Contains('@'))
+            if (email.Contains('@'))
             {
-                user = users.FirstOrDefault(user => user.UserEmail == loginInput);
+                user = users.FirstOrDefault(user => user.UserEmail == email);
             }
             else
             {
-                user = users.FirstOrDefault(user => user.UserName == loginInput);
+                user = users.FirstOrDefault(user => user.UserName == email);
             }
 
             if (user == null || password != user.UserPassword)
