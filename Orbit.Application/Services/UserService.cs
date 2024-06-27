@@ -31,7 +31,6 @@ namespace Orbit.Application.Services
             {
                 throw new ArgumentException("E-mail já cadastrado anteriormente!");
             }
-
             if (usernames.Any())
             {
                 throw new ArgumentException("Username já cadastrado anteriormente!");

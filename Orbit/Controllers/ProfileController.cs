@@ -22,7 +22,7 @@ namespace Orbit.Controllers
             {
                 return RedirectToAction("", "Account");
             }
-
+#warning FIXME: A autenticação e autorização via OAuth2.0 (Facebook, Google, Microsoft...) não está habilitado! Atualmente o redirecionamento para a página inicial verifica somente se o usuario está registrado na sessão ou não
             return View(user);
         }
 
@@ -30,7 +30,9 @@ namespace Orbit.Controllers
         {
             var users = await _userService.GetAllUsersAsync();
 
-            var user = users.FirstOrDefault(u => u.UserName == username);
+            var user = users.FirstOrDefault(u => u.UserName == username); 
+            // Se o UserService possuisse um método Find, em vez de ter que pegar todos os usuarios
+            // e então usar o Linq para pegar o usúario desejado, teriamos melhor performance
 
             if (user == null || user.UserImageByteType == null)
             {
