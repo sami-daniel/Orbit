@@ -74,14 +74,22 @@ namespace Orbit.Application.Dtos.Responses
     {
         public static UserResponse ToUserResponse(this User user) =>
             new UserResponse(userId: user.UserId,
-                            userName: user.UserName,
-                            userEmail: user.UserEmail,
-                            userDateOfBirth: user.UserDateOfBirth,
-                            userPassword: user.UserPassword,
-                            userDescription: user.UserDescription,
-                            userImageByteType: user.UserImageByteType,
-                            userProfileName: user.UserProfileName,
-                            followers: new Collection<UserResponse>(user.Followers.Select(user => user.ToUserResponse()).ToList()),
-                            users: new Collection<UserResponse>(user.Users.Select(user => user.ToUserResponse()).ToList()));
+                             userName: user.UserName,
+                             userEmail: user.UserEmail,
+                             userDateOfBirth: user.UserDateOfBirth,
+                             userPassword: user.UserPassword,
+                             userDescription: user.UserDescription,
+                             userImageByteType: user.UserImageByteType,
+                             userProfileName: user.UserProfileName,
+                             followers: new Collection<UserResponse>(user.Followers
+                                 .Select(u => u.ToUserResponse())
+                                 .ToList()),
+                             users: new Collection<UserResponse>(user.Users
+                                 .Select(u => u.ToUserResponse())
+                                 .ToList()));
+        // FIXME: A utilização de construtores para o mapeamento se deve ao fato de que,
+        // o metodo ToUserResponse deve ser estatico, uma vez que a classe User
+        // é criada via scaffolding, então sua integridade não é constante.
+            
     }
 }
