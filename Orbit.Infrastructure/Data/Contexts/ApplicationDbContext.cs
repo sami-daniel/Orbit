@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
 
@@ -114,7 +113,7 @@ public partial class ApplicationDbContext : DbContext
     {
         foreach (var entry in ChangeTracker.Entries<User>())
         {
-            if (entry.State == EntityState.Modified || entry.State == EntityState.Added) 
+            if (entry.State == EntityState.Modified || entry.State == EntityState.Added)
             {
                 entry.Entity.UserName = entry.Entity.UserName.Trim();
                 entry.Entity.UserEmail = entry.Entity.UserEmail.Trim();
@@ -128,8 +127,10 @@ public partial class ApplicationDbContext : DbContext
         // scripts podem ser alterados manualmente então um fallback
         // é configurado para remover espaços em branco logo antes das
         // mudanças serem commitados.
+
         return base.SaveChanges();
     }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
