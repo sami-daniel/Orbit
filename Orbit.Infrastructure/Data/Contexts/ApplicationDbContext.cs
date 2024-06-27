@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
 
@@ -107,6 +108,27 @@ public partial class ApplicationDbContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+    }
+
+    public override int SaveChanges()
+    {
+        foreach (var entry in ChangeTracker.Entries<User>())
+        {
+            if (entry.State == EntityState.Modified || entry.State == EntityState.Added) 
+            {
+                entry.Entity.UserName = entry.Entity.UserName.Trim();
+                entry.Entity.UserEmail = entry.Entity.UserEmail.Trim();
+                entry.Entity.UserPassword = entry.Entity.UserPassword.Trim();
+                entry.Entity.UserDescription = entry.Entity.UserDescription!.Trim();
+                entry.Entity.UserDescription = entry.Entity.UserProfileName!.Trim();
+            }
+        }
+        // Atualmente os espaços em brancos são limpos em scripts
+        // após serem enviados, ainda no navegador, porém os
+        // scripts podem ser alterados manualmente então um fallback
+        // é configurado para remover espaços em branco logo antes das
+        // mudanças serem commitados.
+        return base.SaveChanges();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
