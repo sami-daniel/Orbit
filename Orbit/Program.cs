@@ -32,7 +32,7 @@ namespace Orbit
             builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddSession();
-
+            
             WebApplication app = builder.Build();
 
             //Habilitando página de erros para desenvolvedor
@@ -49,8 +49,11 @@ namespace Orbit
 
             _ = app.UseSession();
 
-            //Mapeando endpoints para metodos IAction com rota padrão
-            _ = app.MapDefaultControllerRoute();
+            //Mapeando endpoint padrã como para o metodo Index do Controlador Profile
+            //Não há nescessidade de redirecionar do Index do controlador Home para o Profile,
+            //uma vez que ele nã executa ação alguma
+            _ = app.MapControllerRoute(name: "default", 
+                                       pattern: "{controller=Profile}/{action=Index}");
 
             app.Run();
 
