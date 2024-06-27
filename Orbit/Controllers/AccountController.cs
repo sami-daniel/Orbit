@@ -51,20 +51,24 @@ namespace Orbit.Controllers
             return RedirectToAction("", "Profile");
         }
 
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(string loginInput, string password)
         {
             var users = await _userService.GetAllUsersAsync();
+            
+            UserResponse? user;
 
-            var user = users.FirstOrDefault(user => user.UserEmail == email);
-
-            if (user == null)
+            if (loginInput.Contains('@'))
             {
-                return NotFound("Usuario com esse nome nâo foi encontrado!");
+                user = users.FirstOrDefault(user => user.UserEmail == loginInput);
+            }
+            else
+            {
+                user = users.FirstOrDefault(user => user.UserName == loginInput);
             }
 
-            if (password != user.UserPassword)
+            if (user == null || password != user.UserPassword)
             {
-                return BadRequest("Senha incorreta!");
+                return NotFound("Login ou Senha invalidos!");
             }
 
             HttpContext.Session.SetObject("User", user);
