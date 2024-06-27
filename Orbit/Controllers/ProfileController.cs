@@ -16,7 +16,7 @@ namespace Orbit.Controllers
 
         public IActionResult Index()
         {
-            var user = HttpContext.Session.GetObject<UserResponse>("User");
+            UserResponse? user = HttpContext.Session.GetObject<UserResponse>("User");
 
             if (user == null)
             {
@@ -28,18 +28,13 @@ namespace Orbit.Controllers
 
         public async Task<IActionResult> GetUserImageAsync(string username)
         {
-            var users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
 
-            var user = users.FirstOrDefault(u => u.UserName == username); 
+            UserResponse? user = users.FirstOrDefault(u => u.UserName == username);
             // Se o UserService possuisse um método Find, em vez de ter que pegar todos os usuarios
             // e então usar o Linq para pegar o usúario desejado, teriamos melhor performance
 
-            if (user == null || user.UserImageByteType == null)
-            {
-                return NotFound();
-            }
-
-            return File(user.UserImageByteType, "application/image");
+            return user == null || user.UserImageByteType == null ? NotFound() : File(user.UserImageByteType, "application/image");
         }
 
         [HttpGet]
@@ -50,14 +45,14 @@ namespace Orbit.Controllers
                 return BadRequest("Query não pode ser vazia!");
             }
 
-            var normalizeQuery = username.ToLower().Trim();
+            string normalizeQuery = username.ToLower().Trim();
 
-            var profiles = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> profiles = await _userService.GetAllUsersAsync();
 
             var matchProfiles =
                 profiles
                     .Where(p => p.UserName.ToLower().Contains(normalizeQuery))
-                    .Select(p => new { UserName = p.UserName, ProfileName = p.UserProfileName, UserImageByteType = p.UserImageByteType });
+                    .Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserImageByteType });
 
             return Ok(matchProfiles);
         }

@@ -24,8 +24,8 @@ namespace Orbit.Application.Services
                 throw new ArgumentException("Dados invalidos para o usuario!");
             }
 
-            var users = await _unitOfWork.User.FindAsync(user => user.UserEmail == userAddRequest.UserEmail);
-            var usernames = await _unitOfWork.User.FindAsync(user => user.UserName == userAddRequest.UserName);
+            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(user => user.UserEmail == userAddRequest.UserEmail);
+            IEnumerable<Domain.Entities.User> usernames = await _unitOfWork.User.FindAsync(user => user.UserName == userAddRequest.UserName);
 
             if (users.Any())
             {
@@ -35,20 +35,20 @@ namespace Orbit.Application.Services
             {
                 throw new ArgumentException("Username já cadastrado anteriormente!");
             }
-            var user = userAddRequest.ToUser();
+            Domain.Entities.User user = userAddRequest.ToUser();
 
             await _unitOfWork.User.AddAsync(user);
 
-            _unitOfWork.Complete();
+            _ = _unitOfWork.Complete();
 
             return user.ToUserResponse();
         }
 
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
         {
-            var users = await _unitOfWork.User.GetAllAsync();
-            var usersResponses = new List<UserResponse>();
-            foreach (var user in users)
+            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.GetAllAsync();
+            List<UserResponse> usersResponses = [];
+            foreach (Domain.Entities.User user in users)
             {
                 usersResponses.Add(user.ToUserResponse());
             }

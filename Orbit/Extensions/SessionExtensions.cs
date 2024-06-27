@@ -13,15 +13,14 @@ namespace Orbit.Extensions
         public static T? GetObject<T>(this ISession session, string key)
         {
             if (key == null)
+            {
                 return default;
+            }
 
             byte[]? serializedValue = session.Get(key);
 
 
-            if (serializedValue == null)
-                return default;
-
-            return JsonSerializer.Deserialize<T>(serializedValue);
+            return serializedValue == null ? default : JsonSerializer.Deserialize<T>(serializedValue);
         }
     }
 }

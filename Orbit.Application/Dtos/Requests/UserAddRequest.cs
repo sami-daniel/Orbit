@@ -51,6 +51,9 @@ namespace Orbit.Application.Dtos.Requests
             _mapper = mapper;
         }
 
-        public User ToUser() => _mapper.Map<User>(this);
+        public User ToUser()
+        {
+            return _mapper.Map<User>(this);
+        }
     }
 }

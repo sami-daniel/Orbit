@@ -11,10 +11,10 @@ namespace Orbit.Infrastructure.Repositories
 
         public Repository(DbContext context, IConfiguration configuration)
         {
-            var sectNamespaces = configuration.GetSection("AllowedEntityNamespaces");
-            var namespacesInConfig = new List<string>();
+            IConfigurationSection sectNamespaces = configuration.GetSection("AllowedEntityNamespaces");
+            List<string> namespacesInConfig = [];
 
-            foreach (var child in sectNamespaces.GetChildren())
+            foreach (IConfigurationSection child in sectNamespaces.GetChildren())
             {
                 namespacesInConfig.Add(child.Path);
             }
@@ -29,7 +29,7 @@ namespace Orbit.Infrastructure.Repositories
         public async Task AddAsync(TEntity entity)
         {
             ArgumentNullException.ThrowIfNull(nameof(entity));
-            await Context.Set<TEntity>().AddAsync(entity);
+            _ = await Context.Set<TEntity>().AddAsync(entity);
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities)
@@ -46,7 +46,7 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var a = await Context.Set<TEntity>().ToListAsync();
+            List<TEntity> a = await Context.Set<TEntity>().ToListAsync();
             return a;
         }
 
@@ -61,7 +61,7 @@ namespace Orbit.Infrastructure.Repositories
             ArgumentNullException.ThrowIfNull(entity);
             await Task.Run(() =>
             {
-                Context.Set<TEntity>().Remove(entity);
+                _ = Context.Set<TEntity>().Remove(entity);
             });
         }
 

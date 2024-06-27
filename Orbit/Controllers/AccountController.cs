@@ -27,7 +27,7 @@ namespace Orbit.Controllers
             userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
-                var errors = string.Join(',', ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                string errors = string.Join(',', ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                 return BadRequest(errors);
             }
             else if (!ModelState.IsValid && _webHostEnvironment.IsDevelopment())
@@ -59,19 +59,11 @@ namespace Orbit.Controllers
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
 
-            var users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
 
-            UserResponse? user;
-
-            if (email.Contains('@'))
-            {
-                user = users.FirstOrDefault(user => user.UserEmail == email);
-            }
-            else
-            {
-                user = users.FirstOrDefault(user => user.UserName == email);
-            }
-
+            UserResponse? user = email.Contains('@')
+                ? users.FirstOrDefault(user => user.UserEmail == email)
+                : users.FirstOrDefault(user => user.UserName == email);
             if (user == null || password != user.UserPassword)
             {
                 return NotFound("Login ou Senha invalidos!");
@@ -89,16 +81,11 @@ namespace Orbit.Controllers
             {
                 return true;
             }
-            var users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
 
-            var userWithEmail = users.Where(u => u.UserEmail == email);
+            IEnumerable<UserResponse> userWithEmail = users.Where(u => u.UserEmail == email);
 
-            if (userWithEmail.Count() > 0)
-            {
-                return false;
-            }
-
-            return true;
+            return userWithEmail.Count() <= 0;
         }
 
         [HttpPost]
@@ -109,16 +96,11 @@ namespace Orbit.Controllers
                 return true;
             }
 
-            var users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
 
-            var usersWithID = users.Where(u => u.UserName == username);
+            IEnumerable<UserResponse> usersWithID = users.Where(u => u.UserName == username);
 
-            if (usersWithID.Count() > 0)
-            {
-                return false;
-            }
-
-            return true;
+            return usersWithID.Count() <= 0;
         }
     }
 }

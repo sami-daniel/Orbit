@@ -21,9 +21,9 @@ namespace Orbit.Application.Dtos.Responses
 
         public string? UserProfileName { get; private set; }
 
-        public virtual ICollection<UserResponse> Followers { get; private set; } = new List<UserResponse>();
+        public virtual ICollection<UserResponse> Followers { get; private set; } = [];
 
-        public virtual ICollection<UserResponse> Users { get; private set; } = new List<UserResponse>();
+        public virtual ICollection<UserResponse> Users { get; private set; } = [];
 
         public UserResponse(uint userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserResponse> followers, ICollection<UserResponse> users)
         {
@@ -51,7 +51,7 @@ namespace Orbit.Application.Dtos.Responses
                 return false;
             }
 
-            var userResponse = obj as UserResponse;
+            UserResponse? userResponse = obj as UserResponse;
 #pragma warning disable CS8602
             return userResponse.UserId == UserId
                    && userResponse.UserName == UserName
@@ -72,8 +72,9 @@ namespace Orbit.Application.Dtos.Responses
 
     public static class UserExtensions
     {
-        public static UserResponse ToUserResponse(this User user) =>
-            new UserResponse(userId: user.UserId,
+        public static UserResponse ToUserResponse(this User user)
+        {
+            return new UserResponse(userId: user.UserId,
                              userName: user.UserName,
                              userEmail: user.UserEmail,
                              userDateOfBirth: user.UserDateOfBirth,
@@ -87,9 +88,10 @@ namespace Orbit.Application.Dtos.Responses
                              users: new Collection<UserResponse>(user.Users
                                  .Select(u => u.ToUserResponse())
                                  .ToList()));
+        }
         // FIXME: A utilização de construtores para o mapeamento se deve ao fato de que,
         // o metodo ToUserResponse deve ser estatico, uma vez que a classe User
         // é criada via scaffolding, então sua integridade não é constante.
-            
+
     }
 }

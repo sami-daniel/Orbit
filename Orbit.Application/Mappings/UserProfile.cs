@@ -9,7 +9,7 @@ namespace Orbit.Application.Mappings
     {
         public UserProfile()
         {
-            CreateMap<UserAddRequest, User>()
+            _ = CreateMap<UserAddRequest, User>()
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.UserProfileName, opt => opt.AllowNull())
                 .ForMember(dest => dest.UserDescription, opt => opt.AllowNull())
@@ -18,10 +18,10 @@ namespace Orbit.Application.Mappings
                 .ForSourceMember(src => src.Day, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.Month, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.Year, opt => opt.DoNotValidate());
-            
+
             //Ignore os membros Day, Month e Year. Serão resolvidos nos serviços
 
-            CreateMap<User, UserResponse>()
+            _ = CreateMap<User, UserResponse>()
                 .ForMember(dest => dest.Followers, opt => opt.MapFrom(src => src.Followers))
                 .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users))
                 .ForMember(dest => dest.UserProfileName, opt => opt.AllowNull())

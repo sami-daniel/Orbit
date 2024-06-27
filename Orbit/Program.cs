@@ -30,11 +30,11 @@ namespace Orbit
             //Registrando UnitOfWork como servico
             _ = builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            builder.Services.AddScoped<IUserService, UserService>();
+            _ = builder.Services.AddScoped<IUserService, UserService>();
 
-            builder.Services.AddSession();
+            _ = builder.Services.AddSession();
 
-            builder.Services.AddAutoMapper(opt =>
+            _ = builder.Services.AddAutoMapper(opt =>
             {
                 opt.AddProfile<UserProfile>();
             });
