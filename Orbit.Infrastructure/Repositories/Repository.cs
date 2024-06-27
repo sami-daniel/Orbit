@@ -24,6 +24,13 @@ namespace Orbit.Infrastructure.Repositories
                 throw new ArgumentException($"O namespace ${typeof(TEntity).Namespace} não está habilitado!");
             }
             Context = context;
+            
+            // O generico TEntity não tem nenhuma restrição quanto ao uso
+            // de tipos, somente que seja uma classe. Dito isso, a unidade
+            // de trabalho e o repositorio funcionarão somente com os modelos
+            // gerados via scaffolding pelo efcore. Então como medida de segurança
+            // somente entidade de um namespace previamente habilitado poderão ser
+            // utilizadas na unidade
         }
 
         public async Task AddAsync(TEntity entity)
