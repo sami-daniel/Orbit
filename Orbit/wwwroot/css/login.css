@@ -140,8 +140,8 @@ body.modal-open {
 
 .content {
   border: 1px solid rgb(255, 255, 255, 0.5);
-  width: 50%;
-  min-height: 75vh;
+  width: 30%;
+  min-height: 65vh!important auto;
   border-radius: 5px;
   background-color: black;
   position: relative;
@@ -154,7 +154,7 @@ body.modal-open {
 }
 
 .form-title {
-  font-size: 2em;
+  font-size: 1.5em;
   letter-spacing: 1.5px;
   color: white;
   margin: 3% auto;
@@ -172,54 +172,22 @@ body.modal-open {
   outline: none;
 }
 
-.sub-title {
-  color: white;
-  font-size: 2em;
-  font-weight: 500;
-}
 
 .forms div {
   width: 100%;
-  text-align: center;
-  margin-top: 4%;
-}
-
-.content .div-signIn .form-name .birthday-inputs {
-  width: 90%;
-  font-size: 1.5em;
-  font-weight: 300;
-  border: none;
-  border-bottom: 1px solid white;
-  outline: none;
-  background: transparent;
-  color: white;
-}
-
-.content .div-signIn .form-name .birthday-inputs::placeholder {
-  color: white;
-  font-weight: 300;
-}
-
-.content
-  .div-signIn
-  .first-step
-  .form-name
-  .birthday-container
-  input:last-child,
-.content .form-name .birthday-container input:nth-child(3) {
-  margin-left: 5%;
 }
 
 .next-container {
+  margin-top:5%;  
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .next-btn {
-  padding: 15px;
-  width: 80%;
+  padding: 20px;
+  width: 50%;
   background-color: #7bf5e6;
-  font-size: 1.875em;
+  font-size: 1.3em;
   color: white;
   border-radius: 32px;
   border: none;
@@ -245,6 +213,7 @@ div label {
   letter-spacing: 1.5px;
   font-weight: 400;
   user-select: none;
+  margin-bottom:2%;
 }
 
 .pass {
@@ -263,35 +232,40 @@ div label {
   width: 100% !important;
   display: block;
   color: white;
-  font-size: 1.5em;
+  font-size: 0.875em;
   letter-spacing: 1.5px;
   font-weight: 400;
   user-select: none;
 }
 
-.Birthday {
-  display: block;
-  width: 260px;
-  position: relative;
-  left: 5%;
-  color: white;
-  font-size: 1.5em;
-  letter-spacing: 1.5px;
-  font-weight: 400;
-  user-select: none;
-}
 
 .inputs {
-  width: 90%;
+  width: 100%;
   height: 40px;
-  font-size: 1.3em;
-  font-weight: 300;
+  font-size: 1.5em;
+  font-weight: 700;
   border: none;
   border: 1px solid white;
   border-radius: 3px;
   outline: none;
   background: transparent;
   color: white;
+}
+
+.email-container, .Password-container {
+    border-bottom: 1px solid rgba(255,255,255,.5);
+    padding: 20px;
+}
+.name-container{
+    padding: 20px;
+}
+
+
+.error {
+    color: red;
+    font-size: 12px;
+    width: 100%;
+    margin-bottom:2%;
 }
 
 .content .div-signIn .last-step .form-password .terms-and-conditions {
@@ -310,3 +284,78 @@ div label {
   font-style: italic;
   cursor: pointer;
 }
+
+
+.content .div-signIn .first-step .login-options{
+    width:100%;
+    display:flex;
+    flex-flow:column wrap;
+    align-items:center;
+    justify-content:center;
+}
+
+    .content .div-signIn .first-step .login-options .btn-options {
+        width: 60%;
+        padding: 20px;
+        margin-top: 5%;
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+        border: 1px solid white;
+        border-radius: 10px;
+        font-size: 0.875em;
+        font-weight: 400;
+        letter-spacing:1.75px;
+        color:white;
+        background:transparent;
+        position:relative;
+    }
+
+        .content .div-signIn .first-step .login-options .btn-options:not(:first-child){
+            margin-top:5%;
+        }
+
+        .content .div-signIn .first-step .login-options .btn-options .icons-btn {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            position: absolute;
+            right: 25px;
+        }
+
+.content .forms .login-options {
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.content .forms .login-options .btn-options {
+    width: 60%;
+    padding: 20px;
+    margin-top: 2%;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 10px;
+    font-size: 0.875em;
+    font-weight: 400;
+    letter-spacing: 1.75px;
+    color: white;
+    background: transparent;
+    position: relative;
+}
+
+    .content .forms .login-options .btn-options:not(:first-child) {
+        margin-top: 5%;
+    }
+
+    .content .forms .login-options .btn-options .icons-btn {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        position: absolute;
+        right: 25px;
+    }
