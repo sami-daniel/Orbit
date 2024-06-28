@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Orbit.Domain.Entities;
 using Orbit.Infrastructure.Repositories.Interfaces;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories
@@ -53,8 +55,19 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            List<TEntity> a = await Context.Set<TEntity>().ToListAsync();
-            return a;
+            if(typeof(TEntity) == typeof(User))
+            {
+                var users = await Context.Set<User>()
+                    .Include(u => u.Followers)
+                    .Include(u => u.Users)
+                    .ToListAsync();
+
+                return users.Cast<TEntity>();
+            }
+            else
+            {
+                return await Context.Set<TEntity>().ToListAsync();
+            }   
         }
 
         public async Task<TEntity?> GetAsync(int id)

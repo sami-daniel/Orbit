@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Orbit.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,8 +7,6 @@ namespace Orbit.Application.Dtos.Requests
 {
     public class UserAddRequest
     {
-        private readonly IMapper _mapper;
-
         [Required(ErrorMessage = "Insira o nome do usuário!")]
         [StringLength(100, MinimumLength = 5, ErrorMessage = "O nome do usuário deve ter no máximo 100 caracteres.")]
         [RegularExpression(@"^[a-zA-Z0-9_]*$", ErrorMessage = "O nome do usuário só pode conter letras, números e underline.")]
@@ -46,14 +45,5 @@ namespace Orbit.Application.Dtos.Requests
         [Display(Name = "Ano")]
         public int Year { get; set; }
 
-        public UserAddRequest(IMapper mapper)
-        {
-            _mapper = mapper;
-        }
-
-        public User ToUser()
-        {
-            return _mapper.Map<User>(this);
-        }
     }
 }
