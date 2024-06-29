@@ -40,6 +40,15 @@ namespace Orbit
             {
                 _ = app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                _ = app.UseExceptionHandler("Home");
+
+                app.UseStatusCodePagesWithReExecute("Home", "?statusCode={0}");
+
+                app.UseHsts();
+            }
+
 
             //Habilitando middleware para lidar com requisicoes por arquivos estaticos
             _ = app.UseStaticFiles();
