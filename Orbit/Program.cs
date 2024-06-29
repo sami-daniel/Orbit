@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
-using Orbit.Application.Mappings;
 using Orbit.Application.Services;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
@@ -33,11 +32,6 @@ namespace Orbit
             _ = builder.Services.AddScoped<IUserService, UserService>();
 
             _ = builder.Services.AddSession();
-
-            _ = builder.Services.AddAutoMapper(opt =>
-            {
-                opt.AddProfile<UserProfile>();
-            });
 
             WebApplication app = builder.Build();
 

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Orbit.Domain.Entities;
+﻿using Orbit.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Orbit.Application.Dtos.Requests
@@ -45,5 +43,12 @@ namespace Orbit.Application.Dtos.Requests
         [Display(Name = "Ano")]
         public int Year { get; set; }
 
+        public User ToUser() => new User
+        {
+            UserName = UserName,
+            UserDateOfBirth = new DateOnly(Year, Month, Day),
+            UserEmail = UserEmail,
+            UserPassword = UserPassword
+        };
     }
 }
