@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Orbit.Application.Dtos.Requests;
+﻿using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Helpers;
 using Orbit.Application.Interfaces;
@@ -11,12 +10,10 @@ namespace Orbit.Application.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        
+        public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest)
@@ -39,7 +36,7 @@ namespace Orbit.Application.Services
             {
                 throw new ArgumentException("Username já cadastrado anteriormente!");
             }
-            Domain.Entities.User user = _mapper.Map<User>(userAddRequest);
+            Domain.Entities.User user = userAddRequest.ToUser();
 
             await _unitOfWork.User.AddAsync(user);
 
@@ -54,7 +51,7 @@ namespace Orbit.Application.Services
             List<UserResponse> usersResponses = [];
             foreach (Domain.Entities.User user in users)
             {
-                usersResponses.Add(_mapper.Map<UserResponse>(user));
+                usersResponses.Add(user.ToUserResponse());
             }
 
             return usersResponses;

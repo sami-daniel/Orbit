@@ -5,93 +5,62 @@ namespace Orbit.Application.Dtos.Responses
 {
     public class UserResponse
     {
-        public uint UserId { get; private set; }
-
-        public string UserName { get; private set; } = null!;
-
-        public string UserEmail { get; private set; } = null!;
-
-        public DateOnly UserDateOfBirth { get; private set; }
-
-        public string UserPassword { get; private set; } = null!;
-
-        public string? UserDescription { get; private set; }
-
-        public byte[]? UserImageByteType { get; private set; }
-
-        public string? UserProfileName { get; private set; }
-
-        public virtual ICollection<UserResponse> Followers { get; private set; } = [];
-
-        public virtual ICollection<UserResponse> Users { get; private set; } = [];
-
-        public UserResponse(uint userId, string userName, string userEmail, DateOnly userDateOfBirth, string userPassword, string? userDescription, byte[]? userImageByteType, string? userProfileName, ICollection<UserResponse> followers, ICollection<UserResponse> users)
-        {
-            UserId = userId;
-            UserName = userName;
-            UserEmail = userEmail;
-            UserDateOfBirth = userDateOfBirth;
-            UserPassword = userPassword;
-            UserDescription = userDescription;
-            UserImageByteType = userImageByteType;
-            UserProfileName = userProfileName;
-            Followers = followers;
-            Users = users;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (obj.GetType() != typeof(UserResponse))
-            {
-                return false;
-            }
-
-            UserResponse? userResponse = obj as UserResponse;
-#pragma warning disable CS8602
-            return userResponse.UserId == UserId
-                   && userResponse.UserName == UserName
-                   && userResponse.UserEmail == UserEmail
-                   && userResponse.UserDateOfBirth == UserDateOfBirth
-                   && userResponse.UserPassword == UserPassword
-                   && userResponse.UserDescription == UserDescription
-                   && userResponse.UserProfileName == UserProfileName
-                   && userResponse.UserImageByteType == UserImageByteType;
-#pragma warning restore CS8602
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public uint UserId { get; set; }
+        public string UserName { get; set; } = null!;
+        public string UserEmail { get; set; } = null!;
+        public DateOnly UserDateOfBirth { get; set; }
+        public string UserPassword { get; set; } = null!;
+        public string? UserDescription { get; set; }
+        public byte[]? UserImageByteType { get; set; }
+        public string? UserProfileName { get; set; }
+        public ICollection<UserResponse>? Followers { get; set; }
+        public ICollection<UserResponse>? Users { get; set; }
     }
 
     public static class UserExtensions
     {
         public static UserResponse ToUserResponse(this User user)
         {
-            return new UserResponse(userId: user.UserId,
-                             userName: user.UserName,
-                             userEmail: user.UserEmail,
-                             userDateOfBirth: user.UserDateOfBirth,
-                             userPassword: user.UserPassword,
-                             userDescription: user.UserDescription,
-                             userImageByteType: user.UserImageByteType,
-                             userProfileName: user.UserProfileName,
-                             followers: new Collection<UserResponse>(user.Followers
-                                 .Select(u => u.ToUserResponse())
-                                 .ToList()),
-                             users: new Collection<UserResponse>(user.Users
-                                 .Select(u => u.ToUserResponse())
-                                 .ToList()));
+            return user.ToUserResponseInternal(new List<uint>());
         }
-        // FIXME: A utilização de construtores para o mapeamento se deve ao fato de que,
-        // o metodo ToUserResponse deve ser estatico, uma vez que a classe User
-        // é criada via scaffolding, então sua integridade não é constante.
 
+        private static UserResponse ToUserResponseInternal(this User user, List<uint> processedUserIds)
+        {
+            if (processedUserIds.Contains(user.UserId))
+            {
+                return new UserResponse
+                {
+                    UserId = user.UserId,
+                    UserName = user.UserName,
+                    UserEmail = user.UserEmail,
+                    UserDateOfBirth = user.UserDateOfBirth,
+                    UserPassword = user.UserPassword,
+                    UserDescription = user.UserDescription,
+                    UserProfileName = user.UserProfileName,
+                    UserImageByteType = user.UserImageByteType,
+                    Followers = new List<UserResponse>(),
+                    Users = new List<UserResponse>()
+                };
+            }
+
+            processedUserIds.Add(user.UserId);
+
+            var response = new UserResponse
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                UserEmail = user.UserEmail,
+                UserDateOfBirth = user.UserDateOfBirth,
+                UserPassword = user.UserPassword,
+                UserDescription = user.UserDescription,
+                UserProfileName = user.UserProfileName,
+                UserImageByteType = user.UserImageByteType,
+                Followers = user.Followers.Select(u => u.ToUserResponseInternal(new List<uint>(processedUserIds))).ToList(),
+                Users = user.Users.Select(u => u.ToUserResponseInternal(new List<uint>(processedUserIds))).ToList()
+            };
+
+            return response;
+        }
     }
+
 }
