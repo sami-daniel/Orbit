@@ -19,7 +19,6 @@ namespace Orbit.Extensions
 
             byte[]? serializedValue = session.Get(key);
 
-
             return serializedValue == null ? default : JsonSerializer.Deserialize<T>(serializedValue);
         }
     }

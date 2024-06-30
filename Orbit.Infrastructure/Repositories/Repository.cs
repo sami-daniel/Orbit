@@ -13,7 +13,6 @@ namespace Orbit.Infrastructure.Repositories
         {
             IConfigurationSection sectNamespaces = configuration.GetSection("AllowedEntityNamespaces");
             List<string> namespacesInConfig = [];
-
             foreach (IConfigurationSection child in sectNamespaces.GetChildren())
             {
                 namespacesInConfig.Add(child.Path);
@@ -23,6 +22,7 @@ namespace Orbit.Infrastructure.Repositories
             {
                 throw new ArgumentException($"O namespace ${typeof(TEntity).Namespace} não está habilitado!");
             }
+
             Context = context;
 
             // O generico TEntity não tem nenhuma restrição quanto ao uso

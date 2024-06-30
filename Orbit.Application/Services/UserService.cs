@@ -20,7 +20,6 @@ namespace Orbit.Application.Services
         public async Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest)
         {
             ArgumentNullException.ThrowIfNull(nameof(userAddRequest));
-
             if (!ValidationHelper.IsValid(userAddRequest))
             {
                 throw new ArgumentException("Dados invalidos para o usuario!");
@@ -37,10 +36,9 @@ namespace Orbit.Application.Services
             {
                 throw new ArgumentException("Username já cadastrado anteriormente!");
             }
+
             Domain.Entities.User user = userAddRequest.ToUser();
-
             await _unitOfWork.User.AddAsync(user);
-
             _ = _unitOfWork.Complete();
 
             return user.ToUserResponse();

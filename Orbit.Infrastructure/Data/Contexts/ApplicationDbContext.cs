@@ -5,19 +5,18 @@ namespace Orbit.Infrastructure.Data.Contexts;
 
 public partial class ApplicationDbContext : DbContext
 {
+    public virtual DbSet<User> Users { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
-
-    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         _ = modelBuilder
             .UseCollation("utf8mb3_general_ci")
             .HasCharSet("utf8mb3");
-
         _ = modelBuilder.Entity<User>(entity =>
         {
             _ = entity.HasKey(e => e.UserId).HasName("PRIMARY");
@@ -128,7 +127,6 @@ public partial class ApplicationDbContext : DbContext
 
         return base.SaveChanges();
     }
-
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

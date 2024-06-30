@@ -20,6 +20,8 @@ namespace Orbit.Filters
                 return;
             }
 
+            // Protege o controlador Account de usuário já logados de não conseguirem logar novamente
+
             await next();
         }
     }
