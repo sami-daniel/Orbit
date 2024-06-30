@@ -26,7 +26,7 @@ namespace Orbit.Infrastructure.Repositories
                 throw new ArgumentException($"O namespace ${typeof(TEntity).Namespace} não está habilitado!");
             }
             Context = context;
-            
+
             // O generico TEntity não tem nenhuma restrição quanto ao uso
             // de tipos, somente que seja uma classe. Dito isso, a unidade
             // de trabalho e o repositorio funcionarão somente com os modelos
@@ -55,19 +55,18 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            if(typeof(TEntity) == typeof(User))
-            {
-                var users = await Context.Set<User>()
-                    .Include(u => u.Followers)
-                    .Include(u => u.Users)
-                    .ToListAsync();
+            return await Context.Set<TEntity>().ToListAsync();
+        }
 
-                return users.Cast<TEntity>();
-            }
-            else
+        public async Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties)
+        {
+            var entities = Context.Set<TEntity>();
+            foreach (var prop in navProperties)
             {
-                return await Context.Set<TEntity>().ToListAsync();
-            }   
+                entities.Include(prop);
+            }
+
+            return await entities.ToListAsync();
         }
 
         public async Task<TEntity?> GetAsync(int id)

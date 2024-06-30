@@ -22,6 +22,14 @@ namespace Orbit.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<TEntity>> GetAllAsync();
 
         /// <summary>
+        /// Obtém todas as entidades presentes no repositório assincronamente.
+        /// </summary>
+        /// <param name="navProperties">As propriedades a serem incluidas pelo Entity Framework</param>
+        /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção de todas as entidades.</returns>
+        Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties);
+
+
+        /// <summary>
         /// Encontra entidades com base no predicado fornecido.
         /// </summary>
         /// <param name="predicate">Predicado para filtrar as entidades.</param>
