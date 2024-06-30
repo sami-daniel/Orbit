@@ -97,12 +97,12 @@
                         @ViewBag.LoginError
                     </div>
                     <div class="name-container">
-                        <label for="email-login">Email</label>
-                        <input type="text" required name="email" id="email-login" class="inputs" />
+                        <label for="input-login">Email ou Nome de Usuário</label>
+                        <input type="text" required name="input_login" id="input-login" class="inputs" value="@(Html.Raw(ViewBag.InputLogin ?? ""))" />
                     </div>
                     <div class="Password-container">
                         <label for="Password-Login">Senha</label>
-                        <input type="Password" required name="password" id="Password-Login" class="inputs" />
+                        <input type="Password" required name="password" id="Password-Login" class="inputs" value="@(Html.Raw(ViewBag.InputPassword ?? ""))" />
                     </div>
                     <div class="login-options">
                         <button class="btn-options">

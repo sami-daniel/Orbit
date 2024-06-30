@@ -89,15 +89,15 @@ namespace Orbit.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromForm] string? email, [FromForm] string? password)
+        public async Task<IActionResult> Login([FromForm] string? input_login, [FromForm] string? password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
             // porem, para o model binder realizar a vinculação de dados, o nome do
             // parametro não pode ser diferente do atributo name do campo do formulario
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
-
-            if (email == null || password == null) 
+            
+            if (input_login == null || password == null) 
             {
                 HttpContext.Response.StatusCode = 400;
                 ViewBag.LoginModalActive = true;
@@ -105,16 +105,23 @@ namespace Orbit.Controllers
                 return View("Index");
             }
 
+            input_login = input_login.Trim();
+            password = password.Trim();
+
             IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync("Followers", "Users");
 
-            UserResponse? user = email.Contains('@')
-                ? users.FirstOrDefault(user => user.UserEmail == email)
-                : users.FirstOrDefault(user => user.UserName == email);
+            UserResponse? user = input_login.Contains('@')
+                ? users.FirstOrDefault(user => user.UserEmail == input_login)
+                : users.FirstOrDefault(user => user.UserName == input_login);
             if (user == null || password != user.UserPassword)
             {
                 ViewBag.LoginModalActive = true;
                 ViewBag.LoginError = "Usuário ou senha inválidos!";
+                ViewBag.InputLogin = input_login;
+                ViewBag.InputPassword = password;
+
                 HttpContext.Response.StatusCode = 401;
+
                 return View("Index");
             }
 
