@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
 using Orbit.Extensions;
+using System.Security.Claims;
 
 namespace Orbit.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         public readonly IUserService _userService;
@@ -14,15 +17,18 @@ namespace Orbit.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             UserResponse? user = HttpContext.Session.GetObject<UserResponse>("User");
 
             if (user == null)
             {
-                return RedirectToAction("", "Account");
+                var usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
+                var awaiter = await _userService.GetAllUsersAsync("Followers", "Users");
+                
+                user = awaiter.Where(u => u.UserName == usr.Value).First();
             }
-#warning FIXME: A autenticação e autorização via OAuth2.0 (Facebook, Google, Microsoft...) não está habilitado! Atualmente o redirecionamento para a página inicial verifica somente se o usuario está registrado na sessão ou não
+
             return View(user);
         }
 

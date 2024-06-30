@@ -46,13 +46,11 @@ namespace Orbit.Application.Services
             return user.ToUserResponse();
         }
 
-        public async Task<IEnumerable<UserResponse>> FindUsersAsync(Expression<Func<UserResponse, bool>> predicate)
+        public async Task<IEnumerable<UserResponse>> FindUsersAsync(Func<UserResponse, bool> predicate)
         {
-            Expression<Func<User, bool>> userPredicate = ConvertPredicate(predicate);
+            IEnumerable<User> users = await _unitOfWork.User.GetAllAsync();
 
-            IEnumerable<User> users = await _unitOfWork.User.FindAsync(userPredicate);
-
-            return users.Select(u => u.ToUserResponse());
+            return users.Select(u => u.ToUserResponse()).Where(predicate);
         }
 
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
@@ -77,33 +75,6 @@ namespace Orbit.Application.Services
             }
 
             return userResponses;
-        }
-
-        private static Expression<Func<User, bool>> ConvertPredicate(Expression<Func<UserResponse, bool>> predicate)
-        {
-            ParameterExpression? paramUserResponse = predicate.Parameters.FirstOrDefault();
-            ParameterExpression paramUser = Expression.Parameter(typeof(User), paramUserResponse!.Name);
-            Expression body = new ParameterReplacer(paramUserResponse, paramUser).Visit(predicate.Body);
-            Expression<Func<User, bool>> lambda = Expression.Lambda<Func<User, bool>>(body, paramUser);
-
-            return lambda;
-        }
-
-        private class ParameterReplacer : ExpressionVisitor
-        {
-            private readonly ParameterExpression _oldParameter;
-            private readonly ParameterExpression _newParameter;
-
-            public ParameterReplacer(ParameterExpression oldParameter, ParameterExpression newParameter)
-            {
-                _oldParameter = oldParameter;
-                _newParameter = newParameter;
-            }
-
-            protected override Expression VisitParameter(ParameterExpression node)
-            {
-                return node == _oldParameter ? _newParameter : base.VisitParameter(node);
-            }
         }
     }
 }

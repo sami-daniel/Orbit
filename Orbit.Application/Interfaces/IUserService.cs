@@ -9,6 +9,6 @@ namespace Orbit.Application.Interfaces
         Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest);
         Task<IEnumerable<UserResponse>> GetAllUsersAsync();
         Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties);
-        Task<IEnumerable<UserResponse>> FindUsersAsync(Expression<Func<UserResponse, bool>> predicate);
+        Task<IEnumerable<UserResponse>> FindUsersAsync(Func<UserResponse, bool> predicate);
     }
 }

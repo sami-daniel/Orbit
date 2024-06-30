@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
+using Orbit.Domain.Entities;
 using Orbit.Extensions;
+using Orbit.Filters;
+using System.Security.Claims;
 
 namespace Orbit.Controllers
 {
+    [EnsureProfileNotCreated]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -22,6 +28,7 @@ namespace Orbit.Controllers
             return View();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserAddRequest userAddRequest)
         {
             userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
@@ -46,11 +53,28 @@ namespace Orbit.Controllers
                 return BadRequest(ex.Message);
             }
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, "CommonUser"),
+                new Claim(ClaimTypes.Email, userReponse.UserEmail),
+                new Claim(ClaimTypes.NameIdentifier, userReponse.UserName)
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                IsPersistent = true,
+                ExpiresUtc = DateTime.UtcNow.AddYears(1)
+            };
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+
             HttpContext.Session.SetObject("User", userReponse);
 
             return RedirectToAction("", "Profile");
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string email, string password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
@@ -68,6 +92,22 @@ namespace Orbit.Controllers
             {
                 return NotFound("Login ou Senha invalidos!");
             }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, "CommonUser"),
+                new Claim(ClaimTypes.Email, user.UserEmail),
+                new Claim(ClaimTypes.NameIdentifier, user.UserName)
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                IsPersistent = true,
+                ExpiresUtc = DateTime.UtcNow.AddYears(1)
+            };
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
             HttpContext.Session.SetObject("User", user);
 

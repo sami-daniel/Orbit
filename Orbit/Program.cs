@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
 using Orbit.Infrastructure.Data.Contexts;
@@ -20,13 +22,37 @@ namespace Orbit
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0))));
 
+            _ = builder.Services
+                .AddSession(opt => 
+                {
+                    opt.Cookie.Name = "session";
+                });
+
+            _ = builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.RequireAuthenticatedSignIn = false;
+            }).AddCookie(opt =>
+            {
+                opt.LoginPath = "/Account/";
+                opt.Cookie.Name = "auth";
+            });
+
+            _ = builder.Services.AddAuthorization();
+
+            _ = builder.Services.AddAntiforgery(opt =>
+            {
+                opt.Cookie.Name = "Antiforgery";
+            });
+
             _ = builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             _ = builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             _ = builder.Services.AddScoped<IUserService, UserService>();
-
-            _ = builder.Services.AddSession();
 
             WebApplication app = builder.Build();
 
@@ -46,6 +72,10 @@ namespace Orbit
             _ = app.UseStaticFiles();
 
             _ = app.UseRouting();
+
+            _ = app.UseAuthentication();
+
+            _ = app.UseAuthorization();
 
             _ = app.UseSession();
 
