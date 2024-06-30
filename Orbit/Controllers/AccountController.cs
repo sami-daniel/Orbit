@@ -28,14 +28,19 @@ namespace Orbit.Controllers
             return View();
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserAddRequest userAddRequest)
         {
             userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
-                string errors = string.Join(',', ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-                return BadRequest(errors);
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                ViewBag.SummaryErrors = errors;
+                ViewBag.ModalRegisActive = true;
+                HttpContext.Response.StatusCode = 400;
+
+                return View("Index");
             }
             else if (!ModelState.IsValid && _webHostEnvironment.IsDevelopment())
             {
@@ -50,7 +55,9 @@ namespace Orbit.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                ViewBag.SummaryErrors = ex.Message;
+
+                return View("Index");
             }
 
             var claims = new List<Claim>
@@ -74,6 +81,7 @@ namespace Orbit.Controllers
             return RedirectToAction("", "Profile");
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string email, string password)
         {
@@ -90,7 +98,11 @@ namespace Orbit.Controllers
                 : users.FirstOrDefault(user => user.UserName == email);
             if (user == null || password != user.UserPassword)
             {
-                return NotFound("Login ou Senha invalidos!");
+                ViewBag.LoginError = "Usuário ou senha incorretos";
+                HttpContext.Response.StatusCode = 401;
+                ViewBag.ModalLoginActive = true;
+
+                return View("Index");
             }
 
             var claims = new List<Claim>

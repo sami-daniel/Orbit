@@ -93,6 +93,9 @@
                 </div>
 
                 <form method="post" class="forms" asp-action="Login" asp-controller="Account" id="log-form">
+                    <div style="color:red;">
+                        @ViewBag.LoginError
+                    </div>
                     <div class="name-container">
                         <label for="email-login">Email</label>
                         <input type="text" required name="email" id="email-login" class="inputs" />
@@ -155,4 +158,12 @@
     <script src="~/js/particle.js" asp-append-version="true"></script>
     <script src="~/js/behavior.js" asp-append-version="true"></script>
     <script src="~/js/validate.js" asp-append-version="true"></script>
+    @if (ViewBag.ModalLoginActive != null && ViewBag.ModalLoginActive)
+    {
+        <script>
+            $(document).ready(() => {
+                $('#openLogin').click();
+            });
+        </script>
+    }
 }
