@@ -136,76 +136,30 @@
     let onLastStep = false;
     lastStep.hide();
 
-    $('#nextBtn').click(function () {
+    $('#nextBtn').click(() => {
         event.preventDefault();
 
         if ($('#reg-form').valid()) {
-            trimmer();
+            $('#email').val().trim();
             firstStep.hide();
             lastStep.show();
             onLastStep = true;
         }
-
     });
 
-    $('#LoginButton').click(function () {
+    $('#signInButton').click(() => {
         event.preventDefault();
 
-        if ($('#log-form').valid()) {
-            document.getElementById("email-login").value.trim();
-            document.getElementById("Password-Login").value.trim();
-            $('#log-form').submit();
+        if ($('reg-form').valid()) {
+
         }
-    })
-
-    $('#signInButton').click(function () {
-        event.preventDefault();
-
-        if ($('#reg-form').valid()) {
-            document.getElementById('password').value.trim();
-            $('#reg-form').submit();
-        }
-    });
-
-    $(document).keypress(function (e) {
-        if (e.which === 13) {
-            event.preventDefault();
-
-            if (onLastStep) {
-
-                if ($('#reg-form').valid()) {
-                    trimmer();
-                    firstStep.hide();
-                    lastStep.show();
-                    onLastStep = true;
-                }
-            }
-
-            else {
-
-                if ($('#reg-form').valid()) {
-                    document.getElementById('password').value.trim();
-                    $('#signInButton').submit();
-                }
-
-
-            }
-        }
-    });
-
-    backBtn.click(function () {
-        event.preventDefault(); // Previne o comportamento padrão de submissão do 
-        firstStep.show();
-        lastStep.hide();
-        onLastStep = false;
     });
 });
 
 function trimmer() {
-    document.getElementById("name").value.trim();
-    document.getElementById("email").value.trim();
-    document.getElementById("DayBirthday").value.trim();
-    document.getElementById("MonthBirthday").value.trim();
-    document.getElementById("YearBirthday").value.trim();
+    //document.getElementById("name").value.trim();
+    //document.getElementById("DayBirthday").value.trim();
+    //document.getElementById("MonthBirthday").value.trim();
+    //document.getElementById("YearBirthday").value.trim();
    
 }

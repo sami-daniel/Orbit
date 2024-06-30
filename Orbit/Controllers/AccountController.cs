@@ -24,13 +24,13 @@ namespace Orbit.Controllers
         }
 
         public IActionResult Index()
-        {
+        {   
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(UserAddRequest userAddRequest)
+        public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
             userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
@@ -40,7 +40,7 @@ namespace Orbit.Controllers
                 ViewBag.ModalRegisActive = true;
                 HttpContext.Response.StatusCode = 400;
 
-                return View("Index");
+                return RedirectToAction("Index");
             }
             else if (!ModelState.IsValid && _webHostEnvironment.IsDevelopment())
             {
@@ -81,15 +81,29 @@ namespace Orbit.Controllers
             return RedirectToAction("", "Profile");
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login([FromForm] string? email, [FromForm] string? password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
             // porem, para o model binder realizar a vinculação de dados, o nome do
             // parametro não pode ser diferente do atributo name do campo do formulario
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
+
+            if (email == null || password == null) 
+            {
+                HttpContext.Response.StatusCode = 400;
+                ViewBag.LoginModalActive = true;
+
+                return View("Index");
+            }
 
             IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync("Followers", "Users");
 
@@ -98,10 +112,9 @@ namespace Orbit.Controllers
                 : users.FirstOrDefault(user => user.UserName == email);
             if (user == null || password != user.UserPassword)
             {
-                ViewBag.LoginError = "Usuário ou senha incorretos";
+                ViewBag.LoginModalActive = true;
+                ViewBag.LoginError = "Usuário ou senha inválidos!";
                 HttpContext.Response.StatusCode = 401;
-                ViewBag.ModalLoginActive = true;
-
                 return View("Index");
             }
 
@@ -127,7 +140,7 @@ namespace Orbit.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> CheckEmail(string email)
+        public async Task<bool> CheckEmail([FromBody] string? email)
         {
             if (string.IsNullOrEmpty(email))
             {
@@ -136,11 +149,11 @@ namespace Orbit.Controllers
 
             IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserEmail == email);
 
-            return users.Any();
+            return !users.Any();
         }
 
         [HttpPost]
-        public async Task<bool> CheckUsername(string username)
+        public async Task<bool> CheckUsername([FromBody] string? username)
         {
             if (string.IsNullOrEmpty(username))
             {

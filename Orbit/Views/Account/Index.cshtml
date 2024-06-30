@@ -52,7 +52,7 @@
 
                     </div>
 
-                    <div class="last-step">
+                    <div class="last-step" id="lastStep">
                         <div class="top-header">
                             <button class="form-btn" id="backBtn">
                                 <img src="~/images/arrow-left-solid.svg" class="icons" />
@@ -158,7 +158,7 @@
     <script src="~/js/particle.js" asp-append-version="true"></script>
     <script src="~/js/behavior.js" asp-append-version="true"></script>
     <script src="~/js/validate.js" asp-append-version="true"></script>
-    @if (ViewBag.ModalLoginActive != null && ViewBag.ModalLoginActive)
+    @if (ViewBag.LoginModalActive != null && ViewBag.LoginModalActive == true)
     {
         <script>
             $(document).ready(() => {
