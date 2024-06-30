@@ -155,11 +155,3 @@
         }
     });
 });
-
-function trimmer() {
-    //document.getElementById("name").value.trim();
-    //document.getElementById("DayBirthday").value.trim();
-    //document.getElementById("MonthBirthday").value.trim();
-    //document.getElementById("YearBirthday").value.trim();
-   
-}
