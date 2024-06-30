@@ -11,7 +11,7 @@ namespace Orbit.Application.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-        
+
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -48,9 +48,9 @@ namespace Orbit.Application.Services
 
         public async Task<IEnumerable<UserResponse>> FindUsersAsync(Expression<Func<UserResponse, bool>> predicate)
         {
-            var userPredicate = ConvertPredicate(predicate);
+            Expression<Func<User, bool>> userPredicate = ConvertPredicate(predicate);
 
-            var users = await _unitOfWork.User.FindAsync(userPredicate);
+            IEnumerable<User> users = await _unitOfWork.User.FindAsync(userPredicate);
 
             return users.Select(u => u.ToUserResponse());
         }
@@ -71,7 +71,7 @@ namespace Orbit.Application.Services
         {
             IEnumerable<User> users = await _unitOfWork.User.GetAllAsync(navProperties);
             List<UserResponse> userResponses = [];
-            foreach(User user in users)
+            foreach (User user in users)
             {
                 userResponses.Add(user.ToUserResponse());
             }
@@ -79,12 +79,12 @@ namespace Orbit.Application.Services
             return userResponses;
         }
 
-        private Expression<Func<User, bool>> ConvertPredicate(Expression<Func<UserResponse, bool>> predicate)
+        private static Expression<Func<User, bool>> ConvertPredicate(Expression<Func<UserResponse, bool>> predicate)
         {
-            var paramUserResponse = predicate.Parameters.FirstOrDefault();
-            var paramUser = Expression.Parameter(typeof(User), paramUserResponse!.Name);
-            var body = new ParameterReplacer(paramUserResponse, paramUser).Visit(predicate.Body);
-            var lambda = Expression.Lambda<Func<User, bool>>(body, paramUser);
+            ParameterExpression? paramUserResponse = predicate.Parameters.FirstOrDefault();
+            ParameterExpression paramUser = Expression.Parameter(typeof(User), paramUserResponse!.Name);
+            Expression body = new ParameterReplacer(paramUserResponse, paramUser).Visit(predicate.Body);
+            Expression<Func<User, bool>> lambda = Expression.Lambda<Func<User, bool>>(body, paramUser);
 
             return lambda;
         }

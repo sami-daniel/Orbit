@@ -43,12 +43,15 @@ namespace Orbit.Application.Dtos.Requests
         [Display(Name = "Ano")]
         public int Year { get; set; }
 
-        public User ToUser() => new User
+        public User ToUser()
         {
-            UserName = UserName,
-            UserDateOfBirth = new DateOnly(Year, Month, Day),
-            UserEmail = UserEmail,
-            UserPassword = UserPassword
-        };
+            return new User
+            {
+                UserName = UserName,
+                UserDateOfBirth = new DateOnly(Year, Month, Day),
+                UserEmail = UserEmail,
+                UserPassword = UserPassword
+            };
+        }
     }
 }

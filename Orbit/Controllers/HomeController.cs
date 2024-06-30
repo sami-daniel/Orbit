@@ -8,6 +8,6 @@ namespace Orbit.Controllers
         {
             return View("Views/Shared/Error.cshtml");
         }
-        
+
     }
 }

@@ -84,7 +84,7 @@ namespace Orbit.Controllers
 
             IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserEmail == email);
 
-            return users.Count() <= 0;
+            return users.Any();
         }
 
         [HttpPost]
@@ -97,7 +97,7 @@ namespace Orbit.Controllers
 
             IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserName == username);
 
-            return users.Count() <= 0;
+            return users.Any();
         }
     }
 }

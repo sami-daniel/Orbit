@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Orbit.Domain.Entities;
 using Orbit.Infrastructure.Repositories.Interfaces;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories
@@ -60,8 +58,8 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties)
         {
-            var entities = Context.Set<TEntity>().AsQueryable();
-            foreach (var prop in navProperties)
+            IQueryable<TEntity> entities = Context.Set<TEntity>().AsQueryable();
+            foreach (string prop in navProperties)
             {
                 //Followers
                 //Users

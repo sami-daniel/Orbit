@@ -1,5 +1,4 @@
 ﻿using Orbit.Domain.Entities;
-using System.Collections.ObjectModel;
 
 namespace Orbit.Application.Dtos.Responses
 {
@@ -21,7 +20,7 @@ namespace Orbit.Application.Dtos.Responses
     {
         public static UserResponse ToUserResponse(this User user)
         {
-            return user.ToUserResponseInternal(new List<uint>());
+            return user.ToUserResponseInternal([]);
         }
 
         private static UserResponse ToUserResponseInternal(this User user, List<uint> processedUserIds)
@@ -38,14 +37,14 @@ namespace Orbit.Application.Dtos.Responses
                     UserDescription = user.UserDescription,
                     UserProfileName = user.UserProfileName,
                     UserImageByteType = user.UserImageByteType,
-                    Followers = new List<UserResponse>(),
-                    Users = new List<UserResponse>()
+                    Followers = [],
+                    Users = []
                 };
             }
 
             processedUserIds.Add(user.UserId);
 
-            var response = new UserResponse
+            UserResponse response = new()
             {
                 UserId = user.UserId,
                 UserName = user.UserName,
