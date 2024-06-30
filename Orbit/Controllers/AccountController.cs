@@ -59,7 +59,7 @@ namespace Orbit.Controllers
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
 
-            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync("Followers", "Users");
 
             UserResponse? user = email.Contains('@')
                 ? users.FirstOrDefault(user => user.UserEmail == email)
@@ -81,11 +81,10 @@ namespace Orbit.Controllers
             {
                 return true;
             }
-            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
 
-            IEnumerable<UserResponse> userWithEmail = users.Where(u => u.UserEmail == email);
+            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserEmail == email);
 
-            return userWithEmail.Count() <= 0;
+            return users.Count() <= 0;
         }
 
         [HttpPost]
@@ -96,11 +95,9 @@ namespace Orbit.Controllers
                 return true;
             }
 
-            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserName == username);
 
-            IEnumerable<UserResponse> usersWithID = users.Where(u => u.UserName == username);
-
-            return usersWithID.Count() <= 0;
+            return users.Count() <= 0;
         }
     }
 }

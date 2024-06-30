@@ -4,6 +4,7 @@ using Orbit.Application.Helpers;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.Infrastructure.Repositories.Interfaces;
+using System.Linq.Expressions;
 
 namespace Orbit.Application.Services
 {
@@ -45,6 +46,15 @@ namespace Orbit.Application.Services
             return user.ToUserResponse();
         }
 
+        public async Task<IEnumerable<UserResponse>> FindUsersAsync(Expression<Func<UserResponse, bool>> predicate)
+        {
+            var userPredicate = ConvertPredicate(predicate);
+
+            var users = await _unitOfWork.User.FindAsync(userPredicate);
+
+            return users.Select(u => u.ToUserResponse());
+        }
+
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
         {
             IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.GetAllAsync();
@@ -55,6 +65,45 @@ namespace Orbit.Application.Services
             }
 
             return usersResponses;
+        }
+
+        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties)
+        {
+            IEnumerable<User> users = await _unitOfWork.User.GetAllAsync(navProperties);
+            List<UserResponse> userResponses = [];
+            foreach(User user in users)
+            {
+                userResponses.Add(user.ToUserResponse());
+            }
+
+            return userResponses;
+        }
+
+        private Expression<Func<User, bool>> ConvertPredicate(Expression<Func<UserResponse, bool>> predicate)
+        {
+            var paramUserResponse = predicate.Parameters.FirstOrDefault();
+            var paramUser = Expression.Parameter(typeof(User), paramUserResponse!.Name);
+            var body = new ParameterReplacer(paramUserResponse, paramUser).Visit(predicate.Body);
+            var lambda = Expression.Lambda<Func<User, bool>>(body, paramUser);
+
+            return lambda;
+        }
+
+        private class ParameterReplacer : ExpressionVisitor
+        {
+            private readonly ParameterExpression _oldParameter;
+            private readonly ParameterExpression _newParameter;
+
+            public ParameterReplacer(ParameterExpression oldParameter, ParameterExpression newParameter)
+            {
+                _oldParameter = oldParameter;
+                _newParameter = newParameter;
+            }
+
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                return node == _oldParameter ? _newParameter : base.VisitParameter(node);
+            }
         }
     }
 }

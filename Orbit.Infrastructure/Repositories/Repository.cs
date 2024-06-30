@@ -60,10 +60,12 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties)
         {
-            var entities = Context.Set<TEntity>();
+            var entities = Context.Set<TEntity>().AsQueryable();
             foreach (var prop in navProperties)
             {
-                entities.Include(prop);
+                //Followers
+                //Users
+                entities = entities.Include(prop);
             }
 
             return await entities.ToListAsync();

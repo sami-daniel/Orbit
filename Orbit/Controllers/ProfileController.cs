@@ -28,9 +28,9 @@ namespace Orbit.Controllers
 
         public async Task<IActionResult> GetUserImageAsync(string username)
         {
-            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserName == username);
 
-            UserResponse? user = users.FirstOrDefault(u => u.UserName == username);
+            UserResponse? user = users.FirstOrDefault();
             // Se o UserService possuisse um método Find, em vez de ter que pegar todos os usuarios
             // e então usar o Linq para pegar o usúario desejado, teriamos melhor performance
 
@@ -47,12 +47,10 @@ namespace Orbit.Controllers
 
             string normalizeQuery = username.ToLower().Trim();
 
-            IEnumerable<UserResponse> profiles = await _userService.GetAllUsersAsync();
+            IEnumerable<UserResponse> profiles = await _userService.FindUsersAsync(p => p.UserName.ToLower().Contains(normalizeQuery));
 
-            var matchProfiles =
-                profiles
-                    .Where(p => p.UserName.ToLower().Contains(normalizeQuery))
-                    .Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserImageByteType });
+
+            var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserImageByteType });
 
             return Ok(matchProfiles);
         }
