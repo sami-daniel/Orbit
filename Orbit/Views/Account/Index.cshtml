@@ -7,7 +7,7 @@
         <h2 class="title">OrbIt</h2>
     </header>
     <section class="container">
-        <div class="text-exibition">
+        <div class="text-exibition" data-aos="zoom-out-up">
             <p>Acompanhe tudo no mundo da tecnologia conosco.</p>
         </div>
     </section>
@@ -21,7 +21,7 @@
     <div class="modal-background hidden" id="modalBackground">
         <div class="content">
 
-            <div class="div-signIn" id="divSignIn">
+            <div class="div-signIn" id="divSignIn" >
                 <form method="post" asp-action="CreateUser" asp-controller="Account" class="form-name forms" id="reg-form">
                     <div class="first-step">
                         <div class="top-header">
@@ -61,24 +61,33 @@
                         </div>
 
                         <div class="password-container">
+                            <label class="pass" for="UserName">Username</label>
+                            <input type="text" required name="UserName" id="UserName" class="inputs" />
+                        </div>
+
+                        <div class="password-container">
+                            <label class="pass" for="UserName">Nome</label>
+                            <input type="text" required name="ProfileName" id="ProfileName" class="inputs" />
+                        </div>
+
+                        <div class="password-container">
                             <label for="password">Senha</label>
                             <input type="password" required name="UserPassword" id="password" class="inputs" />
                         </div>
-                        <div class="password-container">
-                            <label class="pass" for="repeatpassword">Repita sua senha</label>
-                            <input type="password" required name="repeatpassword" id="repeatpassword" class="inputs" />
+
+                        <div class="profile-options">
+                            <input type="checkbox" name="private" required />
+                            <label>Perfil Privado</label>
                         </div>
+                        
                         <div class="terms-and-conditions">
                             <input type="checkbox" name="terms" required />
                             <label class="termos">
-                                Concorda com os nossos termos de políticas e serviços! <a href="#">
-                                    Termos de política
-                                    e serviços
-                                </a>
+                                Concorda com os Termos Politica e Serviços <a href="#">Termos de e serviços</a>
                             </label>
                         </div>
                         <div class="next-container">
-                            <button class="next-btn" id="signInButton">Cadastrar</button>
+                            <button class="next-btn" id="signInButton">Sign In</button>
                         </div>
                     </div>
                 </form>
@@ -93,9 +102,12 @@
                 </div>
 
                 <form method="post" class="forms" asp-action="Login" asp-controller="Account" id="log-form">
-                    <div style="color:red;">
-                        @ViewBag.LoginError
-                    </div>
+                    @if(ViewBag.LoginError != null)
+                    {
+                        <div class="container-error">
+                            @ViewBag.LoginError
+                        </div>
+                    }
                     <div class="name-container">
                         <label for="email-login">Email</label>
                         <input type="text" required name="email" id="email-login" class="inputs" />
@@ -135,6 +147,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
           rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 }
 
 @section scripts {
@@ -153,6 +166,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"
             asp-fallback-src="~/libs/jQuery/js/additional-methods.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script src="~/js/script.js" asp-append-version="true"></script>
     <script src="~/js/particle.js" asp-append-version="true"></script>
