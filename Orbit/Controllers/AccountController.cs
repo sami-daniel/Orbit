@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
@@ -143,6 +144,13 @@ namespace Orbit.Controllers
             HttpContext.Session.SetObject("User", user);
 
             return RedirectToActionPermanent("", "Profile");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

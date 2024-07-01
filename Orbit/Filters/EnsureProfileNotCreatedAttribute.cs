@@ -10,7 +10,7 @@ namespace Orbit.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.HttpContext.User.Identity!.IsAuthenticated)
+            if (context.HttpContext.User.Identity!.IsAuthenticated && !context.ActionDescriptor.DisplayName!.Contains("LogOut"))
             {
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
