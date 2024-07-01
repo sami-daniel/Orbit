@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
 using Orbit.Infrastructure.Repositories.Interfaces;
+using System.Diagnostics;
 
 namespace Orbit
 {
@@ -20,10 +20,11 @@ namespace Orbit
 
             _ = builder.Services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
-             serverVersion: new MySqlServerVersion(new Version(8, 4, 0))));
+             serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
+            .LogTo(m => Debug.WriteLine(m)));
 
             _ = builder.Services
-                .AddSession(opt => 
+                .AddSession(opt =>
                 {
                     opt.Cookie.Name = "session";
                 });

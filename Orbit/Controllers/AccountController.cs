@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
-using Orbit.Domain.Entities;
 using Orbit.Extensions;
 using Orbit.Filters;
 using System.Security.Claims;
@@ -24,7 +23,7 @@ namespace Orbit.Controllers
         }
 
         public IActionResult Index()
-        {   
+        {
             return View();
         }
 
@@ -35,7 +34,7 @@ namespace Orbit.Controllers
             userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                IEnumerable<string> errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 ViewBag.SummaryErrors = errors;
                 ViewBag.ModalRegisActive = true;
                 HttpContext.Response.StatusCode = 400;
@@ -60,15 +59,15 @@ namespace Orbit.Controllers
                 return View("Index");
             }
 
-            var claims = new List<Claim>
-            {
+            List<Claim> claims =
+            [
                 new Claim(ClaimTypes.Role, "CommonUser"),
                 new Claim(ClaimTypes.Email, userReponse.UserEmail),
                 new Claim(ClaimTypes.NameIdentifier, userReponse.UserName)
-            };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-            var authProperties = new AuthenticationProperties
+            ];
+            ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            ClaimsPrincipal principal = new(identity);
+            AuthenticationProperties authProperties = new()
             {
                 AllowRefresh = true,
                 IsPersistent = true,
@@ -96,8 +95,8 @@ namespace Orbit.Controllers
             // parametro não pode ser diferente do atributo name do campo do formulario
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
-            
-            if (input_login == null || password == null) 
+
+            if (input_login == null || password == null)
             {
                 HttpContext.Response.StatusCode = 400;
                 ViewBag.LoginModalActive = true;
@@ -125,15 +124,15 @@ namespace Orbit.Controllers
                 return View("Index");
             }
 
-            var claims = new List<Claim>
-            {
+            List<Claim> claims =
+            [
                 new Claim(ClaimTypes.Role, "CommonUser"),
                 new Claim(ClaimTypes.Email, user.UserEmail),
                 new Claim(ClaimTypes.NameIdentifier, user.UserName)
-            };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-            var authProperties = new AuthenticationProperties
+            ];
+            ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            ClaimsPrincipal principal = new(identity);
+            AuthenticationProperties authProperties = new()
             {
                 AllowRefresh = true,
                 IsPersistent = true,

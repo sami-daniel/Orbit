@@ -23,9 +23,9 @@ namespace Orbit.Controllers
 
             if (user == null)
             {
-                var usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-                var awaiter = await _userService.GetAllUsersAsync("Followers", "Users");
-                
+                Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
+                IEnumerable<UserResponse> awaiter = await _userService.GetAllUsersAsync("Followers", "Users");
+
                 user = awaiter.Where(u => u.UserName == usr.Value).First();
             }
 

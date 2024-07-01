@@ -1,6 +1,5 @@
 ﻿using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
-using System.Linq.Expressions;
 
 namespace Orbit.Application.Interfaces
 {
@@ -11,7 +10,7 @@ namespace Orbit.Application.Interfaces
         Task<IEnumerable<UserResponse>> GetAllUsersAsync();
 
         Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties);
-        
+
         Task<IEnumerable<UserResponse>> FindUsersAsync(Func<UserResponse, bool> predicate);
     }
 }

@@ -10,7 +10,7 @@ namespace Orbit.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.HttpContext.User.Identity!.IsAuthenticated) 
+            if (context.HttpContext.User.Identity!.IsAuthenticated)
             {
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
@@ -22,7 +22,7 @@ namespace Orbit.Filters
 
             // Protege o controlador Account de usuário já logados de não conseguirem logar novamente
 
-            await next();
+            _ = await next();
         }
     }
 }
