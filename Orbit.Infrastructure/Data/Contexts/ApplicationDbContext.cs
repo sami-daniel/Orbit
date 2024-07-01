@@ -114,7 +114,7 @@ public partial class ApplicationDbContext : DbContext
                 entry.Entity.UserName = entry.Entity.UserName.Trim();
                 entry.Entity.UserEmail = entry.Entity.UserEmail.Trim();
                 entry.Entity.UserPassword = entry.Entity.UserPassword.Trim();
-                entry.Entity.UserProfileName = entry.Entity.UserProfileName?.Trim();
+                entry.Entity.UserProfileName = entry.Entity.UserProfileName.Trim();
                 entry.Entity.UserDescription = entry.Entity.UserDescription?.Trim();
             }
         }

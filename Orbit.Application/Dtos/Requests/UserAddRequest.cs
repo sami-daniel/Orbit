@@ -25,7 +25,7 @@ namespace Orbit.Application.Dtos.Requests
         [Display(Name = "Nome do Perfil")]
         public string UserProfileName { get; set; } = null!;
         [Display(Name = "Perfil Privado")]
-        public bool IsPrivateProfile { get; set; } = null!;
+        public bool IsPrivateProfile { get; set; } = false;
         
         public User ToUser()
         {

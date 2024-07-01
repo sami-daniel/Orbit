@@ -32,7 +32,6 @@ namespace Orbit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
-            userAddRequest.UserDateOfBirth = new DateOnly(userAddRequest.Year, userAddRequest.Month, userAddRequest.Day);
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 IEnumerable<string> errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
