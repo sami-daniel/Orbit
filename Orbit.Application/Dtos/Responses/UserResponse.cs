@@ -12,8 +12,8 @@ namespace Orbit.Application.Dtos.Responses
         public bool IsPrivateProfile { get; set; } = false;
         public byte[]? UserImageByteType { get; set; }
         public string? UserDescription { get; set; }
-        public ICollection<UserResponse> Followers { get; set; }
-        public ICollection<UserResponse> Users { get; set; }
+        public ICollection<UserResponse> Followers { get; set; } = [];
+        public ICollection<UserResponse> Users { get; set; } = [];
     }
 
     public static class UserExtensions
