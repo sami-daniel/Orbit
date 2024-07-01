@@ -24,7 +24,9 @@ namespace Orbit.Application.Dtos.Requests
         [StringLength(200, ErrorMessage = "O nome de usuário dever ter no máximo 200 caracteres.")]
         [Display(Name = "Nome do Perfil")]
         public string UserProfileName { get; set; } = null!;
-
+        [Display(Name = "Perfil Privado")]
+        public bool IsPrivateProfile { get; set; } = null!;
+        
         public User ToUser()
         {
             return new User
@@ -32,7 +34,8 @@ namespace Orbit.Application.Dtos.Requests
                 UserName = UserName,
                 UserEmail = UserEmail,
                 UserPassword = UserPassword,
-                UserProfileName = UserProfileName
+                UserProfileName = UserProfileName,
+                IsPrivateProfile = IsPrivateProfile
             };
         }
     }
