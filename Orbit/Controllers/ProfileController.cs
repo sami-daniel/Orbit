@@ -32,17 +32,6 @@ namespace Orbit.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> GetUserImageAsync(string username)
-        {
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserName == username);
-
-            UserResponse? user = users.FirstOrDefault();
-            // Se o UserService possuisse um método Find, em vez de ter que pegar todos os usuarios
-            // e então usar o Linq para pegar o usúario desejado, teriamos melhor performance
-
-            return user == null || user.UserImageByteType == null ? NotFound() : File(user.UserImageByteType, "application/image");
-        }
-
         [HttpGet]
         public async Task<IActionResult> Search([FromQuery] string username)
         {
