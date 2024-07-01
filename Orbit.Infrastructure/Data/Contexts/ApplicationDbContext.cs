@@ -30,7 +30,6 @@ public partial class ApplicationDbContext : DbContext
             _ = entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
             _ = entity.Property(e => e.UserId).HasColumnName("user_id");
-            _ = entity.Property(e => e.UserDateOfBirth).HasColumnName("user_date_of_birth");
             _ = entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
                 .HasColumnName("user_description")
@@ -67,7 +66,7 @@ public partial class ApplicationDbContext : DbContext
                         .HasConstraintName("follower_ibfk_1"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("follower_ibfk_2"),
                     j =>
                     {
@@ -85,7 +84,7 @@ public partial class ApplicationDbContext : DbContext
                     "Follower",
                     r => r.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("follower_ibfk_2"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("FollowerId")
@@ -115,8 +114,8 @@ public partial class ApplicationDbContext : DbContext
                 entry.Entity.UserName = entry.Entity.UserName.Trim();
                 entry.Entity.UserEmail = entry.Entity.UserEmail.Trim();
                 entry.Entity.UserPassword = entry.Entity.UserPassword.Trim();
+                entry.Entity.UserProfileName = entry.Entity.UserProfileName?.Trim();
                 entry.Entity.UserDescription = entry.Entity.UserDescription?.Trim();
-                entry.Entity.UserDescription = entry.Entity.UserProfileName?.Trim();
             }
         }
         // Atualmente os espaços em brancos são limpos em scripts
