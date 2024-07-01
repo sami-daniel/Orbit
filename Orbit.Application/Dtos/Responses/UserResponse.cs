@@ -8,9 +8,10 @@ namespace Orbit.Application.Dtos.Responses
         public string UserName { get; set; } = null!;
         public string UserEmail { get; set; } = null!;
         public string UserPassword { get; set; } = null!;
-        public string? UserProfileName { get; set; } = null!
-        public string? UserDescription { get; set; }
+        public string UserProfileName { get; set; } = null!
+        public bool IsPrivateProfile { get; set; } = null!
         public byte[]? UserImageByteType { get; set; }
+        public string? UserDescription { get; set; }
         public ICollection<UserResponse> Followers { get; set; }
         public ICollection<UserResponse> Users { get; set; }
     }
@@ -33,8 +34,9 @@ namespace Orbit.Application.Dtos.Responses
                     UserEmail = user.UserEmail,
                     UserPassword = user.UserPassword,
                     UserProfileName = user.UserProfileName,
-                    UserDescription = user.UserDescription,
+                    IsPrivateProfile = user.IsPrivateProfile,
                     UserImageByteType = user.UserImageByteType,
+                    UserDescription = user.UserDescription,
                     Followers = [],
                     Users = []
                 };
@@ -49,6 +51,7 @@ namespace Orbit.Application.Dtos.Responses
                 UserEmail = user.UserEmail,
                 UserPassword = user.UserPassword,
                 UserProfileName = user.UserProfileName,
+                IsPrivateProfile = user.IsPrivateProfile,
                 UserDescription = user.UserDescription,
                 UserImageByteType = user.UserImageByteType,
                 Followers = user.Followers.Select(u => u.ToUserResponseInternal(new List<uint>(processedUserIds))).ToList(),
