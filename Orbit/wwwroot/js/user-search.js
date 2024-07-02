@@ -2,7 +2,7 @@
     $('#searchBar').on('input' ,() => {
         $.ajax(
             {
-                url: 'Dashboard/Search',
+                url: 'Profile/Search',
                 method: 'GET',
                 contentType: 'application/json',
                 data: { username: $('#searchBar').val() },

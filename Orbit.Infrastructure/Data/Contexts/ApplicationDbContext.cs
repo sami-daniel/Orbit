@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace Orbit.Domain;
+namespace Orbit.Infrastructure.Data.Contexts;
 
 public partial class ApplicationDbContext : DbContext
 {

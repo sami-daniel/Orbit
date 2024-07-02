@@ -1,4 +1,5 @@
-﻿using Orbit.Domain.Entities;
+﻿using Orbit.Application.Extensions;
+using Orbit.Domain.Entities;
 
 namespace Orbit.Application.Dtos.Responses
 {
@@ -34,7 +35,7 @@ namespace Orbit.Application.Dtos.Responses
                     UserEmail = user.UserEmail,
                     UserPassword = user.UserPassword,
                     UserProfileName = user.UserProfileName,
-                    IsPrivateProfile = user.IsPrivateProfile,
+                    IsPrivateProfile = user.IsPrivateProfile.ToBoolean(),
                     UserImageByteType = user.UserImageByteType,
                     UserDescription = user.UserDescription,
                     Followers = [],
@@ -51,7 +52,7 @@ namespace Orbit.Application.Dtos.Responses
                 UserEmail = user.UserEmail,
                 UserPassword = user.UserPassword,
                 UserProfileName = user.UserProfileName,
-                IsPrivateProfile = user.IsPrivateProfile,
+                IsPrivateProfile = user.IsPrivateProfile.ToBoolean(),
                 UserDescription = user.UserDescription,
                 UserImageByteType = user.UserImageByteType,
                 Followers = user.Followers.Select(u => u.ToUserResponseInternal(new List<uint>(processedUserIds))).ToList(),

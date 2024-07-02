@@ -30,7 +30,9 @@
                             </button>
                             <h2 class="form-title">Crie sua conta no OrbIt</h2>
                         </div>
-
+                        <div class="error">
+                            @ViewBag.SummaryErrors
+                        </div>
                         <div class="email-container">
                             <label for="email">Email</label>
                             <input type="email" required name="UserEmail" id="email" class="inputs" />
@@ -61,8 +63,8 @@
                         </div>
 
                         <div class="password-container">
-                            <label class="pass" for="UserName">Username</label>
-                            <input type="text" required name="UserName" id="UserName" class="inputs" />
+                            <label class="pass" for="uname">Nome do perfil</label>
+                            <input type="text" required name="UserName" id="uname" class="inputs" />
                         </div>
 
                         <div class="password-container">
@@ -76,12 +78,12 @@
                         </div>
 
                         <div class="profile-options">
-                            <input type="checkbox" name="IsPrivateField" required />
+                            <input type="checkbox" name="IsPrivateProfile" required />
                             <label>Perfil Privado</label>
                         </div>
                         
                         <div class="terms-and-conditions">
-                            <input type="checkbox" name="terms" required />
+                            <input type="checkbox" name="terms" id="terms"/>
                             <label class="termos">
                                 Concorda com os Termos Politica e Serviços <a href="#">Termos de e serviços</a>
                             </label>
@@ -177,6 +179,15 @@
         <script>
             $(document).ready(() => {
                 $('#openLogin').click();
+            });
+        </script>
+    }
+
+    @if (ViewBag.RegisModalActive != null && ViewBag.RegisModalActive == true)
+    {
+        <script>
+            $(document).ready(() => {
+                $('#openSignIn').click();
             });
         </script>
     }

@@ -55,6 +55,8 @@ namespace Orbit.Controllers
             catch (ArgumentException ex)
             {
                 ViewBag.SummaryErrors = ex.Message;
+                ViewBag.RegisModalActive = true;
+                HttpContext.Response.StatusCode = 400;
 
                 return View("Index");
             }
@@ -153,7 +155,7 @@ namespace Orbit.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> CheckEmail([FromBody] string? email)
+        public async Task<bool> CheckEmail([FromForm] string email)
         {
             if (string.IsNullOrEmpty(email))
             {
@@ -166,7 +168,7 @@ namespace Orbit.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> CheckUsername([FromBody] string? username)
+        public async Task<bool> CheckUsername([FromForm] string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -175,7 +177,7 @@ namespace Orbit.Controllers
 
             IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserName == username);
 
-            return users.Any();
+            return !users.Any();
         }
     }
 }
