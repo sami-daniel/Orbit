@@ -1,4 +1,7 @@
-﻿namespace Orbit.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Orbit.Domain.Entities;
 
 public partial class User
 {
@@ -18,7 +21,7 @@ public partial class User
 
     public ulong IsPrivateProfile { get; set; }
 
-    public virtual ICollection<User> Followers { get; set; } = [];
+    public virtual ICollection<User> Followers { get; set; } = new List<User>();
 
-    public virtual ICollection<User> Users { get; set; } = [];
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

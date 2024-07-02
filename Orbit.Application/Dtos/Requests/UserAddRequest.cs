@@ -27,7 +27,7 @@ namespace Orbit.Application.Dtos.Requests
         public string UserProfileName { get; set; } = null!;
         [Display(Name = "Perfil Privado")]
         public string IsPrivateProfile { get; set; } = null!;
-
+        
         public User ToUser()
         {
             return new User
