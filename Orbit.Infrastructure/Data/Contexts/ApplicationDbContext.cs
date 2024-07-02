@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Orbit.Infrastructure.Data.Contexts;
 
@@ -21,52 +18,52 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
+        _ = modelBuilder
             .UseCollation("utf8mb3_general_ci")
             .HasCharSet("utf8mb3");
 
-        modelBuilder.Entity<User>(entity =>
+        _ = modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PRIMARY");
+            _ = entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
-            entity.ToTable("user");
+            _ = entity.ToTable("user");
 
-            entity.HasIndex(e => e.UserEmail, "user_email_UNIQUE").IsUnique();
+            _ = entity.HasIndex(e => e.UserEmail, "user_email_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.UserId, "user_id_UNIQUE").IsUnique();
+            _ = entity.HasIndex(e => e.UserId, "user_id_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
+            _ = entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.IsPrivateProfile)
+            _ = entity.Property(e => e.UserId).HasColumnName("user_id");
+            _ = entity.Property(e => e.IsPrivateProfile)
                 .HasColumnType("bit(1)")
                 .HasColumnName("is_private_profile");
-            entity.Property(e => e.UserDescription)
+            _ = entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
                 .HasColumnName("user_description")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-            entity.Property(e => e.UserEmail)
+            _ = entity.Property(e => e.UserEmail)
                 .HasMaxLength(200)
                 .HasColumnName("user_email")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-            entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
-            entity.Property(e => e.UserName)
+            _ = entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
+            _ = entity.Property(e => e.UserName)
                 .HasMaxLength(100)
                 .HasColumnName("user_name")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-            entity.Property(e => e.UserPassword)
+            _ = entity.Property(e => e.UserPassword)
                 .HasMaxLength(200)
                 .HasColumnName("user_password")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-            entity.Property(e => e.UserProfileName)
+            _ = entity.Property(e => e.UserProfileName)
                 .HasMaxLength(200)
                 .HasColumnName("user_profile_name");
 
-            entity.HasMany(d => d.Followers).WithMany(p => p.Users)
+            _ = entity.HasMany(d => d.Followers).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
@@ -77,16 +74,16 @@ public partial class ApplicationDbContext : DbContext
                         .HasConstraintName("follower_ibfk_2"),
                     j =>
                     {
-                        j.HasKey("UserId", "FollowerId")
+                        _ = j.HasKey("UserId", "FollowerId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.ToTable("follower");
-                        j.HasIndex(new[] { "FollowerId" }, "follower_id");
-                        j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
-                        j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
+                        _ = j.ToTable("follower");
+                        _ = j.HasIndex(new[] { "FollowerId" }, "follower_id");
+                        _ = j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
+                        _ = j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
                     });
 
-            entity.HasMany(d => d.Users).WithMany(p => p.Followers)
+            _ = entity.HasMany(d => d.Users).WithMany(p => p.Followers)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
@@ -97,13 +94,13 @@ public partial class ApplicationDbContext : DbContext
                         .HasConstraintName("follower_ibfk_1"),
                     j =>
                     {
-                        j.HasKey("UserId", "FollowerId")
+                        _ = j.HasKey("UserId", "FollowerId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.ToTable("follower");
-                        j.HasIndex(new[] { "FollowerId" }, "follower_id");
-                        j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
-                        j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
+                        _ = j.ToTable("follower");
+                        _ = j.HasIndex(new[] { "FollowerId" }, "follower_id");
+                        _ = j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
+                        _ = j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
                     });
         });
 

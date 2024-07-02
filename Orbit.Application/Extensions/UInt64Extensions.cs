@@ -2,9 +2,9 @@
 {
     internal static class UInt64Extensions
     {
-        public static bool ToBoolean(this UInt64 value)
+        public static bool ToBoolean(this ulong value)
         {
-            return value == 1 ? true : false;
+            return value == 1;
         }
     }
 }
