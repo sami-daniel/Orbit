@@ -4,7 +4,7 @@
     {
         public static bool ToBoolean(this UInt64 value)
         {
-            return value == 1 ? true : false;
+            return value == 1;
         }
     }
 }
