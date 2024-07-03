@@ -79,7 +79,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", userReponse);
 
-            return RedirectToAction("", "Profile");
+            return CreatedAtRoute("/Profile/", null!);
         }
 
         [HttpGet]
