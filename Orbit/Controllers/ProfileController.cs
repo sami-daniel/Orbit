@@ -24,7 +24,7 @@ namespace Orbit.Controllers
             if (user == null)
             {
                 Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-                IEnumerable<UserResponse> awaiter = await _userService.GetAllUsersAsync("Followers", "Users");
+                IEnumerable<UserResponse> awaiter = await _userService.FindUsersAsync(new { UserName = usr.Value },"Followers", "Users");
 
                 user = awaiter.Where(u => u.UserName == usr.Value).First();
             }
@@ -42,7 +42,7 @@ namespace Orbit.Controllers
 
             string normalizeQuery = username.ToLower().Trim();
 
-            IEnumerable<UserResponse> profiles = await _userService.FindUsersAsync(p => p.UserName.ToLower().Contains(normalizeQuery));
+            IEnumerable<UserResponse> profiles = await _userService.FindUsersAsync(new { UserName = username.ToLower() });
 
 
             var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserImageByteType });

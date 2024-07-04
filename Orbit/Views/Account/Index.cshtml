@@ -21,8 +21,8 @@
     <div class="modal-background hidden" id="modalBackground">
         <div class="content">
 
-            <div class="div-signIn" id="divSignIn" >
-                <form method="post" asp-action="CreateUser" asp-controller="Account" class="form-name forms" id="reg-form">
+            <div class="div-signIn" id="divSignIn">
+                <form method="POST" asp-action="CreateUser" asp-controller="Account" class="form-name forms" id="reg-form">
                     <div class="first-step">
                         <div class="top-header">
                             <button class="form-btn" id="closeBtn">
@@ -31,11 +31,11 @@
                             <h2 class="form-title">Crie sua conta no OrbIt</h2>
                         </div>
                         <div class="error">
-                            @ViewBag.SummaryErrors
+                            @ViewBag.UserEmailError
                         </div>
                         <div class="email-container">
                             <label for="email">Email</label>
-                            <input type="email" required name="UserEmail" id="email" class="inputs" />
+                            <input type="email" required name="UserEmail" id="email" class="inputs" autocomplete="off" />
                         </div>
                         <div class="login-options">
                             <button class="btn-options">
@@ -63,27 +63,36 @@
                         </div>
 
                         <div class="password-container">
+                            <div class="error">
+                                @ViewBag.UserNameError
+                            </div>
                             <label class="pass" for="uname">Nome do perfil</label>
-                            <input type="text" required name="UserName" id="uname" class="inputs" />
+                            <input type="text" required name="UserName" id="uname" class="inputs" autocomplete="off" />
                         </div>
 
                         <div class="password-container">
+                            <div class="error">
+                                @ViewBag.UserProfileError
+                            </div>
                             <label class="pass" for="ProfileName">Nome do Perfil</label>
-                            <input type="text" required name="UserProfileName" id="ProfileName" class="inputs" />
+                            <input type="text" required name="UserProfileName" id="ProfileName" class="inputs" autocomplete="off" />
                         </div>
 
                         <div class="password-container">
+                            <div class="error">
+                                @ViewBag.UserPasswordError
+                            </div>
                             <label for="password">Senha</label>
-                            <input type="password" required name="UserPassword" id="password" class="inputs" />
+                            <input type="password" required name="UserPassword" id="password" class="inputs" autocomplete="off" />
                         </div>
 
                         <div class="profile-options">
                             <input type="checkbox" name="IsPrivateProfile" required />
                             <label>Perfil Privado</label>
                         </div>
-                        
+
                         <div class="terms-and-conditions">
-                            <input type="checkbox" name="terms" id="terms"/>
+                            <input type="checkbox" name="terms" id="terms" />
                             <label class="termos">
                                 Concorda com os Termos Politica e Serviços <a href="#">Termos de e serviços</a>
                             </label>
@@ -104,7 +113,7 @@
                 </div>
 
                 <form method="post" class="forms" asp-action="Login" asp-controller="Account" id="log-form">
-                    @if(ViewBag.LoginError != null)
+                    @if (ViewBag.LoginError != null)
                     {
                         <div class="container-error">
                             @ViewBag.LoginError

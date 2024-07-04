@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Orbit.Infrastructure.Repositories.Interfaces;
+using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories
@@ -45,10 +48,75 @@ namespace Orbit.Infrastructure.Repositories
             await Context.Set<TEntity>().AddRangeAsync(entities);
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(object conditions)
         {
-            ArgumentNullException.ThrowIfNull(predicate);
-            return await Context.Set<TEntity>().Where(predicate).ToListAsync();
+            ArgumentException.ThrowIfNullOrEmpty(nameof(conditions));
+            var conditionString = new List<string>();
+            var parameters = new List<object>();
+            int index = 0;
+
+            foreach (var property in conditions.GetType().GetProperties())
+            {
+                var value = property.GetValue(conditions);
+
+                if (value != null)
+                {
+                    string condition = $"{property.Name} == @{index}";
+                    conditionString.Add(condition);
+                    parameters.Add(value);
+                    index++;
+                }
+            }
+
+            if (conditionString.Count == 0)
+                return [];
+
+            string dinamycWhere = string.Join(" AND ", conditionString);
+
+
+            return await Context.Set<TEntity>()
+                        .Where(dinamycWhere, parameters.ToArray())
+                        .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> FindAsync(object conditions, params string[] navProperties)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(conditions));
+            var conditionString = new List<string>();
+            var parameters = new List<object>();
+            int index = 0;
+
+            foreach (var property in conditions.GetType().GetProperties())
+            {
+                var value = property.GetValue(conditions);
+
+                if (value != null)
+                {
+                    string condition = $"{property.Name} == @{index}";
+                    conditionString.Add(condition);
+                    parameters.Add(value);
+                    index++;
+                }
+            }
+
+            if (conditionString.Count() == 0)
+                return [];
+
+            string dinamycWhere = string.Join(" AND ", conditionString);
+
+
+            var queryableElements = Context.Set<TEntity>()
+                        .Where(dinamycWhere).AsQueryable();
+
+            var qList = queryableElements.ToList();
+            Debug.WriteLine(qList);
+
+            foreach(string prop in navProperties)
+            {
+                queryableElements.Include(prop);
+            }
+
+            return await queryableElements.ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

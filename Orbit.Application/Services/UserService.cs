@@ -9,6 +9,7 @@ namespace Orbit.Application.Services
 {
     public class UserService : IUserService
     {
+#pragma warning disable CS0618
         private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IUnitOfWork unitOfWork)
@@ -24,8 +25,8 @@ namespace Orbit.Application.Services
                 throw new ArgumentException("Dados invalidos para o usuario!");
             }
 
-            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(user => user.UserEmail == userAddRequest.UserEmail);
-            IEnumerable<Domain.Entities.User> usernames = await _unitOfWork.User.FindAsync(user => user.UserName == userAddRequest.UserName);
+            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(new { UserEmail = userAddRequest.UserEmail});
+            IEnumerable<Domain.Entities.User> usernames = await _unitOfWork.User.FindAsync(new { UserName = userAddRequest.UserName });
 
             if (users.Any())
             {
@@ -43,13 +44,19 @@ namespace Orbit.Application.Services
             return user.ToUserResponse();
         }
 
-        public async Task<IEnumerable<UserResponse>> FindUsersAsync(Func<UserResponse, bool> predicate)
+        public async Task<IEnumerable<UserResponse>> FindUsersAsync(object conditions)
         {
-            IEnumerable<User> users = await _unitOfWork.User.GetAllAsync();
-
-            return users.Select(u => u.ToUserResponse()).Where(predicate);
+            var filteredUsers = await _unitOfWork.User.FindAsync(conditions);
+            return filteredUsers.Select(u => u.ToUserResponse());
         }
 
+        public async Task<IEnumerable<UserResponse>> FindUsersAsync(object conditions, params string[] navProperties)
+        {
+            var filteredUsers = await _unitOfWork.User.FindAsync(conditions, navProperties);
+            return filteredUsers.Select(u => u.ToUserResponse());
+        }
+
+        [Obsolete("Esse metodo retorna uma lista completa de todos os usuários. A iteração sobre essa coleção causará instabilidade e uso excessivo de recursos. Use FindAsync em vez de GetAllUsersAsync")]
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
         {
             IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.GetAllAsync();
@@ -62,6 +69,7 @@ namespace Orbit.Application.Services
             return usersResponses;
         }
 
+        
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties)
         {
             IEnumerable<User> users = await _unitOfWork.User.GetAllAsync(navProperties);

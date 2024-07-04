@@ -67,7 +67,7 @@
             },
             UserProfileName: {
                 required: "Insira o nome de perfil do usuário!",
-                maxlength: "O nome de usuário deve ter no máximo 200 caracteres."
+                maxlength: "O nome de perfil deve ter no máximo 200 caracteres."
             },
             terms: {
                 required: "Deve concordar com os termos de usuário."
@@ -83,6 +83,9 @@ $(document).ready(function () {
     const backBtn = $("#backBtn");
     let onLastStep = false;
     lastStep.hide();
+
+    regForm.find('input').prop('readonly', true);
+    regForm.find('input').attr('onfocus', 'this.removeAttribute("readonly");this.select();')
 
     regForm.find('button').click((event) => {
         event.preventDefault();

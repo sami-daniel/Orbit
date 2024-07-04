@@ -22,7 +22,7 @@ namespace Orbit.Application.Dtos.Requests
         [Display(Name = "Senha")]
         public string UserPassword { get; set; } = null!;
         [Required(ErrorMessage = "Insira o nome de perfil do usuário!")]
-        [StringLength(200, ErrorMessage = "O nome de usuário dever ter no máximo 200 caracteres.")]
+        [StringLength(200, ErrorMessage = "O nome de perfil dever ter no máximo 200 caracteres.")]
         [Display(Name = "Nome do Perfil")]
         public string UserProfileName { get; set; } = null!;
         [Display(Name = "Perfil Privado")]

@@ -28,6 +28,12 @@ namespace Orbit.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            return RedirectToAction("", "Profile");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
@@ -35,7 +41,11 @@ namespace Orbit.Controllers
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 IEnumerable<string> errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                ViewBag.SummaryErrors = errors;
+                ViewBag.UserEmailError = errors.FirstOrDefault(e => e.Contains("email"));
+                ViewBag.UserNameError = errors.FirstOrDefault(e => e.Contains("nome do usuário"));
+                ViewBag.UserProfileError = errors.FirstOrDefault(e => e.Contains("nome de perfil"));
+                ViewBag.UserPasswordError = errors.FirstOrDefault(e => e.Contains("senha"));
+
                 ViewBag.ModalRegisActive = true;
                 HttpContext.Response.StatusCode = 400;
 
@@ -79,7 +89,9 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", userReponse);
 
-            return CreatedAtRoute("/Profile/", null!);
+            var URI = $"{Request.Scheme}://{Request.Host}/Profile";
+            HttpContext.Response.Headers.Add("Location", URI);
+            return Created();
         }
 
         [HttpGet]
@@ -109,11 +121,19 @@ namespace Orbit.Controllers
             input_login = input_login.Trim();
             password = password.Trim();
 
-            IEnumerable<UserResponse> users = await _userService.GetAllUsersAsync("Followers", "Users");
+            IEnumerable<UserResponse> users = [];
 
-            UserResponse? user = input_login.Contains('@')
-                ? users.FirstOrDefault(user => user.UserEmail == input_login)
-                : users.FirstOrDefault(user => user.UserName == input_login);
+            if (input_login.Contains('@'))
+            {
+                users = await _userService.FindUsersAsync(new { UserEmail = input_login }, "Followers", "Users");
+            }
+            else 
+            {
+                await _userService.FindUsersAsync(new { UserName = input_login }, "Followers", "Users");
+            }
+
+            var user = users.FirstOrDefault();
+            
             if (user == null || password != user.UserPassword)
             {
                 ViewBag.LoginModalActive = true;
@@ -162,7 +182,7 @@ namespace Orbit.Controllers
                 return true;
             }
 
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserEmail == email);
+            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(new { UserEmail = email });
 
             return !users.Any();
         }
@@ -175,7 +195,7 @@ namespace Orbit.Controllers
                 return true;
             }
 
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(u => u.UserName == username);
+            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(new { UserName = username });
 
             return !users.Any();
         }
