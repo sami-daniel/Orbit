@@ -33,6 +33,20 @@ namespace Orbit.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/watch/{username}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ViewExternal(string username)
+        {
+            var users = await _userService.FindUsersAsync(new { UserName = username });
+            var user = users.FirstOrDefault();
+
+            if (user is null)
+                return NotFound();
+
+            return View(user);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Search([FromQuery] string username)
         {
             if (string.IsNullOrEmpty(username))
