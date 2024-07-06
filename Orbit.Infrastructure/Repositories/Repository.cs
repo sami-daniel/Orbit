@@ -106,10 +106,8 @@ namespace Orbit.Infrastructure.Repositories
 
 
             var queryableElements = Context.Set<TEntity>()
-                        .Where(dinamycWhere).AsQueryable();
+                        .Where(dinamycWhere, parameters.ToArray()).AsQueryable();
 
-            var qList = queryableElements.ToList();
-            Debug.WriteLine(qList);
 
             foreach(string prop in navProperties)
             {
