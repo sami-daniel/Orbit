@@ -55,12 +55,27 @@
         </div>
     </div>
 
-    <div class="navigation-bar">
-        <div class="content-nav">Publications</div>
-        <div class="content-nav">Projects</div>
-        <div class="content-nav">Curriculum</div>
-        <div class="content-nav">Media</div>
-    </div>
+
+    @if(Model.IsPrivateProfile == true)
+    {
+        
+        <div class="navigation-bar" display="none">
+            <div class="content-nav">Publications</div>
+            <div class="content-nav">Projects</div>
+            <div class="content-nav">Curriculum</div>
+            <div class="content-nav">Media</div>
+        </div>
+    }
+    else
+    {
+        <div class="navigation-bar">
+            <div class="content-nav">Publications</div>
+            <div class="content-nav">Projects</div>
+            <div class="content-nav">Curriculum</div>
+            <div class="content-nav">Media</div>
+        </div>
+    }
+
 </main>
 
 @section links {
