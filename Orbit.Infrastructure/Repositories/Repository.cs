@@ -99,7 +99,7 @@ namespace Orbit.Infrastructure.Repositories
                 }
             }
 
-            if (conditionString.Count() == 0)
+            if (conditionString.Count == 0)
                 return [];
 
             string dinamycWhere = string.Join(" AND ", conditionString);
