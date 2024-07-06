@@ -23,8 +23,22 @@ namespace Orbit.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
         {
+            if(formID == 1)
+            {
+                ViewBag.LoginModalActive = modalActive;
+                ViewBag.LoginError = errorMessage;
+            }
+            else if (formID == 2)
+            {
+                ViewBag.RegisModalActive = modalActive;
+                ViewBag.UserEmailError = userEmailError;
+                ViewBag.UserNameError = userNameError;
+                ViewBag.UserProfileError = userProfileError;
+                ViewBag.UserPasswordError = userPasswordError;
+            }
+
             return View();
         }
 
@@ -41,15 +55,12 @@ namespace Orbit.Controllers
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 IEnumerable<string> errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                ViewBag.UserEmailError = errors.FirstOrDefault(e => e.Contains("email"));
-                ViewBag.UserNameError = errors.FirstOrDefault(e => e.Contains("nome do usuário"));
-                ViewBag.UserProfileError = errors.FirstOrDefault(e => e.Contains("nome de perfil"));
-                ViewBag.UserPasswordError = errors.FirstOrDefault(e => e.Contains("senha"));
-
-                ViewBag.ModalRegisActive = true;
-                HttpContext.Response.StatusCode = 400;
-
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { modalActive = true,
+                                                       userEmailError = errors.FirstOrDefault(e => e.Contains("email")),
+                                                       userNameError = errors.FirstOrDefault(e => e.Contains("nome do usuário")),
+                                                       userProfileError = errors.FirstOrDefault(e => e.Contains("nome de perfil")),
+                                                       userPasswordError = errors.FirstOrDefault(e => e.Contains("senha")),
+                                                       formID = 2});
             }
             else if (!ModelState.IsValid && _webHostEnvironment.IsDevelopment())
             {
@@ -66,9 +77,8 @@ namespace Orbit.Controllers
             {
                 ViewBag.SummaryErrors = ex.Message;
                 ViewBag.RegisModalActive = true;
-                HttpContext.Response.StatusCode = 400;
 
-                return View("Index");
+                return RedirectToAction("Index", new { modalActive = true });
             }
 
             List<Claim> claims =
@@ -89,15 +99,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", userReponse);
 
-            var URI = $"{Request.Scheme}://{Request.Host}/Profile";
-            HttpContext.Response.Headers.Add("Location", URI);
             return Created();
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -112,18 +114,13 @@ namespace Orbit.Controllers
 
             if (input_login == null || password == null)
             {
-                var URI = $"{Request.Scheme}://{Request.Host}/Account";
-                ViewBag.LoginModalActive = true;
-                Response.Headers.Location = URI;
-                await HttpContext.Response.CompleteAsync();
-
-                return BadRequest();
+                return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
             input_login = input_login.Trim();
             password = password.Trim();
 
-            IEnumerable<UserResponse> users = [];
+            IEnumerable<UserResponse> users;
 
             if (input_login.Contains('@'))
             {
@@ -138,16 +135,7 @@ namespace Orbit.Controllers
             
             if (user == null || password != user.UserPassword)
             {
-                ViewBag.LoginModalActive = true;
-                ViewBag.LoginError = "Usuário ou senha inválidos!";
-                ViewBag.InputLogin = input_login;
-                ViewBag.InputPassword = password;
-
-                var URI = $"{Request.Scheme}://{Request.Host}/Account";
-                Response.Headers.Location = URI;
-                await HttpContext.Response.CompleteAsync();
-                
-                return Unauthorized();
+                return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
             List<Claim> claims =

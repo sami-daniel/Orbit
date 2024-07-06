@@ -2,7 +2,7 @@
 {
     public static class StringExtensions
     {
-        public static ulong ToLong(this string value)
+        public static ulong ToLong(this string? value)
         {
             return value == "on" ? 1u : 0u;
         }
