@@ -112,10 +112,12 @@ namespace Orbit.Controllers
 
             if (input_login == null || password == null)
             {
-                HttpContext.Response.StatusCode = 400;
+                var URI = $"{Request.Scheme}://{Request.Host}/Account";
                 ViewBag.LoginModalActive = true;
+                Response.Headers.Location = URI;
+                await HttpContext.Response.CompleteAsync();
 
-                return View("Index");
+                return BadRequest();
             }
 
             input_login = input_login.Trim();
@@ -129,7 +131,7 @@ namespace Orbit.Controllers
             }
             else 
             {
-                await _userService.FindUsersAsync(new { UserName = input_login }, "Followers", "Users");
+                users = await _userService.FindUsersAsync(new { UserName = input_login }, "Followers", "Users");
             }
 
             var user = users.FirstOrDefault();
@@ -141,9 +143,11 @@ namespace Orbit.Controllers
                 ViewBag.InputLogin = input_login;
                 ViewBag.InputPassword = password;
 
-                HttpContext.Response.StatusCode = 401;
-
-                return View("Index");
+                var URI = $"{Request.Scheme}://{Request.Host}/Account";
+                Response.Headers.Location = URI;
+                await HttpContext.Response.CompleteAsync();
+                
+                return Unauthorized();
             }
 
             List<Claim> claims =
