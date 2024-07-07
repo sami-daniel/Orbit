@@ -105,16 +105,16 @@ namespace Orbit.Infrastructure.Repositories
             string dinamycWhere = string.Join(" AND ", conditionString);
 
 
-            var queryableElements = Context.Set<TEntity>()
+            var query = Context.Set<TEntity>()
                         .Where(dinamycWhere, parameters.ToArray()).AsQueryable();
 
 
             foreach(string prop in navProperties)
             {
-                queryableElements.Include(prop);
+                query = query.Include(prop);
             }
 
-            return await queryableElements.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -124,15 +124,13 @@ namespace Orbit.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties)
         {
-            IQueryable<TEntity> entities = Context.Set<TEntity>().AsQueryable();
+            IQueryable<TEntity> query = Context.Set<TEntity>().AsQueryable();
             foreach (string prop in navProperties)
             {
-                //Followers
-                //Users
-                entities = entities.Include(prop);
+                query = query.Include(prop);
             }
 
-            return await entities.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<TEntity?> GetAsync(int id)
