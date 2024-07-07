@@ -25,7 +25,7 @@ namespace Orbit.Controllers
 
         public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
         {
-            if(formID == 1)
+            if (formID == 1)
             {
                 ViewBag.LoginModalActive = modalActive;
                 ViewBag.LoginError = errorMessage;
@@ -55,12 +55,15 @@ namespace Orbit.Controllers
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
             {
                 IEnumerable<string> errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                return RedirectToAction("Index", new { modalActive = true,
-                                                       userEmailError = errors.FirstOrDefault(e => e.Contains("email")),
-                                                       userNameError = errors.FirstOrDefault(e => e.Contains("nome do usuário")),
-                                                       userProfileError = errors.FirstOrDefault(e => e.Contains("nome de perfil")),
-                                                       userPasswordError = errors.FirstOrDefault(e => e.Contains("senha")),
-                                                       formID = 2});
+                return RedirectToAction("Index", new
+                {
+                    modalActive = true,
+                    userEmailError = errors.FirstOrDefault(e => e.Contains("email")),
+                    userNameError = errors.FirstOrDefault(e => e.Contains("nome do usuário")),
+                    userProfileError = errors.FirstOrDefault(e => e.Contains("nome de perfil")),
+                    userPasswordError = errors.FirstOrDefault(e => e.Contains("senha")),
+                    formID = 2
+                });
             }
             else if (!ModelState.IsValid && _webHostEnvironment.IsDevelopment())
             {
@@ -126,13 +129,13 @@ namespace Orbit.Controllers
             {
                 users = await _userService.FindUsersAsync(new { UserEmail = input_login }, "Followers", "Users");
             }
-            else 
+            else
             {
                 users = await _userService.FindUsersAsync(new { UserName = input_login }, "Followers", "Users");
             }
 
             var user = users.FirstOrDefault();
-            
+
             if (user == null || password != user.UserPassword)
             {
                 return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
