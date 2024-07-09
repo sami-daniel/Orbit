@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
@@ -5,6 +6,7 @@ using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
 using Orbit.Infrastructure.Repositories.Interfaces;
+using System.Diagnostics;
 
 namespace Orbit
 {
@@ -14,43 +16,72 @@ namespace Orbit
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-            //Registrando controllers e views como serviços
             _ = builder.Services.AddControllersWithViews();
 
-            //Adicionando contexto de banco de dados como serviço
             _ = builder.Services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
-             serverVersion: new MySqlServerVersion(new Version(8, 4, 0))));
+             serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
+            .LogTo(m => Debug.WriteLine(m)));
 
+            _ = builder.Services
+                .AddSession(opt =>
+                {
+                    opt.Cookie.Name = "session";
+                });
 
-            //Registrando UserRepository como servico
+            _ = builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.RequireAuthenticatedSignIn = false;
+            }).AddCookie(opt =>
+            {
+                opt.LoginPath = "/Account/";
+                opt.Cookie.Name = "auth";
+            });
+
+            _ = builder.Services.AddAuthorization();
+
+            _ = builder.Services.AddAntiforgery(opt =>
+            {
+                opt.Cookie.Name = "Antiforgery";
+            });
+
             _ = builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-            //Registrando UnitOfWork como servico
             _ = builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            builder.Services.AddScoped<IUserService, UserService>();
-
-            builder.Services.AddSession();
+            _ = builder.Services.AddScoped<IUserService, UserService>();
 
             WebApplication app = builder.Build();
 
-            //Habilitando página de erros para desenvolvedor
             if (app.Environment.IsDevelopment())
             {
                 _ = app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                _ = app.UseExceptionHandler("Home");
 
-            //Habilitando middleware para lidar com requisicoes por arquivos estaticos
+                _ = app.UseStatusCodePagesWithReExecute("Home", "?statusCode={0}");
+
+                _ = app.UseHsts();
+            }
+
             _ = app.UseStaticFiles();
 
-            //Habilitando roteamento
             _ = app.UseRouting();
+
+            _ = app.UseAuthentication();
+
+            _ = app.UseAuthorization();
 
             _ = app.UseSession();
 
-            //Mapeando endpoints para metodos IAction com rota padrão
-            _ = app.MapDefaultControllerRoute();
+            _ = app.MapControllerRoute(name: "default",
+                                       pattern: "{controller=Account}/{action=Index}");
 
             app.Run();
 

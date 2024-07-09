@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Orbit.Infrastructure.Data.Contexts;
 
 public partial class ApplicationDbContext : DbContext
 {
+    public ApplicationDbContext()
+    {
+    }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -33,7 +38,9 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.UserDateOfBirth).HasColumnName("user_date_of_birth");
+            entity.Property(e => e.IsPrivateProfile)
+                .HasColumnType("bit(1)")
+                .HasColumnName("is_private_profile");
             entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
                 .HasColumnName("user_description")
@@ -57,20 +64,16 @@ public partial class ApplicationDbContext : DbContext
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserProfileName)
                 .HasMaxLength(200)
-                .HasColumnName("user_profile_name")
-                .UseCollation("utf8mb4_0900_ai_ci")
-                .HasCharSet("utf8mb4");
+                .HasColumnName("user_profile_name");
 
             entity.HasMany(d => d.Followers).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
                     r => r.HasOne<User>().WithMany()
                         .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("follower_ibfk_1"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("follower_ibfk_2"),
                     j =>
                     {
@@ -88,11 +91,9 @@ public partial class ApplicationDbContext : DbContext
                     "Follower",
                     r => r.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("follower_ibfk_2"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("follower_ibfk_1"),
                     j =>
                     {

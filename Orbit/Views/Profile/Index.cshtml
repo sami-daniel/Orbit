@@ -1,6 +1,6 @@
 ﻿@using Orbit.Application.Dtos.Responses
 
-@model UserReponse
+@model UserResponse
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
@@ -11,7 +11,10 @@
         <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow" />
     </div>
     <div class="title-user">
-        <span>@Model.UserName</span>
+        <span>Olá, @(Html.Raw(Model.UserProfileName ?? "")), e esse cuzinho moscando ai?</span>
+    </div>
+    <div class="logout-btn">
+        <a class="btn-logout" href="~/Account/Logout">Logout</a>
     </div>
 </header>
 
@@ -45,8 +48,8 @@
                 }
             </p>
             <div class="profile-followers">
-                <p>Followers <span>@Model.Followers.Count</span></p>
-                <p>Following <span>@Model.Users.Count</span></p>
+                <p>Followers <span>@Model.Followers!.Count</span></p>
+                <p>Following <span>@Model.Users!.Count</span></p>
             </div>
         </div>
 

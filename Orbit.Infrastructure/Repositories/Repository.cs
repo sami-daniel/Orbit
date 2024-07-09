@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Orbit.Infrastructure.Repositories.Interfaces;
+using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories
@@ -11,10 +14,9 @@ namespace Orbit.Infrastructure.Repositories
 
         public Repository(DbContext context, IConfiguration configuration)
         {
-            var sectNamespaces = configuration.GetSection("AllowedEntityNamespaces");
-            var namespacesInConfig = new List<string>();
-
-            foreach (var child in sectNamespaces.GetChildren())
+            IConfigurationSection sectNamespaces = configuration.GetSection("AllowedEntityNamespaces");
+            List<string> namespacesInConfig = [];
+            foreach (IConfigurationSection child in sectNamespaces.GetChildren())
             {
                 namespacesInConfig.Add(child.Path);
             }
@@ -23,13 +25,21 @@ namespace Orbit.Infrastructure.Repositories
             {
                 throw new ArgumentException($"O namespace ${typeof(TEntity).Namespace} não está habilitado!");
             }
+
             Context = context;
+
+            // O generico TEntity não tem nenhuma restrição quanto ao uso
+            // de tipos, somente que seja uma classe. Dito isso, a unidade
+            // de trabalho e o repositorio funcionarão somente com os modelos
+            // gerados via scaffolding pelo efcore. Então como medida de segurança
+            // somente entidade de um namespace previamente habilitado poderão ser
+            // utilizadas na unidade
         }
 
         public async Task AddAsync(TEntity entity)
         {
             ArgumentNullException.ThrowIfNull(nameof(entity));
-            await Context.Set<TEntity>().AddAsync(entity);
+            _ = await Context.Set<TEntity>().AddAsync(entity);
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities)
@@ -38,16 +48,89 @@ namespace Orbit.Infrastructure.Repositories
             await Context.Set<TEntity>().AddRangeAsync(entities);
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(object conditions)
         {
-            ArgumentNullException.ThrowIfNull(predicate);
-            return await Context.Set<TEntity>().Where(predicate).ToListAsync();
+            ArgumentException.ThrowIfNullOrEmpty(nameof(conditions));
+            var conditionString = new List<string>();
+            var parameters = new List<object>();
+            int index = 0;
+
+            foreach (var property in conditions.GetType().GetProperties())
+            {
+                var value = property.GetValue(conditions);
+
+                if (value != null)
+                {
+                    string condition = $"{property.Name} == @{index}";
+                    conditionString.Add(condition);
+                    parameters.Add(value);
+                    index++;
+                }
+            }
+
+            if (conditionString.Count == 0)
+                return [];
+
+            string dinamycWhere = string.Join(" AND ", conditionString);
+
+
+            return await Context.Set<TEntity>()
+                        .Where(dinamycWhere, parameters.ToArray())
+                        .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> FindAsync(object conditions, params string[] navProperties)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(conditions));
+            var conditionString = new List<string>();
+            var parameters = new List<object>();
+            int index = 0;
+
+            foreach (var property in conditions.GetType().GetProperties())
+            {
+                var value = property.GetValue(conditions);
+
+                if (value != null)
+                {
+                    string condition = $"{property.Name} == @{index}";
+                    conditionString.Add(condition);
+                    parameters.Add(value);
+                    index++;
+                }
+            }
+
+            if (conditionString.Count == 0)
+                return [];
+
+            string dinamycWhere = string.Join(" AND ", conditionString);
+
+
+            var query = Context.Set<TEntity>()
+                        .Where(dinamycWhere, parameters.ToArray()).AsQueryable();
+
+
+            foreach(string prop in navProperties)
+            {
+                query = query.Include(prop);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var a = await Context.Set<TEntity>().ToListAsync(); 
-            return a;
+            return await Context.Set<TEntity>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>().AsQueryable();
+            foreach (string prop in navProperties)
+            {
+                query = query.Include(prop);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<TEntity?> GetAsync(int id)
@@ -61,7 +144,7 @@ namespace Orbit.Infrastructure.Repositories
             ArgumentNullException.ThrowIfNull(entity);
             await Task.Run(() =>
             {
-                Context.Set<TEntity>().Remove(entity);
+                _ = Context.Set<TEntity>().Remove(entity);
             });
         }
 

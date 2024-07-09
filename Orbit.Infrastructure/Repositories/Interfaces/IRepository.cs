@@ -19,15 +19,31 @@ namespace Orbit.Infrastructure.Repositories.Interfaces
         /// Obtém todas as entidades presentes no repositório assincronamente.
         /// </summary>
         /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção de todas as entidades.</returns>
+        [Obsolete("Esse metodo retorna todas as entidades do banco de dados sem tipo algum de filtragem, forçando excessivamente o banco de dados e a pressão do ORM escolhido. Utilize FindAsync() em vez de GetAllAsync()")]
         Task<IEnumerable<TEntity>> GetAllAsync();
+
+        /// <summary>
+        /// Obtém todas as entidades presentes no repositório assincronamente.
+        /// </summary>
+        /// <param name="navProperties">As propriedades a serem incluidas</param>
+        /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção de todas as entidades.</returns>
+        [Obsolete("Esse metodo retorna todas as entidades do banco de dados sem tipo algum de filtragem forçando excessivamente o banco de dados e a pressão do ORM escolhido. Utilize FindAsync() em vez de GetAllAsync()")]
+        Task<IEnumerable<TEntity>> GetAllAsync(params string[] navProperties);
 
         /// <summary>
         /// Encontra entidades com base no predicado fornecido.
         /// </summary>
-        /// <param name="predicate">Predicado para filtrar as entidades.</param>
+        /// <param name="conditions">Objeto contendo propriedade a serem comparadas.</param>
         /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção das entidades encontradas.</returns>
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TEntity>> FindAsync(object conditions);
 
+        /// <summary>
+        /// Encontra entidades com base no predicado fornecido.
+        /// </summary>
+        /// <param name="conditions">Objeto contendo propriedade a serem comparadas.</param>
+        /// <param name="navProperties">Objeto contendo propriedades a serem incluidas</param>
+        /// <returns>Tarefa representando a operação assíncrona, resultando em uma coleção das entidades encontradas.</returns>
+        Task<IEnumerable<TEntity>> FindAsync(object conditions, params string[] navProperties);
         /// <summary>
         /// Adiciona uma entidade ao repositório assincronamente.
         /// </summary>

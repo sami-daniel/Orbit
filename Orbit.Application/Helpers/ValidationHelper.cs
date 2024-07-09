@@ -7,17 +7,10 @@ namespace Orbit.Application.Helpers
         public static bool IsValid(object obj)
         {
             ValidationContext validationContext = new(obj);
-
-            List<ValidationResult> validationResults = new List<ValidationResult>();
-
+            List<ValidationResult> validationResults = [];
             bool isValid = Validator.TryValidateObject(obj, validationContext, validationResults);
 
-            if (!isValid)
-            {
-                return false;
-            }
-
-            return true;
+            return isValid;
         }
 
     }

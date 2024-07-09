@@ -1,0 +1,27 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
+
+<header class="content-top">
+    <h2 class="title">OrbIt</h2>
+</header>
+
+<main class="container">
+    <img src="~/images/Not-Found-Icon.png" alt="Not Found" class="img-error" />
+    <div class="text-error">
+        <h1 class="message-error">404 Page Not Found</h1>
+        <a href="~/Account">Clique aqui para voltar para página inicial!</a>
+    </div>
+</main>
+
+
+
+
+@section links {
+    <link rel="stylesheet" href="~/css/Error.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+          rel="stylesheet">
+}
