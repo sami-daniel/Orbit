@@ -1,12 +1,12 @@
 # Orbit - Rede Social para Profissionais de Tecnologia
-![version](https://img.shields.io/badge/version-1.1.0-black.svg) <br>
+![version](https://img.shields.io/badge/version-1.2.0-black.svg) <br>
 ![Orbit](https://img.shields.io/badge/Orbit-black.svg)
 
-**Orbit 1.1.0**
+**Orbit 1.2.0**
 
 Bem-vindo ao Orbit, uma rede social inovadora projetada para conectar profissionais de tecnologia, incluindo programadores, designers, engenheiros de software, especialistas em TI e outros profissionais do setor. Nosso objetivo é proporcionar um espaço dinâmico e colaborativo onde esses profissionais possam interagir, compartilhar conhecimentos, trabalhar em projetos conjuntos e explorar novas oportunidades de carreira.
 
-Esta é a versão 1.1.0 do projeto. Atualmente contamos com um sistema de login e cadastro, redirecionamento para a página de perfil e pesquisa de usuarios com base no nome
+Esta é a versão 1.2.0 do projeto. Atualmente contamos com um sistema de login e cadastro, redirecionamento para a página de perfil e pesquisa de usuarios com base no nome
 
 ## Pré-requisitos
 
