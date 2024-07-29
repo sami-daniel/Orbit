@@ -26,13 +26,6 @@
 
 <main class="content-main">
     <div class="profiles-specs">
-        <form class="profile-img" enctype="multipart/form-data">
-            <a>
-                <input type="file" name="profileImage" id="profileImage" />
-                <img src="@Url.Action("GetProfileImage", new { userID = Model.UserId })" alt="Image Profile" />
-                <label class="profile-text-image" for="profileImage">Add an Image</label>
-            </a>
-        </form>
         <form class="profile-img" id="profile-image-form" asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data">
             <label class="profile-text-image" for="profileImage">Add an Image</label>
             <input type="file" name="profileImage" id="profileImage" />
@@ -58,10 +51,21 @@
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit">Edit Profile</button>
+            <button class="btn-edit" id="openEditDiv">Edit Profile</button>
         </div>
     </div>
 
+    <div id="divEditProfile" class="container-edit">
+        <button class="form-btn" id="closeBtn">
+            <img src="~/images/xmark-solid.svg" class="icons" width="40px"/>
+        </button>
+        <form class="form-edit">
+            <div class="description-text">
+                <textarea placeholder="Description"></textarea>
+            </div>
+        </form>
+    </div>
+    
     <div class="navigation-bar">
         <div class="content-nav">Publications</div>
         <div class="content-nav">Projects</div>
@@ -82,6 +86,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
             asp-fallback-test="window.jQuery"></script>
+
+    <script src="~/js/profilePage.js"></script>
 
     <script>
         $(document).ready(() => {
