@@ -18,14 +18,17 @@
     </div>
 </header>
 
-<div class="background-img">
+<form class="background-img" enctype="multipart/form-data">
+    <label class="text-img" for="backgroundImg">Add an Image</label>
+    <input type="file" name="backgroundImg" id="backgroundImg" />
     <img src="" alt="" />
-    <span class="text-img">Add an image</span>
-</div>
+</form>
 
 <main class="content-main">
     <div class="profiles-specs">
-        <div class="profile-img">
+        <form class="profile-img" enctype="multipart/form-data">
+            <label class="profile-text-image" for="profileImage">Add an Image</label>
+            <input type="file" name="profileImage" id="profileImage" />
             <img src="@if(Model.UserImageByteType == null){
             <text>/images/image-profile.png</text>
             }
@@ -33,7 +36,7 @@
             @Url.Action("GetUserImageAsync", new { username = Model.UserName })
             }
             " alt="Image Profile" />
-        </div>
+        </form>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
             <p>@Html.Raw("@")@Model.UserName</p>

@@ -73,8 +73,12 @@ body{
     transition:.4s;
 }
 
-.background-img:hover{
-    background-color:white;
+.background-img input[type="file"]{
+    display:none;
+}
+
+.background-img:hover {
+    background-color: white;
 }
 
 .background-img:hover .text-img{
@@ -117,6 +121,15 @@ body{
 
 .content-main .profiles-specs .profile-img {
    align-content:start;
+   position:relative;
+}
+
+.content-main .profiles-specs .profile-img input[type="file"]{
+    display:none;
+}
+
+.content-main .profile-specs .profile-img .profile-text-image{
+    position:absolute;
 }
 
 .content-main .profiles-specs .profile-img img{
