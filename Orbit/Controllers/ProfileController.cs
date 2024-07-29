@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
 using Orbit.Extensions;
@@ -30,9 +31,9 @@ namespace Orbit.Controllers
             if (user == null)
             {
                 Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-                IEnumerable<UserResponse> awaiter = await _userService.FindUsersAsync(new { UserName = usr.Value },"Followers", "Users");
-
-                user = awaiter.Where(u => u.UserName == usr.Value).First();
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.UserName == usr.Value);
+                HttpContext.Session.SetObject("User", u.ToUserResponse());
+                user = u.ToUserResponse();
             }
 
             UserInSession = user;
@@ -71,15 +72,15 @@ namespace Orbit.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadProfileImage(IFormFile imageFile)
+        public async Task<IActionResult> UploadProfileImage(IFormFile profileImage)
         {
-            if(imageFile != null && imageFile.Length > 0)
+            if(profileImage != null && profileImage.Length > 0)
             {
                 using (var memoryStream = new MemoryStream()) 
                 {
-                    await imageFile.CopyToAsync(memoryStream);
-
-                    var profile = _context.Users.First(u => u.UserName == UserInSession.UserName);
+                    await profileImage.CopyToAsync(memoryStream);
+                    var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                    var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
                     profile.UserImageByteType = memoryStream.ToArray();
 
@@ -90,13 +91,13 @@ namespace Orbit.Controllers
                 return NoContent();
             }
 
-            return BadRequest(imageFile);
+            return BadRequest(profileImage);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProfileImage(object userID)
+        public async Task<IActionResult> GetProfileImage([FromQuery] uint userID)
         {
-            var imageEntity = await _context.Users.FindAsync(userID);
+            var imageEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userID);
             if (imageEntity == null || imageEntity.UserImageByteType == null)
             {
                 return NotFound();
