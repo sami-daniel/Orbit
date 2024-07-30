@@ -12,6 +12,7 @@ namespace Orbit.Application.Dtos.Responses
         public string UserProfileName { get; set; } = null!;
         public bool IsPrivateProfile { get; set; } = false;
         public byte[]? UserImageByteType { get; set; }
+        public byte[]? UserBannerByteType { get; set; }
         public string? UserDescription { get; set; }
         public ICollection<UserResponse> Followers { get; set; } = [];
         public ICollection<UserResponse> Users { get; set; } = [];
@@ -30,6 +31,7 @@ namespace Orbit.Application.Dtos.Responses
                 UserProfileName = user.UserProfileName,
                 IsPrivateProfile = user.IsPrivateProfile.ToBoolean(),
                 UserImageByteType = user.UserImageByteType,
+                UserBannerByteType = user.UserBannerByteType,
                 UserDescription = user.UserDescription,
                 Followers = [],
                 Users = []

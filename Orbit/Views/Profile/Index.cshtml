@@ -18,10 +18,10 @@
     </div>
 </header>
 
-<form class="background-img" enctype="multipart/form-data">
+<form class="background-img" id="form-banner" enctype="multipart/form-data">
     <label class="text-img" for="backgroundImg">Add an Image</label>
     <input type="file" name="backgroundImg" id="backgroundImg" />
-    <img src="" alt="" />
+    <img src="@Url.Action("GetBannerImage", new { userID = Model.UserId })" alt="" />
 </form>
 
 <main class="content-main">
@@ -61,7 +61,7 @@
         </button>
         <form class="form-edit">
             <div class="description-text">
-                <textarea placeholder="Description"></textarea>
+                <textarea id="descricao-textarea" placeholder="Description"></textarea>
             </div>
         </form>
     </div>
@@ -100,11 +100,31 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (){
+                    success: function () {
                         location.reload();
                     }
-                })
+                });
             });
         });
     </script>
+
+   <script>
+        $(document).ready(() => {
+            $('#backgroundImg').change(() => {
+                var formData = new FormData($('#form-banner')[0]);
+
+                $.ajax({
+                    url: '/Profile/UploadBannerImage',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+
+   </script>
 }

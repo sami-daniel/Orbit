@@ -105,5 +105,57 @@ namespace Orbit.Controllers
 
             return File(imageEntity.UserImageByteType, "image/png");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadBannerImage(IFormFile backgroundImg)
+        {
+            if (backgroundImg != null && backgroundImg.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await backgroundImg.CopyToAsync(memoryStream);
+                    var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                    var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
+
+                    profile.UserBannerByteType = memoryStream.ToArray();
+
+                    _context.Update(profile);
+                    await _context.SaveChangesAsync();
+                }
+
+                return NoContent();
+            }
+
+            return BadRequest(backgroundImg);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetBannerImage([FromQuery] uint userID)
+        {
+            var imageEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userID);
+            if (imageEntity == null || imageEntity.UserBannerByteType == null)
+            {
+                return NotFound();
+            }
+
+            return File(imageEntity.UserBannerByteType, "image/png");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfileDescription(string desc)
+        {
+            var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+
+            var profileToUpdate = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
+
+            profileToUpdate!.UserDescription = desc;
+
+            _context.Users.Update(profileToUpdate);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

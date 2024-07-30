@@ -52,6 +52,7 @@ public partial class ApplicationDbContext : DbContext
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
+            entity.Property(e => e.UserBannerByteType).HasColumnName("user_banner_byte_type");
             entity.Property(e => e.UserName)
                 .HasMaxLength(255)
                 .HasColumnName("user_name")

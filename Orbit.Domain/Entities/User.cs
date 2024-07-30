@@ -19,6 +19,8 @@ public partial class User
 
     public byte[]? UserImageByteType { get; set; }
 
+    public byte[]? UserBannerByteType {  get; set; }
+
     public ulong IsPrivateProfile { get; set; }
 
     public virtual ICollection<User> Followers { get; set; } = new List<User>();
