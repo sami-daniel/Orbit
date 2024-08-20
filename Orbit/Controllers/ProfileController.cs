@@ -33,7 +33,6 @@ namespace Orbit.Controllers
                 user = await users.FirstOrDefaultAsync();
             }
 
-            UserInSession = user;
             return View(user);
         }
 
