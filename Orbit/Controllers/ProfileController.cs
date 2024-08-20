@@ -183,7 +183,8 @@ namespace Orbit.Controllers
             usr.UserProfileName = user.UserProfileName;
             usr.UserName = user.UserName;
             usr.UserDescription = user.UserDescription;
-
+            HttpContext.Session.Clear();
+            HttpContext.Session.SetObject("User", usr);
             await _context.SaveChangesAsync();
 
             return Ok();
