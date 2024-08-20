@@ -47,23 +47,23 @@ public partial class ApplicationDbContext : DbContext
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserEmail)
-                .HasMaxLength(200)
+                .HasMaxLength(255)
                 .HasColumnName("user_email")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
             entity.Property(e => e.UserName)
-                .HasMaxLength(100)
+                .HasMaxLength(255)
                 .HasColumnName("user_name")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserPassword)
-                .HasMaxLength(200)
+                .HasMaxLength(255)
                 .HasColumnName("user_password")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserProfileName)
-                .HasMaxLength(200)
+                .HasMaxLength(255)
                 .HasColumnName("user_profile_name");
 
             entity.HasMany(d => d.Followers).WithMany(p => p.Users)

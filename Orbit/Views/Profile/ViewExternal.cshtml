@@ -1,6 +1,7 @@
 ﻿@using Orbit.Application.Dtos.Responses
+@using Orbit.Domain.Entities
 
-@model UserResponse
+@model User
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
@@ -56,7 +57,7 @@
     </div>
 
 
-    @if(Model.IsPrivateProfile == true)
+    @if(Model.IsPrivateProfile == 1)
     {
         
         <div class="navigation-bar" display="none">

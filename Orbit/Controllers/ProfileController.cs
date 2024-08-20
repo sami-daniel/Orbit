@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
+using Orbit.Domain.Entities;
 using Orbit.Extensions;
+using Orbit.Infrastructure.Data.Contexts;
 using System.Security.Claims;
 
 namespace Orbit.Controllers
@@ -11,22 +14,23 @@ namespace Orbit.Controllers
     public class ProfileController : Controller
     {
         public readonly IUserService _userService;
+        public readonly ApplicationDbContext _context;
 
-        public ProfileController(IUserService userService)
+        public ProfileController(IUserService userService, ApplicationDbContext context)
         {
             _userService = userService;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            UserResponse? user = HttpContext.Session.GetObject<UserResponse>("User");
+            User? user = HttpContext.Session.GetObject<User>("User");
 
             if (user == null)
             {
                 Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-                IEnumerable<UserResponse> awaiter = await _userService.FindUsersAsync(new { UserName = usr.Value },"Followers", "Users");
-
-                user = awaiter.Where(u => u.UserName == usr.Value).First();
+                var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == usr.Value);
+                user = await users.FirstOrDefaultAsync();
             }
 
             return View(user);
@@ -37,8 +41,8 @@ namespace Orbit.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ViewExternal(string username)
         {
-            var users = await _userService.FindUsersAsync(new { UserName = username });
-            var user = users.FirstOrDefault();
+            var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == username);
+            var user = await users.FirstOrDefaultAsync();
 
             if (user is null)
                 return NotFound();
