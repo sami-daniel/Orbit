@@ -75,7 +75,7 @@ namespace Orbit.Controllers
                 using (var memoryStream = new MemoryStream()) 
                 {
                     await profileImage.CopyToAsync(memoryStream);
-                    var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                    var us = HttpContext.Session.GetObject<User>("User")!.UserName;
                     var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
                     profile.UserImageByteType = memoryStream.ToArray();
@@ -110,7 +110,7 @@ namespace Orbit.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await backgroundImg.CopyToAsync(memoryStream);
-                    var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                    var us = HttpContext.Session.GetObject<User>("User")!.UserName;
                     var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
                     profile.UserBannerByteType = memoryStream.ToArray();
@@ -141,7 +141,7 @@ namespace Orbit.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProfileDescription(string desc)
         {
-            var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+            var us = HttpContext.Session.GetObject<User>("User")!.UserName;
 
             var profileToUpdate = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
