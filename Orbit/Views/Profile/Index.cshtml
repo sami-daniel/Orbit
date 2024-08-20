@@ -20,7 +20,7 @@
 </header>
 
 <form class="background-img" id="form-banner" enctype="multipart/form-data">
-   
+
     <input type="file" name="backgroundImg" id="backgroundImg" />
     <img src="@Url.Action("GetBannerImage", new { userID = Model.UserId })" alt="" />
     <label class="text-img" for="backgroundImg">Add an Image</label>
@@ -29,7 +29,7 @@
 <main class="content-main">
     <div class="profiles-specs">
         <form class="profile-img" id="profile-image-form" asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data">
-            
+
             <input type="file" name="profileImage" id="profileImage" />
             <img src="@Url.Action("GetProfileImage", new { userID = Model.UserId })" alt="~/images/image-profile.png" />
             <label class="profile-text-image" for="profileImage">Add an Image</label>
@@ -60,25 +60,25 @@
 
     <div id="divEditProfile" class="container-edit">
         <button class="form-btn" id="closeBtn">
-            <img src="~/images/xmark-solid.svg" class="icons" width="40px"/>
+            <img src="~/images/xmark-solid.svg" class="icons" width="40px" />
         </button>
-        <form class="form-edit">
+        <form id="form-to-edit" class="form-edit">
             <h2 class="edit-title">Edit Profile</h2>
             <div class="username-container">
-                <input type="text" name="" id="" placeholder="Username" />
+                <input type="text" name="UserName" id="" value="@ViewBag.EditSectionUserName" placeholder="Username" />
             </div>
             <div class="profileName-container">
-                <input type="text" name="" id="" placeholder="Profile Name" />
+                <input type="text" name="UserProfileName" id="" value="@ViewBag.EditSectionProfileName" placeholder="Profile Name" />
             </div>
             <div class="description-text">
-                <textarea id="descricao-textarea" placeholder="Description"></textarea>
+                <textarea id="descricao-textarea" name="UserDescription" value="@ViewBag.EditSectionDesc" placeholder="Description"></textarea>
             </div>
             <div class="submit-container">
-                <input type="submit" name="" id="" placeholder="Submit" />
+                <input type="submit" id="submit-edit" placeholder="Submit" />
             </div>
         </form>
     </div>
-    
+
     <div class="navigation-bar">
         <div class="content-nav">Publications</div>
         <div class="content-nav">Projects</div>
@@ -121,7 +121,7 @@
         });
     </script>
 
-   <script>
+    <script>
         $(document).ready(() => {
             $('#backgroundImg').change(() => {
                 var formData = new FormData($('#form-banner')[0]);
@@ -139,5 +139,31 @@
             });
         });
 
-   </script>
+    </script>
+
+    <script>
+        $(document).ready(() => {
+            $('#submit-edit').click(() => {
+                event.preventDefault();
+
+                var formData = new FormData($('#form-to-edit')[0]);
+
+                formData.append('id', @Model.UserId);
+
+                $.ajax({
+                    url: '/Profile/UpdateProfile',
+                    type: 'PUT',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('Perfil atualizado com sucesso!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Ocorreu um erro ao atualizar o perfil: ', xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 }

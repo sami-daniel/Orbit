@@ -52,7 +52,7 @@
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit">Follow Profile</button>
+            <button class="btn-edit" id="btn-follow">Follow Profile</button>
         </div>
     </div>
 
@@ -91,4 +91,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
             asp-fallback-test="window.jQuery"></script>
+    <script>
+        $(document).ready(() => {
+            $('#btn-follow').click(() => {
+                event.preventDefault();
+
+                var formData = new FormData();
+
+                formData.append('id', @Model.UserId);
+                formData.append('followerUserName', '@ViewBag.ViewExternalUsernameFollower');
+                $.ajax({
+                    url: '/Profile/Follow',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('Perfil seguido com sucesso!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Ocorreu um erro ao seguir o perfil: ', xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 }

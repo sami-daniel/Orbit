@@ -28,21 +28,30 @@ namespace Orbit.Controllers
 
             if (user == null)
             {
-                Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-                var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == usr.Value);
+                Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
+                var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == usr.Value);
                 user = await users.FirstOrDefaultAsync();
             }
+
+            ViewBag.EditSectionUserName = user!.UserName;
+            ViewBag.EditSectionProfileName = user!.UserProfileName;
+            ViewBag.EditSectionDesc = user!.UserDescription;
 
             return View(user);
         }
 
         [HttpGet]
         [Route("[controller]/watch/{username}")]
-        [AllowAnonymous]
         public async Task<IActionResult> ViewExternal(string username)
         {
             var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == username);
             var user = await users.FirstOrDefaultAsync();
+            
+            Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
+            var usersAL = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == usr.Value);
+            var userAl = await users.FirstOrDefaultAsync();
+
+            ViewBag.ViewExternalUsernameFollower = userAl!.UserName;
 
             if (user is null)
                 return NotFound();
@@ -110,7 +119,13 @@ namespace Orbit.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await backgroundImg.CopyToAsync(memoryStream);
-                    var us = HttpContext.Session.GetObject<User>("User")!.UserName;
+                    var us = HttpContext.Session.GetObject<User>("User")!.UserName; // This is unstable because
+                                                                                    // the image only can be
+                                                                                    // updated if the user is recently
+                                                                                    // logged, because the profile controller
+                                                                                    // don't set the User in the section, 
+                                                                                    // but only verify if is alredy on session.
+                                                                                    // Otherwhise, just proceed the flow
                     var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
                     profile.UserBannerByteType = memoryStream.ToArray();
@@ -125,6 +140,23 @@ namespace Orbit.Controllers
             return BadRequest(backgroundImg);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Follow(int id, string followerUserName)
+        {
+            if (followerUserName == null)
+            {
+                return BadRequest("Follower user name não pode ser vazio!");
+            }
+
+            var usrToFollow = await _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserId == id).FirstAsync();
+            var follower = await _context.Users.Where(u => u.UserName == followerUserName).FirstOrDefaultAsync();
+
+            usrToFollow.Users.Add(follower!);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetBannerImage([FromQuery] uint userID)
@@ -136,6 +168,25 @@ namespace Orbit.Controllers
             }
 
             return File(imageEntity.UserBannerByteType, "image/png");
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateProfile(User user, int id)
+        {
+            var usr = await _context.Users.FindAsync(uint.Parse(id.ToString()));
+
+            if (usr == null)
+            {
+                return NotFound();
+            }
+
+            usr.UserProfileName = user.UserProfileName;
+            usr.UserName = user.UserName;
+            usr.UserDescription = user.UserDescription;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         [HttpPost]
