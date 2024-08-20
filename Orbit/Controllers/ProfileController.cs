@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
+using Orbit.Domain.Entities;
 using Orbit.Extensions;
 using Orbit.Infrastructure.Data.Contexts;
-using Pomelo.EntityFrameworkCore.MySql.Metadata.Internal;
 using System.Security.Claims;
 
 namespace Orbit.Controllers
@@ -14,10 +13,9 @@ namespace Orbit.Controllers
     [Authorize]
     public class ProfileController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly ApplicationDbContext _context;
+        public readonly IUserService _userService;
+        public readonly ApplicationDbContext _context;
 
-        public UserResponse UserInSession { get; set; } = null!;
         public ProfileController(IUserService userService, ApplicationDbContext context)
         {
             _userService = userService;
@@ -26,14 +24,13 @@ namespace Orbit.Controllers
 
         public async Task<IActionResult> Index()
         {
-            UserResponse? user = HttpContext.Session.GetObject<UserResponse>("User");
+            User? user = HttpContext.Session.GetObject<User>("User");
 
             if (user == null)
             {
                 Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.UserName == usr.Value);
-                HttpContext.Session.SetObject("User", u.ToUserResponse());
-                user = u.ToUserResponse();
+                var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == usr.Value);
+                user = await users.FirstOrDefaultAsync();
             }
 
             UserInSession = user;
@@ -45,8 +42,8 @@ namespace Orbit.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ViewExternal(string username)
         {
-            var users = await _userService.FindUsersAsync(new { UserName = username });
-            var user = users.FirstOrDefault();
+            var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == username);
+            var user = await users.FirstOrDefaultAsync();
 
             if (user is null)
                 return NotFound();

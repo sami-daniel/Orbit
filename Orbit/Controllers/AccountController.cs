@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Requests;
 using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
+using Orbit.Domain.Entities;
 using Orbit.Extensions;
 using Orbit.Filters;
+using Orbit.Infrastructure.Data.Contexts;
 using System.Security.Claims;
 
 namespace Orbit.Controllers
@@ -16,11 +19,13 @@ namespace Orbit.Controllers
     {
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(IUserService userService, IWebHostEnvironment webHostEnvironment)
+        public AccountController(IUserService userService, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
         {
             _userService = userService;
             _webHostEnvironment = webHostEnvironment;
+            _context = context;
         }
 
         public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
@@ -70,11 +75,13 @@ namespace Orbit.Controllers
                 return BadRequest(ModelState);
             }
 
-            UserResponse userReponse;
+            User user;
 
             try
             {
-                userReponse = await _userService.AddUserAsync(userAddRequest);
+                var usr = userAddRequest.ToUser();
+                await _context.Users.AddAsync(usr);
+                user = usr; 
             }
             catch (ArgumentException ex)
             {
@@ -87,8 +94,8 @@ namespace Orbit.Controllers
             List<Claim> claims =
             [
                 new Claim(ClaimTypes.Role, "CommonUser"),
-                new Claim(ClaimTypes.Email, userReponse.UserEmail),
-                new Claim(ClaimTypes.NameIdentifier, userReponse.UserName)
+                new Claim(ClaimTypes.Email, user.UserEmail),
+                new Claim(ClaimTypes.NameIdentifier, user.UserName)
             ];
             ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             ClaimsPrincipal principal = new(identity);
@@ -100,9 +107,9 @@ namespace Orbit.Controllers
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-            HttpContext.Session.SetObject("User", userReponse);
+            HttpContext.Session.SetObject("User", user);
 
-            return Created();
+            return RedirectToActionPermanent("", "Profile");
         }
 
         [HttpPost]
@@ -123,15 +130,15 @@ namespace Orbit.Controllers
             input_login = input_login.Trim();
             password = password.Trim();
 
-            IEnumerable<UserResponse> users;
+            IEnumerable<User> users;
 
             if (input_login.Contains('@'))
             {
-                users = await _userService.FindUsersAsync(new { UserEmail = input_login }, "Followers", "Users");
+                users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == input_login);
             }
             else
             {
-                users = await _userService.FindUsersAsync(new { UserName = input_login }, "Followers", "Users");
+                users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == input_login);
             }
 
             var user = users.FirstOrDefault();

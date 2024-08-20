@@ -7,6 +7,7 @@ using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
 using Orbit.Infrastructure.Repositories.Interfaces;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace Orbit
 {
@@ -16,7 +17,7 @@ namespace Orbit
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-            _ = builder.Services.AddControllersWithViews();
+            _ = builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             _ = builder.Services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
