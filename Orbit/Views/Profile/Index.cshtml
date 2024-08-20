@@ -20,17 +20,19 @@
 </header>
 
 <form class="background-img" id="form-banner" enctype="multipart/form-data">
-    <label class="text-img" for="backgroundImg">Add an Image</label>
+   
     <input type="file" name="backgroundImg" id="backgroundImg" />
     <img src="@Url.Action("GetBannerImage", new { userID = Model.UserId })" alt="" />
+    <label class="text-img" for="backgroundImg">Add an Image</label>
 </form>
 
 <main class="content-main">
     <div class="profiles-specs">
         <form class="profile-img" id="profile-image-form" asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data">
-            <label class="profile-text-image" for="profileImage">Add an Image</label>
+            
             <input type="file" name="profileImage" id="profileImage" />
             <img src="@Url.Action("GetProfileImage", new { userID = Model.UserId })" alt="~/images/image-profile.png" />
+            <label class="profile-text-image" for="profileImage">Add an Image</label>
         </form>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
@@ -61,8 +63,18 @@
             <img src="~/images/xmark-solid.svg" class="icons" width="40px"/>
         </button>
         <form class="form-edit">
+            <h2 class="edit-title">Edit Profile</h2>
+            <div class="username-container">
+                <input type="text" name="" id="" placeholder="Username" />
+            </div>
+            <div class="profileName-container">
+                <input type="text" name="" id="" placeholder="Profile Name" />
+            </div>
             <div class="description-text">
                 <textarea id="descricao-textarea" placeholder="Description"></textarea>
+            </div>
+            <div class="submit-container">
+                <input type="submit" name="" id="" placeholder="Submit" />
             </div>
         </form>
     </div>
