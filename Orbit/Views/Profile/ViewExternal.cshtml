@@ -99,6 +99,22 @@
                 var formData = new FormData();
 
                 formData.append('id', @Model.UserId);
+                $.ajax({
+                    url: '/Notifications/Index',
+                    type: 'POST',
+                    data: {
+                        user: "@Model.UserName",
+                        message: `O usuário @Model.UserName começou a te seguir!`
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error)
+                    }
+                });
+
+                formData.append('id', @Model.UserId);
                 formData.append('followerUserName', '@ViewBag.ViewExternalUsernameFollower');
                 $.ajax({
                     url: '/Profile/Follow',
