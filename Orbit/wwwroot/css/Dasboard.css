@@ -126,8 +126,21 @@ body{
     cursor:pointer;
 
 }
+.content-main .profiles-specs .edit-profile .msg-btn{
+    background-color:black;
+    border:1px solid white;
+    padding:15px;
+    border-radius:16px;
+    font-size:1.2em;
+    transition:.4s;
+    cursor:pointer;
 
+}
 .content-main .profiles-specs .edit-profile .btn-edit:hover{
+    background-color:white;
+    color:black;
+}
+.content-main .profiles-specs .edit-profile .msg-btn:hover{
     background-color:white;
     color:black;
 }
