@@ -1,6 +1,7 @@
 ﻿@using Orbit.Application.Dtos.Responses
+@using Orbit.Domain.Entities
 
-@model UserResponse
+@model User
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
@@ -11,29 +12,28 @@
         <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow" />
     </div>
     <div class="title-user">
-        <span>Olá, @(Html.Raw(Model.UserProfileName ?? "")), e esse cuzinho moscando ai?</span>
+        <span>Olá, @(Html.Raw(Model.UserProfileName ?? ""))</span>
     </div>
     <div class="logout-btn">
         <a class="btn-logout" href="~/Account/Logout">Logout</a>
     </div>
 </header>
 
-<div class="background-img">
-    <img src="" alt="" />
-    <span class="text-img">Add an image</span>
-</div>
+<form class="background-img" id="form-banner" enctype="multipart/form-data">
+
+    <input type="file" name="backgroundImg" id="backgroundImg" />
+    <img src="@Url.Action("GetBannerImage", new { userID = Model.UserId })" alt="" />
+    <label class="text-img" for="backgroundImg">Add an Image</label>
+</form>
 
 <main class="content-main">
     <div class="profiles-specs">
-        <div class="profile-img">
-            <img src="@if(Model.UserImageByteType == null){
-            <text>/images/image-profile.png</text>
-            }
-            else{
-            @Url.Action("GetUserImageAsync", new { username = Model.UserName })
-            }
-            " alt="Image Profile" />
-        </div>
+        <form class="profile-img" id="profile-image-form" asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data">
+
+            <input type="file" name="profileImage" id="profileImage" />
+            <img src="@Url.Action("GetProfileImage", new { userID = Model.UserId })" alt="~/images/image-profile.png" />
+            <label class="profile-text-image" for="profileImage">Add an Image</label>
+        </form>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
             <p>@Html.Raw("@")@Model.UserName</p>
@@ -54,8 +54,30 @@
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit">Edit Profile</button>
+            <button class="btn-edit" id="openEditDiv">Edit Profile</button>
+            <a href="~/Chat" class="msg-btn">Messages</a>
         </div>
+    </div>
+
+    <div id="divEditProfile" class="container-edit">
+        <button class="form-btn" id="closeBtn">
+            <img src="~/images/xmark-solid.svg" class="icons" width="40px" />
+        </button>
+        <form id="form-to-edit" class="form-edit">
+            <h2 class="edit-title">Edit Profile</h2>
+            <div class="username-container">
+                <input type="text" name="UserName" id="" value="@ViewBag.EditSectionUserName" placeholder="Username" />
+            </div>
+            <div class="profileName-container">
+                <input type="text" name="UserProfileName" id="" value="@ViewBag.EditSectionProfileName" placeholder="Profile Name" />
+            </div>
+            <div class="description-text">
+                <textarea id="descricao-textarea" name="UserDescription" value="@ViewBag.EditSectionDesc" placeholder="Description"></textarea>
+            </div>
+            <div class="submit-container">
+                <input type="submit" id="submit-edit" placeholder="Submit" />
+            </div>
+        </form>
     </div>
 
     <div class="navigation-bar">
@@ -78,4 +100,101 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
             asp-fallback-test="window.jQuery"></script>
+
+    <script src="~/js/profilePage.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            $('#profileImage').change(() => {
+                var formData = new FormData($('#profile-image-form')[0]);
+
+                $.ajax({
+                    url: '/Profile/UploadProfileImage',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(() => {
+            $('#backgroundImg').change(() => {
+                var formData = new FormData($('#form-banner')[0]);
+
+                $.ajax({
+                    url: '/Profile/UploadBannerImage',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(() => {
+            $('#submit-edit').click(() => {
+                event.preventDefault();
+
+                var formData = new FormData($('#form-to-edit')[0]);
+
+                $.ajax({
+                    url: '/Profile/UpdateProfile',
+                    type: 'PUT',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('Perfil atualizado com sucesso!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Ocorreu um erro ao atualizar o perfil: ', xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notification")
+            .build();
+
+        connection.on("ReceiveNotification", (user ,message) => {
+            $("<div>")
+                .text("Nova notificação: " + message)
+                .css({
+                    position: 'fixed',
+                    top: '10px',
+                    right: '10px',
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    color: 'black',
+                    borderRadius: '5px',
+                    zIndex: 1000
+                })
+                .appendTo("body")
+                .fadeIn(400)
+                .delay(5000)
+                .fadeOut(400, function () {
+                    
+                });
+        });
+
+
+        connection.start().catch(err => console.error(err.toString()));
+    </script>
 }

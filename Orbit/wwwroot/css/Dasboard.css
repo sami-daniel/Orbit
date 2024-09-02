@@ -64,17 +64,34 @@ body{
     background-color:rgba(255,255,255,.5);
     transition: .4s;
     cursor:pointer;
+    overflow: hidden;
 }
 
 .background-img .text-img{
     text-transform:uppercase;
     letter-spacing:2px;
     font-weight:800;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     transition:.4s;
 }
 
-.background-img:hover{
-    background-color:white;
+    .background-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display:none;
+    }
+
+.background-img input[type="file"]{
+    display:none;
+}
+
+.background-img:hover {
+    background-color: white;
 }
 
 .background-img:hover .text-img{
@@ -109,25 +126,73 @@ body{
     cursor:pointer;
 
 }
+.content-main .profiles-specs .edit-profile .msg-btn{
+    background-color:black;
+    border:1px solid white;
+    padding:15px;
+    border-radius:16px;
+    font-size:1.2em;
+    transition:.4s;
+    cursor:pointer;
 
+}
 .content-main .profiles-specs .edit-profile .btn-edit:hover{
+    background-color:white;
+    color:black;
+}
+.content-main .profiles-specs .edit-profile .msg-btn:hover{
     background-color:white;
     color:black;
 }
 
 .content-main .profiles-specs .profile-img {
    align-content:start;
+   position:relative;
+   display:flex;
+   justify-content:center;
+   align-items:center;
+   border-radius: 100%;
+   overflow: hidden;
 }
 
-.content-main .profiles-specs .profile-img img{
-    width:150px;
-    height:150px;
-    object-fit:cover;
-   
+.content-main .profiles-specs .profile-img input[type="file"]{
+    display:none;
 }
 
-.content-main .profiles-specs .profile-description p{
-    margin-top:2%;
+.profile-text-image{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    background-color:rgba(0,0,0,.5);
+    cursor:pointer;
+    transition:.3s all linear;
+}
+
+
+
+.content-main .profiles-specs .profile-img img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+
+}
+
+.content-main .profiles-specs .profile-img a:hover label{
+    opacity:1;
+}
+
+.content-main .profiles-specs .profile-description{
+    margin-left:2%;
+}
+
+.content-main .profiles-specs .profile-description p {
+    margin-top: 2%;
 }
 
 .content-main .profiles-specs .profile-description .profile-followers{
@@ -160,4 +225,144 @@ body{
     font-weight:500;
     letter-spacing: 1.5px;
     cursor:pointer;
+}
+
+.container-edit{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:50%;
+    height:50%;
+    border:1px solid white;
+    border-radius:10px;
+    background-color:black;
+    display:none;
+    padding:10px;
+
+}
+.container-edit .form-edit{
+    width:100%;
+    height:100%;
+    padding:20px;
+}
+
+.container-edit .form-edit .edit-title{
+    text-align:center;
+    letter-spacing:2px;
+    color:white;
+}
+
+.container-edit .form-edit div{
+    width:100%;
+    margin: 2% 0;
+    padding: 10px;
+    text-align:center;
+}
+
+.container-edit .form-btn{
+    background:transparent;
+    border:none;
+    outline:none;
+}
+
+.icons{
+    width:20px;
+    height:20px;
+    background:transparent;
+}
+
+
+
+.container-edit .form-edit .description-text textarea {
+    background: transparent;
+    padding: 15px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    width: 50%;
+    outline: none;
+    font-size:1.2em;
+}
+
+
+.container-edit .form-edit .username-container input{
+    background: transparent;
+    padding: 15px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    width: 50%;
+    outline:none;
+    font-size:1.2em;
+}
+
+
+
+.container-edit .form-edit .profileName-container input{
+    background: transparent;
+    padding: 15px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    width: 50%;
+    outline:none;
+    font-size:1.2em;
+}
+.container-edit .form-edit .submit-container input {
+    background: transparent;
+    padding: 10px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    outline: none;
+    width:25%;
+    font-size: 1.2em;
+    cursor:pointer;
+    transition:.5s;
+}
+.container-edit .form-edit .submit-container input:hover {
+   background-color:white;
+   color:black;
+   box-shadow:0px 4px 12px white;
+}
+
+
+
+
+
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s forwards;
 }

@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
+using Orbit.Hubs;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
 using Orbit.Infrastructure.Repositories.Interfaces;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace Orbit
 {
@@ -16,12 +18,13 @@ namespace Orbit
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-            _ = builder.Services.AddControllersWithViews();
+            _ = builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             _ = builder.Services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
-            .LogTo(m => Debug.WriteLine(m)));
+            .LogTo(m => Debug.WriteLine(m))
+            .EnableSensitiveDataLogging());
 
             _ = builder.Services
                 .AddSession(opt =>
@@ -55,6 +58,8 @@ namespace Orbit
 
             _ = builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddSignalR();
+
             WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -82,6 +87,10 @@ namespace Orbit
 
             _ = app.MapControllerRoute(name: "default",
                                        pattern: "{controller=Account}/{action=Index}");
+
+            app.MapHub<ChatHub>("/chathub");
+
+            app.MapHub<NotificationHub>("/notification");
 
             app.Run();
 

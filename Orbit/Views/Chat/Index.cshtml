@@ -1,0 +1,84 @@
+﻿@using Orbit.Domain.Entities
+@model User
+
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
+
+<main class="container">
+    <div class="contacts-container">
+        <h2>Contacts</h2>
+        @foreach (var user in Model.Followers)
+        {
+            <div class="contact-user">
+                <div class="profile-img">
+                    <img src="@Url.Action("GetProfileImage", "Profile", new { userID = user.UserId })" alt="Profile Image" />
+                </div>
+                <div class="profile-name">@user.UserName</div>
+            </div>
+        }
+    </div>
+    <div class="messages-container">
+        <header class="info-container">
+            <div class="profile-img">
+                <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserId })" alt="Profile Image" />
+            </div>
+            <div class="profile-name">@Model.UserProfileName</div>
+        </header>
+        <main class="messages">
+            <div class="contact-message"></div>
+            <div class="user-message"></div>
+        </main>
+        <footer>
+            <div class="input-container">
+                <form>
+                    <input type="text" name="" id="input-message" placeholder="Enviar mensagem" />
+                    <input type="button" id="btn-submit" value="Enviar" />
+                </form>
+            </div>
+        </footer>
+    </div>
+</main>
+
+
+
+@section links {
+    <link rel="stylesheet" href="~/css/Chat.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+          rel="stylesheet">
+}
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        connection.start().then(function () {
+            console.log("Connected");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        connection.on("ReceiveMessage", function (user, message) {
+            $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong> ' + message + '</div>');
+        });
+
+        $('#btn-submit').click((event) => {
+            event.preventDefault();
+            var message = $('#input-message').val();
+            connection.invoke("SendMessage", '@Model.UserName', message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            $('#input-message').val('');
+        });
+    </script>
+
+}
