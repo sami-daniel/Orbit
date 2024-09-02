@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Responses;
@@ -6,7 +7,6 @@ using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.Extensions;
 using Orbit.Infrastructure.Data.Contexts;
-using System.Security.Claims;
 
 namespace Orbit.Controllers
 {
@@ -46,7 +46,7 @@ namespace Orbit.Controllers
         {
             var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == username);
             var user = await users.FirstOrDefaultAsync();
-            
+
             Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
             var usersAL = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == usr.Value);
             var userAl = await usersAL.FirstOrDefaultAsync();
@@ -79,9 +79,9 @@ namespace Orbit.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadProfileImage(IFormFile profileImage)
         {
-            if(profileImage != null && profileImage.Length > 0)
+            if (profileImage != null && profileImage.Length > 0)
             {
-                using (var memoryStream = new MemoryStream()) 
+                using (var memoryStream = new MemoryStream())
                 {
                     await profileImage.CopyToAsync(memoryStream);
                     var us = HttpContext.Session.GetObject<User>("User")!.UserName;

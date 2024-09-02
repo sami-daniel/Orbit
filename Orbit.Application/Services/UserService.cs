@@ -25,7 +25,7 @@ namespace Orbit.Application.Services
                 throw new ArgumentException("Dados invalidos para o usuario!");
             }
 
-            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(new { UserEmail = userAddRequest.UserEmail});
+            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(new { UserEmail = userAddRequest.UserEmail });
             IEnumerable<Domain.Entities.User> usernames = await _unitOfWork.User.FindAsync(new { UserName = userAddRequest.UserName });
 
             if (users.Any())
@@ -69,7 +69,7 @@ namespace Orbit.Application.Services
             return usersResponses;
         }
 
-        
+
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties)
         {
             IEnumerable<User> users = await _unitOfWork.User.GetAllAsync(navProperties);

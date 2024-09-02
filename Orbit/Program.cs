@@ -1,3 +1,5 @@
+﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
@@ -7,8 +9,6 @@ using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
 using Orbit.Infrastructure.Repositories.Interfaces;
-using System.Diagnostics;
-using System.Text.Json.Serialization;
 
 namespace Orbit
 {
@@ -58,7 +58,7 @@ namespace Orbit
 
             _ = builder.Services.AddScoped<IUserService, UserService>();
 
-            builder.Services.AddSignalR();
+            _ = builder.Services.AddSignalR();
 
             WebApplication app = builder.Build();
 
@@ -88,9 +88,9 @@ namespace Orbit
             _ = app.MapControllerRoute(name: "default",
                                        pattern: "{controller=Account}/{action=Index}");
 
-            app.MapHub<ChatHub>("/chathub");
+            _ = app.MapHub<ChatHub>("/chathub");
 
-            app.MapHub<NotificationHub>("/notification");
+            _ = app.MapHub<NotificationHub>("/notification");
 
             app.Run();
 
