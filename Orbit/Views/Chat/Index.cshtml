@@ -1,1 +1,49 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
+
+<main class="container">
+    <div class="contacts-container">
+        <h2>Contacts</h2>
+        <div class="contact-user">
+            <div class="profile-img">
+                <img src="~/images/Google.png" alt="Profile Image" />
+            </div>
+            <div class="profile-name">sss</div>
+            <div class="others">
+                ss
+            </div>
+        </div>
+    </div>
+    <div class="messages-container">
+        <header class="info-container">
+            <div class="profile-img">
+                <img src="~/images/Google.png" alt="Profile Image"/>
+            </div>
+            <div class="profile-name">ssss</div>
+            <div class="others">ss</div>
+        </header>
+        <main class="messages">
+            <div class="contact-message"></div>
+            <div class="user-message"></div>
+        </main>
+        <footer>
+            <div class="input-container">
+                <form>
+                    <input type="text" name="" id="" placeholder="Enviar mensagem" />
+                    <input type="submit" name="" placeholder="Enviar" />
+                </form>
+            </div>
+        </footer>
+    </div>
+</main>
+
+
+
+@section links {
+    <link rel="stylesheet" href="~/css/Chat.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+          rel="stylesheet">
+}
