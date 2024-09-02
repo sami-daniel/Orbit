@@ -88,7 +88,7 @@ namespace Orbit
             _ = app.MapControllerRoute(name: "default",
                                        pattern: "{controller=Account}/{action=Index}");
 
-            app.MapHub<ChatHub>("/chat");
+            app.MapHub<ChatHub>("/chathub");
 
             app.MapHub<NotificationHub>("/notification");
 

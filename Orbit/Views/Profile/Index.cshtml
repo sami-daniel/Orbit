@@ -172,7 +172,25 @@
             .build();
 
         connection.on("ReceiveNotification", (user ,message) => {
-            alert(message);
+            $("<div>")
+                .text("Nova notificação: " + message)
+                .css({
+                    position: 'fixed',
+                    top: '10px',
+                    right: '10px',
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    color: 'black',
+                    borderRadius: '5px',
+                    zIndex: 1000
+                })
+                .appendTo("body")
+                .fadeIn(400)
+                .delay(5000)
+                .fadeOut(400, function () {
+                    
+                });
         });
 
 

@@ -49,7 +49,7 @@ namespace Orbit.Controllers
             
             Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
             var usersAL = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == usr.Value);
-            var userAl = await users.FirstOrDefaultAsync();
+            var userAl = await usersAL.FirstOrDefaultAsync();
 
             ViewBag.ViewExternalUsernameFollower = userAl!.UserName;
 
