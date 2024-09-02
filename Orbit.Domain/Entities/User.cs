@@ -19,7 +19,7 @@ public partial class User
 
     public byte[]? UserImageByteType { get; set; }
 
-    public byte[]? UserBannerByteType {  get; set; }
+    public byte[]? UserBannerByteType { get; set; }
 
     public ulong IsPrivateProfile { get; set; }
 
