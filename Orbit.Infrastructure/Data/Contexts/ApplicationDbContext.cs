@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Orbit.Infrastructure.Data.Contexts;
 
 public partial class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext()
-    {
-    }
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -22,18 +17,19 @@ public partial class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .UseCollation("utf8mb3_general_ci")
-            .HasCharSet("utf8mb3");
+            .UseCollation("utf8mb4_0900_ai_ci")
+            .HasCharSet("utf8mb4");
 
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
-            entity.ToTable("user");
+            entity
+                .ToTable("user")
+                .HasCharSet("utf8mb3")
+                .UseCollation("utf8mb3_general_ci");
 
             entity.HasIndex(e => e.UserEmail, "user_email_UNIQUE").IsUnique();
-
-            entity.HasIndex(e => e.UserId, "user_id_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
@@ -41,20 +37,18 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.IsPrivateProfile)
                 .HasColumnType("bit(1)")
                 .HasColumnName("is_private_profile");
+            entity.Property(e => e.UserBannerByteType).HasColumnName("user_banner_byte_type");
             entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
                 .HasColumnName("user_description")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserEmail)
-                .HasMaxLength(255)
                 .HasColumnName("user_email")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
             entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
-            entity.Property(e => e.UserBannerByteType).HasColumnName("user_banner_byte_type");
             entity.Property(e => e.UserName)
-                .HasMaxLength(255)
                 .HasColumnName("user_name")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
@@ -81,7 +75,10 @@ public partial class ApplicationDbContext : DbContext
                         j.HasKey("UserId", "FollowerId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.ToTable("follower");
+                        j
+                            .ToTable("follower")
+                            .HasCharSet("utf8mb3")
+                            .UseCollation("utf8mb3_general_ci");
                         j.HasIndex(new[] { "FollowerId" }, "follower_id");
                         j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
                         j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
@@ -101,7 +98,10 @@ public partial class ApplicationDbContext : DbContext
                         j.HasKey("UserId", "FollowerId")
                             .HasName("PRIMARY")
                             .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.ToTable("follower");
+                        j
+                            .ToTable("follower")
+                            .HasCharSet("utf8mb3")
+                            .UseCollation("utf8mb3_general_ci");
                         j.HasIndex(new[] { "FollowerId" }, "follower_id");
                         j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
                         j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
