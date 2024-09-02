@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Orbit.Domain.Entities;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Orbit.Infrastructure.Data.Contexts;
 

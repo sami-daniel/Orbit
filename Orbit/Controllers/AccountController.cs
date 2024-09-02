@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Dtos.Requests;
@@ -10,7 +10,6 @@ using Orbit.Domain.Entities;
 using Orbit.Extensions;
 using Orbit.Filters;
 using Orbit.Infrastructure.Data.Contexts;
-using System.Security.Claims;
 
 namespace Orbit.Controllers
 {
@@ -82,7 +81,7 @@ namespace Orbit.Controllers
                 var usr = userAddRequest.ToUser();
                 await _context.Users.AddAsync(usr);
                 await _context.SaveChangesAsync();
-                user = usr; 
+                user = usr;
             }
             catch (ArgumentException ex)
             {

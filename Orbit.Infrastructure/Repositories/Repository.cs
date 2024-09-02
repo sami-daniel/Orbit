@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Orbit.Infrastructure.Repositories.Interfaces;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
 
 namespace Orbit.Infrastructure.Repositories
 {
@@ -109,7 +106,7 @@ namespace Orbit.Infrastructure.Repositories
                         .Where(dinamycWhere, parameters.ToArray()).AsQueryable();
 
 
-            foreach(string prop in navProperties)
+            foreach (string prop in navProperties)
             {
                 query = query.Include(prop);
             }

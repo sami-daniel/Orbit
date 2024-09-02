@@ -1,6 +1,6 @@
-﻿using Orbit.Application.Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using Orbit.Application.Extensions;
 using Orbit.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace Orbit.Application.Dtos.Requests
 {
@@ -27,7 +27,7 @@ namespace Orbit.Application.Dtos.Requests
         public string UserProfileName { get; set; } = null!;
         [Display(Name = "Perfil Privado")]
         public string? IsPrivateProfile { get; set; }
-        
+
         public User ToUser()
         {
             return new User

@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Orbit.Infrastructure.Repositories.Interfaces
+﻿namespace Orbit.Infrastructure.Repositories.Interfaces
 {
     /// <summary>
     /// Interface genérica para um repositório de entidades.

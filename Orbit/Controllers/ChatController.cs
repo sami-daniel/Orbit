@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using Orbit.Hubs;
 using Orbit.Infrastructure.Data.Contexts;
-using System.Security.Claims;
 
 namespace Orbit.Controllers
 {
