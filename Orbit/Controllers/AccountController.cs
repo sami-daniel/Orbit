@@ -81,6 +81,7 @@ namespace Orbit.Controllers
             {
                 var usr = userAddRequest.ToUser();
                 await _context.Users.AddAsync(usr);
+                await _context.SaveChangesAsync();
                 user = usr; 
             }
             catch (ArgumentException ex)

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
+using Orbit.Hubs;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repositories;
 using Orbit.Infrastructure.Repositories.Implementations;
@@ -57,6 +58,8 @@ namespace Orbit
 
             _ = builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddSignalR();
+
             WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -84,6 +87,10 @@ namespace Orbit
 
             _ = app.MapControllerRoute(name: "default",
                                        pattern: "{controller=Account}/{action=Index}");
+
+            app.MapHub<ChatHub>("/chat");
+
+            app.MapHub<NotificationHub>("/notification");
 
             app.Run();
 
