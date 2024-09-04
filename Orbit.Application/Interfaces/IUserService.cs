@@ -20,7 +20,7 @@ namespace Orbit.Application.Interfaces
         /// Obtém todos os usuários.
         /// </summary>
         /// <returns>Uma tarefa que representa a operação assíncrona. A tarefa contém uma lista de todos os usuários.</returns>
-        Task<User> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "");
+        Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "");
 
         /// <summary>
         /// Adiciona um novo usuário ao sistema.
