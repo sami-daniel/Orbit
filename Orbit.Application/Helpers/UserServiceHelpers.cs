@@ -4,7 +4,7 @@ using Orbit.Domain.Entities;
 
 internal static class UserServiceHelpers
 {
-    private static void ValidateUser(User user)
+    public static void ValidateUser(User user)
     {
         ArgumentNullException.ThrowIfNull(user);
 
