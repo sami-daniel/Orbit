@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Text.RegularExpressions;
 using Orbit.Application.Exceptions;
 using Orbit.Domain.Entities;
 
@@ -36,6 +37,17 @@ internal static class UserServiceHelpers
         if (user.UserDescription != null && user.UserDescription.Length > 65535)
         {
             throw new ArgumentException("A descrição do usuário não pode ter mais de 65535 caracteres.");
+        }
+
+        // Value validations, like valid email, valid username ...
+        if (!Regex.Match(user.UserEmail, "^[^\\.\\s][\\w\\-\\.{2,}]+@([\\w-]+\\.)+[\\w-]{2,}$").Success)
+        {
+            throw new ArgumentException("O email do usuário é invalido.");
+        }
+
+        if (!Regex.Match(user.UserName, "^[a-zA-Z0-9_]*$").Success)
+        {
+            throw new ArgumentException("O nome do usuário é invalido. Deve conter somente letras, números e underscore");
         }
 
         // Verifing valid images
