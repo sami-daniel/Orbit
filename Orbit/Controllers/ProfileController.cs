@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.Extensions;

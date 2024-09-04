@@ -6,9 +6,6 @@ using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
 using Orbit.Hubs;
 using Orbit.Infrastructure.Data.Contexts;
-using Orbit.Infrastructure.Repositories;
-using Orbit.Infrastructure.Repositories.Implementations;
-using Orbit.Infrastructure.Repositories.Interfaces;
 
 namespace Orbit
 {

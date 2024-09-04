@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Orbit.Application.Exceptions;
+﻿namespace Orbit.Application.Exceptions;
 public class InvalidImageException : Exception
 {
     public InvalidImageException()
