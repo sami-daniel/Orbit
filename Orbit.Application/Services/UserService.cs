@@ -1,15 +1,15 @@
-﻿using Orbit.Application.Dtos.Requests;
-using Orbit.Application.Dtos.Responses;
-using Orbit.Application.Helpers;
+﻿using System.Drawing;
+using System.Linq.Expressions;
+using System.Reflection;
+using Orbit.Application.Exceptions;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
-using Orbit.Infrastructure.Repositories.Interfaces;
+using Orbit.Infrastructure.UnitOfWork.Interfaces;
 
 namespace Orbit.Application.Services
 {
     public class UserService : IUserService
     {
-#pragma warning disable CS0618
         private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IUnitOfWork unitOfWork)
@@ -17,69 +17,82 @@ namespace Orbit.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest)
+        public Task AddUserAsync(User user)
         {
-            ArgumentNullException.ThrowIfNull(nameof(userAddRequest));
-            if (!ValidationHelper.IsValid(userAddRequest))
-            {
-                throw new ArgumentException("Dados invalidos para o usuario!");
-            }
 
-            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(new { UserEmail = userAddRequest.UserEmail });
-            IEnumerable<Domain.Entities.User> usernames = await _unitOfWork.User.FindAsync(new { UserName = userAddRequest.UserName });
-
-            if (users.Any())
-            {
-                throw new ArgumentException("E-mail já cadastrado anteriormente!");
-            }
-            if (usernames.Any())
-            {
-                throw new ArgumentException("Username já cadastrado anteriormente!");
-            }
-
-            Domain.Entities.User user = userAddRequest.ToUser();
-            await _unitOfWork.User.AddAsync(user);
-            _ = _unitOfWork.Complete();
-
-            return user.ToUserResponse();
         }
+        public Task<User> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "") => throw new NotImplementedException();
+        public Task<User?> GetUserByIdentifierAsync(string userIdentifier) => throw new NotImplementedException();
+        public Task UpdateUserAsync(string userIdentifier, User user) => throw new NotImplementedException();
 
-        public async Task<IEnumerable<UserResponse>> FindUsersAsync(object conditions)
+        private static void ValidateUser(User user)
         {
-            var filteredUsers = await _unitOfWork.User.FindAsync(conditions);
-            return filteredUsers.Select(u => u.ToUserResponse());
-        }
+            ArgumentNullException.ThrowIfNull(user);
 
-        public async Task<IEnumerable<UserResponse>> FindUsersAsync(object conditions, params string[] navProperties)
-        {
-            var filteredUsers = await _unitOfWork.User.FindAsync(conditions, navProperties);
-            return filteredUsers.Select(u => u.ToUserResponse());
-        }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserName);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserProfileName);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserPassword);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserEmail);
 
-        [Obsolete("Esse metodo retorna uma lista completa de todos os usuários. A iteração sobre essa coleção causará instabilidade e uso excessivo de recursos. Use FindAsync em vez de GetAllUsersAsync")]
-        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
-        {
-            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.GetAllAsync();
-            List<UserResponse> usersResponses = [];
-            foreach (Domain.Entities.User user in users)
+            if (user.UserName.Length > 255)
             {
-                usersResponses.Add(user.ToUserResponse());
+                throw new ArgumentException("O nome de usuário não pode ter mais de 255 caracteres.");
             }
 
-            return usersResponses;
-        }
-
-
-        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties)
-        {
-            IEnumerable<User> users = await _unitOfWork.User.GetAllAsync(navProperties);
-            List<UserResponse> userResponses = [];
-            foreach (User user in users)
+            if (user.UserEmail.Length > 255)
             {
-                userResponses.Add(user.ToUserResponse());
+                throw new ArgumentException("O email do usuário não pode ter mais de 255 caracteres.");
             }
 
-            return userResponses;
+            if (user.UserProfileName.Length > 255)
+            {
+                throw new ArgumentException("O nome do perfil do usuário não pode ter mais de 255 caracteres.");
+            }
+
+            if (user.UserPassword.Length > 255)
+            {
+                throw new ArgumentException("A senha do usuário não pode ter mais de 255 caracteres.");
+            }
+
+            if (user.UserDescription != null && user.UserDescription.Length > 65535)
+            {
+                throw new ArgumentException("A descrição do usuário não pode ter mais de 65535 caracteres.");
+            }
+
+            // Verifing valid images
+            if (user.UserImageByteType != null)
+            {
+                try
+                {
+                    using (var ms = new MemoryStream(user.UserImageByteType))
+                    {
+#pragma warning disable CA1416 // Validate platform compatibility
+                        Image.FromStream(ms);
+#pragma warning restore CA1416 // Validate platform compatibility
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new InvalidImageException("A imagem do usuário é inválida.");
+                }
+            }
+
+            if (user.UserBannerByteType != null)
+            {
+                try
+                {
+                    using (var ms = new MemoryStream(user.UserBannerByteType))
+                    {
+#pragma warning disable CA1416 // Validate platform compatibility
+                        Image.FromStream(ms);
+#pragma warning restore CA1416 // Validate platform compatibility
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new InvalidImageException("A imagem de banner do usuário é inválida.");
+                }
+            }
         }
     }
 }
