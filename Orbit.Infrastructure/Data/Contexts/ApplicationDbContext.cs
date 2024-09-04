@@ -35,7 +35,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.IsPrivateProfile)
                 .HasColumnType("bit(1)")
                 .HasColumnName("is_private_profile");
-            entity.Property(e => e.UserBannerByteType).HasColumnName("user_banner_byte_type");
+            entity.Property(e => e.UserProfileBannerImageByteType).HasColumnName("user_profile_banner_image_byte_type");
             entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
                 .HasColumnName("user_description")
@@ -45,7 +45,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("user_email")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-            entity.Property(e => e.UserImageByteType).HasColumnName("user_image_byte_type");
+            entity.Property(e => e.UserProfileImageByteType).HasColumnName("user_profile_image_byte_type");
             entity.Property(e => e.UserName)
                 .HasColumnName("user_name")
                 .UseCollation("utf8mb4_0900_ai_ci")

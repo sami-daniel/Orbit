@@ -86,7 +86,7 @@ namespace Orbit.Controllers
                     var us = HttpContext.Session.GetObject<User>("User")!.UserName;
                     var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
-                    profile.UserImageByteType = memoryStream.ToArray();
+                    profile.UserProfileImageByteType = memoryStream.ToArray();
 
                     _context.Update(profile);
                     await _context.SaveChangesAsync();
@@ -102,12 +102,12 @@ namespace Orbit.Controllers
         public async Task<IActionResult> GetProfileImage([FromQuery] uint userID)
         {
             var imageEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userID);
-            if (imageEntity == null || imageEntity.UserImageByteType == null)
+            if (imageEntity == null || imageEntity.UserProfileImageByteType == null)
             {
                 return NotFound();
             }
 
-            return File(imageEntity.UserImageByteType, "image/png");
+            return File(imageEntity.UserProfileImageByteType, "image/png");
         }
 
         [HttpPost]
@@ -127,7 +127,7 @@ namespace Orbit.Controllers
                                                                                     // Otherwhise, just proceed the flow
                     var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
 
-                    profile.UserBannerByteType = memoryStream.ToArray();
+                    profile.UserProfileBannerImageByteType = memoryStream.ToArray();
 
                     _context.Update(profile);
                     await _context.SaveChangesAsync();
@@ -161,12 +161,12 @@ namespace Orbit.Controllers
         public async Task<IActionResult> GetBannerImage([FromQuery] uint userID)
         {
             var imageEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userID);
-            if (imageEntity == null || imageEntity.UserBannerByteType == null)
+            if (imageEntity == null || imageEntity.UserProfileBannerImageByteType == null)
             {
                 return NotFound();
             }
 
-            return File(imageEntity.UserBannerByteType, "image/png");
+            return File(imageEntity.UserProfileBannerImageByteType, "image/png");
         }
 
         [HttpPut]

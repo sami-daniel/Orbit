@@ -59,11 +59,11 @@ namespace Orbit.Application.Services
             }
 
             // Verifing valid images
-            if (user.UserImageByteType != null)
+            if (user.UserProfileImageByteType != null)
             {
                 try
                 {
-                    using (var ms = new MemoryStream(user.UserImageByteType))
+                    using (var ms = new MemoryStream(user.UserProfileImageByteType))
                     {
 #pragma warning disable CA1416 // Validate platform compatibility
                         Image.FromStream(ms);
@@ -76,11 +76,11 @@ namespace Orbit.Application.Services
                 }
             }
 
-            if (user.UserBannerByteType != null)
+            if (user.UserProfileBannerImageByteType != null)
             {
                 try
                 {
-                    using (var ms = new MemoryStream(user.UserBannerByteType))
+                    using (var ms = new MemoryStream(user.UserProfileBannerImageByteType))
                     {
 #pragma warning disable CA1416 // Validate platform compatibility
                         Image.FromStream(ms);

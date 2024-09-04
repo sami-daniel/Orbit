@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `orbitdatabase`.`user` (
   `user_profile_name` VARCHAR(255) NOT NULL,
   `user_description` TEXT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
   `user_profile_image_byte_type` LONGBLOB NULL DEFAULT NULL,
-  `user_profile_banner_imager_byte_type` LONGBLOB NULL DEFAULT NULL,
+  `user_profile_banner_image_byte_type` LONGBLOB NULL DEFAULT NULL,
   `is_private_profile` BIT(1) NOT NULL,
   PRIMARY KEY (`user_id`))
 ENGINE = InnoDB
