@@ -1,10 +1,12 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
+using Orbit.DTOs.Requests;
 using Orbit.Extensions;
 using Orbit.Filters;
 using Orbit.Infrastructure.Data.Contexts;
@@ -16,13 +18,13 @@ namespace Orbit.Controllers
     {
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
+        public AccountController(IMapper mapper, IUserService userService, IWebHostEnvironment webHostEnvironment)
         {
+            _mapper = mapper;
             _userService = userService;
             _webHostEnvironment = webHostEnvironment;
-            _context = context;
         }
 
         public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
@@ -72,22 +74,7 @@ namespace Orbit.Controllers
                 return BadRequest(ModelState);
             }
 
-            User user;
-
-            try
-            {
-                var usr = userAddRequest.ToUser();
-                await _context.Users.AddAsync(usr);
-                await _context.SaveChangesAsync();
-                user = usr;
-            }
-            catch (ArgumentException ex)
-            {
-                ViewBag.SummaryErrors = ex.Message;
-                ViewBag.RegisModalActive = true;
-
-                return RedirectToAction("Index", new { modalActive = true });
-            }
+            var user = _mapper.Map<User>(userAddRequest);
 
             List<Claim> claims =
             [
@@ -125,21 +112,7 @@ namespace Orbit.Controllers
                 return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
-            input_login = input_login.Trim();
-            password = password.Trim();
-
-            IEnumerable<User> users;
-
-            if (input_login.Contains('@'))
-            {
-                users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == input_login);
-            }
-            else
-            {
-                users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == input_login);
-            }
-
-            var user = users.FirstOrDefault();
+            var user = await _userService.GetUserByIdentifierAsync(input_login);
 
             if (user == null || password != user.UserPassword)
             {
@@ -172,32 +145,6 @@ namespace Orbit.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<bool> CheckEmail([FromForm] string email)
-        {
-            if (string.IsNullOrEmpty(email))
-            {
-                return true;
-            }
-
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(new { UserEmail = email });
-
-            return !users.Any();
-        }
-
-        [HttpPost]
-        public async Task<bool> CheckUsername([FromForm] string username)
-        {
-            if (string.IsNullOrEmpty(username))
-            {
-                return true;
-            }
-
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(new { UserName = username });
-
-            return !users.Any();
         }
     }
 }

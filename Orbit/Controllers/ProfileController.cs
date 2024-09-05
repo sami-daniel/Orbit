@@ -68,9 +68,9 @@ namespace Orbit.Controllers
 
             string normalizeQuery = username.ToLower().Trim();
 
-            IEnumerable<UserResponse> profiles = await _userService.GetAllUsersAsync();
+            var profiles = await _userService.GetAllUserAsync();
             profiles = profiles.Where(u => u.UserName.Contains(username));
-            var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserImageByteType });
+            var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserProfileImageByteType });
 
             return Ok(matchProfiles);
         }
