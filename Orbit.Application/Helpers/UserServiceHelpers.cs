@@ -5,6 +5,13 @@ using Orbit.Domain.Entities;
 
 internal static class UserServiceHelpers
 {
+    /// <summary>
+    /// Valida as propriedades do objeto User.
+    /// </summary>
+    /// <param name="user">O objeto User a ser validado.</param>
+    /// <exception cref="ArgumentNullException">Lançada quando o objeto User ou suas propriedades obrigatórias são nulas ou vazias.</exception>
+    /// <exception cref="ArgumentException">Lançada quando as propriedades do objeto User não atendem aos critérios de validação.</exception>
+    /// <exception cref="InvalidImageException">Lançada quando as imagens de perfil ou banner do usuário são inválidas.</exception>
     public static void ValidateUser(User user)
     {
         ArgumentNullException.ThrowIfNull(user);
