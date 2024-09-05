@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Orbit.Application.Exceptions;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
@@ -27,12 +26,82 @@ namespace Orbit.Application.Services
                 throw;
             }
 
-            await _unitOfWork.UserRepository.InsertAsync(user);
+            using (var transaction = await _unitOfWork.StartTransactionAsync())
+            {
+                try
+                {
+                    await _unitOfWork.UserRepository.InsertAsync(user);
+                    await _unitOfWork.CompleteAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+
+                    throw new UserAlredyExistsException("O usuário com esse identificador já existe!");
+                }
+            }
         }
 
-        public async Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "") => await _unitOfWork.UserRepository.GetAsync(filter, orderBy, includeProperties);
+        public async Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "")
+        {
+            return await _unitOfWork.UserRepository.GetAsync(filter, orderBy, includeProperties);
+        }
 
-        public Task<User?> GetUserByIdentifierAsync(string userIdentifier) => throw new NotImplementedException();
-        public Task UpdateUserAsync(string userIdentifier, User user) => throw new NotImplementedException();
+        public async Task<User?> GetUserByIdentifierAsync(string userIdentifier)
+        {
+            IEnumerable<User>? users = null;
+
+            if (userIdentifier.Contains('@'))
+            {
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail ==  userIdentifier);
+            }
+
+            users = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userIdentifier);
+
+            return users.FirstOrDefault();
+        }
+        public async Task UpdateUserAsync(string userIdentifier, User updatedUser)
+        {
+            IEnumerable<User>? users = null;
+
+            if (userIdentifier.Contains('@'))
+            {
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == userIdentifier);
+            }
+
+            users = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userIdentifier);
+
+            var user = users.FirstOrDefault();
+
+            if (user != null)
+            {
+                user.UserEmail = updatedUser.UserEmail;
+                user.UserDescription = updatedUser.UserDescription;
+                user.UserProfileImageByteType = updatedUser.UserProfileImageByteType;
+                user.UserProfileName = updatedUser.UserProfileName;
+                user.UserPassword = updatedUser.UserPassword;
+                user.UserName = updatedUser.UserName;
+
+                using (var transaction = await _unitOfWork.StartTransactionAsync())
+                {
+                    try
+                    {
+                        await _unitOfWork.CompleteAsync();
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+
+                        throw new UserAlredyExistsException("O usuário com esse identificador já existe!");
+                    }
+                }
+            }
+            else
+            {
+                throw new UserNotFoundException("O usuário com esse identificador não foi encontrado!");
+            }
+        }
     }
 }
