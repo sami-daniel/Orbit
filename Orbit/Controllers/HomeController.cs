@@ -6,7 +6,7 @@ namespace Orbit.Controllers
     {
         public IActionResult Index()
         {
-            return View("Views/Shared/Error.cshtml");
+            return RedirectToActionPermanent("Index", "Account");
         }
 
     }
