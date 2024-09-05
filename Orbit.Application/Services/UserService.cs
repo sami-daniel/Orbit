@@ -97,6 +97,15 @@ namespace Orbit.Application.Services
         {
             IEnumerable<User>? users = null;
 
+            try
+            {
+                UserServiceHelpers.ValidateUser(updatedUser);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
             if (userIdentifier.Contains('@'))
             {
                 users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == userIdentifier);
