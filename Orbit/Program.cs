@@ -6,6 +6,11 @@ using Orbit.Application.Interfaces;
 using Orbit.Application.Services;
 using Orbit.Hubs;
 using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Infrastructure.Repository.Implementations;
+using Orbit.Infrastructure.Repository.Interfaces;
+using Orbit.Infrastructure.UnitOfWork.Implementations;
+using Orbit.Infrastructure.UnitOfWork.Interfaces;
+using Orbit.Profiles;
 
 namespace Orbit
 {
@@ -13,23 +18,28 @@ namespace Orbit
     {
         private static void Main(string[] args)
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
-            _ = builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
-            _ = builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+            builder.Services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
             .LogTo(m => Debug.WriteLine(m))
             .EnableSensitiveDataLogging());
 
-            _ = builder.Services
+            builder.Services.AddAutoMapper(opt =>
+            {
+                opt.AddProfile<UserProfile>();
+            });
+
+            builder.Services
                 .AddSession(opt =>
                 {
                     opt.Cookie.Name = "session";
                 });
 
-            _ = builder.Services.AddAuthentication(opt =>
+            builder.Services.AddAuthentication(opt =>
             {
                 opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -42,52 +52,51 @@ namespace Orbit
                 opt.Cookie.Name = "auth";
             });
 
-            _ = builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization();
 
-            _ = builder.Services.AddAntiforgery(opt =>
+            builder.Services.AddAntiforgery(opt =>
             {
                 opt.Cookie.Name = "Antiforgery";
             });
 
-            _ = builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-            _ = builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            _ = builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
-            _ = builder.Services.AddSignalR();
+            builder.Services.AddSignalR();
 
-            WebApplication app = builder.Build();
+            var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
-                _ = app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
             else
             {
-                _ = app.UseExceptionHandler("Home");
+                app.UseExceptionHandler("Home");
 
-                _ = app.UseStatusCodePagesWithReExecute("Home", "?statusCode={0}");
+                app.UseStatusCodePagesWithReExecute("Home", "?statusCode={0}");
 
-                _ = app.UseHsts();
+                app.UseHsts();
             }
 
-            _ = app.UseStaticFiles();
+            app.UseStaticFiles();
 
-            _ = app.UseRouting();
+            app.UseRouting();
 
-            _ = app.UseAuthentication();
+            app.UseAuthentication();
 
-            _ = app.UseAuthorization();
+            app.UseAuthorization();
 
-            _ = app.UseSession();
+            app.UseSession();
 
-            _ = app.MapControllerRoute(name: "default",
-                                       pattern: "{controller=Account}/{action=Index}");
+            app.MapDefaultControllerRoute();
 
-            _ = app.MapHub<ChatHub>("/chathub");
+            app.MapHub<ChatHub>("/chathub");
 
-            _ = app.MapHub<NotificationHub>("/notification");
+            app.MapHub<NotificationHub>("/notification");
 
             app.Run();
 
