@@ -47,7 +47,7 @@ internal static class UserServiceHelpers
         }
 
         // Value validations, like valid email, valid username ...
-        if (!Regex.Match(user.UserEmail, "^[^\\.\\s][\\w\\-\\.{2,}]+@([\\w-]+\\.)+[\\w-]{2,}$").Success)
+        if (!Regex.Match(user.UserEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$").Success)
         {
             throw new ArgumentException("O email do usuário é invalido.");
         }

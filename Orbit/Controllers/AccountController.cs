@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
+using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 
 namespace Orbit.Controllers
@@ -74,7 +75,7 @@ namespace Orbit.Controllers
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-            HttpContext.Session.SetObject("User", user);
+            HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
 
             return RedirectToActionPermanent("", "Profile");
         }
@@ -117,7 +118,7 @@ namespace Orbit.Controllers
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-            HttpContext.Session.SetObject("User", user);
+            HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
 
             return RedirectToActionPermanent("", "Profile");
         }
