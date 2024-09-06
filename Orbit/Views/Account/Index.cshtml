@@ -22,7 +22,7 @@
         <div class="content">
 
             <div class="div-signIn" id="divSignIn">
-                <form method="POST" asp-action="CreateUser" asp-controller="Account" class="form-name forms" id="reg-form">
+                <form method="POST" asp-action="create-user" asp-controller="account" class="form-name forms" id="reg-form">
                     <div class="first-step">
                         <div class="top-header">
                             <button class="form-btn" id="closeBtn">
@@ -112,7 +112,7 @@
                     <h2 class="form-title"> Faça o login na OrbIt</h2>
                 </div>
 
-                <form method="post" class="forms" asp-action="Login" asp-controller="Account" id="log-form">
+                <form method="post" class="forms" asp-action="login" asp-controller="account" id="log-form">
                     @if (ViewBag.LoginError != null)
                     {
                         <div class="container-error">
@@ -121,7 +121,7 @@
                     }
                     <div class="name-container">
                         <label for="input-login">Email ou Nome de Usuário</label>
-                        <input type="text" required name="input_login" id="input-login" class="inputs" value="@(Html.Raw(ViewBag.InputLogin ?? ""))" />
+                        <input type="text" required name="inputLogin" id="input-login" class="inputs" value="@(Html.Raw(ViewBag.InputLogin ?? ""))" />
                     </div>
                     <div class="Password-container">
                         <label for="Password-Login">Senha</label>

@@ -8,12 +8,10 @@ using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
 using Orbit.Extensions;
-using Orbit.Filters;
-using Orbit.Infrastructure.Data.Contexts;
 
 namespace Orbit.Controllers
 {
-    [EnsureProfileNotCreated]
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -27,33 +25,15 @@ namespace Orbit.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
+        [HttpGet]
+        [Route("")]
+        public IActionResult Index()
         {
-            if (formID == 1)
-            {
-                ViewBag.LoginModalActive = modalActive;
-                ViewBag.LoginError = errorMessage;
-            }
-            else if (formID == 2)
-            {
-                ViewBag.RegisModalActive = modalActive;
-                ViewBag.UserEmailError = userEmailError;
-                ViewBag.UserNameError = userNameError;
-                ViewBag.UserProfileError = userProfileError;
-                ViewBag.UserPasswordError = userPasswordError;
-            }
-
             return View();
         }
 
-        [HttpGet]
-        public IActionResult CreateUser()
-        {
-            return RedirectToAction("", "Profile");
-        }
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Route("create-user")]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
@@ -75,6 +55,8 @@ namespace Orbit.Controllers
             }
 
             var user = _mapper.Map<User>(userAddRequest);
+
+            await _userService.AddUserAsync(user);
 
             List<Claim> claims =
             [
@@ -98,8 +80,8 @@ namespace Orbit.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromForm] string? input_login, [FromForm] string? password)
+        [Route("login")]
+        public async Task<IActionResult> Login([FromForm] string? inputLogin, [FromForm] string? password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
             // porem, para o model binder realizar a vinculação de dados, o nome do
@@ -107,12 +89,12 @@ namespace Orbit.Controllers
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
 
-            if (input_login == null || password == null)
+            if (inputLogin == null || password == null)
             {
                 return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
-            var user = await _userService.GetUserByIdentifierAsync(input_login);
+            var user = await _userService.GetUserByIdentifierAsync(inputLogin);
 
             if (user == null || password != user.UserPassword)
             {
@@ -141,6 +123,7 @@ namespace Orbit.Controllers
         }
 
         [HttpGet]
+        [Route("log-out")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

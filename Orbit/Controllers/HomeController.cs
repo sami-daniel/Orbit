@@ -6,7 +6,7 @@ namespace Orbit.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToActionPermanent("Index", "Account");
+            return RedirectToActionPermanent("", "account");
         }
 
     }

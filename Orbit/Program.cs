@@ -20,7 +20,12 @@ namespace Orbit
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            builder.Services.AddControllersWithViews()
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            builder.Services.AddRouting(opt =>
+            {
+                opt.LowercaseUrls = true;
+            });
 
             builder.Services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
@@ -48,7 +53,7 @@ namespace Orbit
                 opt.RequireAuthenticatedSignIn = false;
             }).AddCookie(opt =>
             {
-                opt.LoginPath = "/Account/";
+                opt.LoginPath = "/account/";
                 opt.Cookie.Name = "auth";
             });
 
@@ -75,9 +80,9 @@ namespace Orbit
             }
             else
             {
-                app.UseExceptionHandler("Home");
+                app.UseExceptionHandler("home");
 
-                app.UseStatusCodePagesWithReExecute("Home", "?statusCode={0}");
+                app.UseStatusCodePagesWithReExecute("home", "?statusCode={0}");
 
                 app.UseHsts();
             }
