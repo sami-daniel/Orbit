@@ -165,7 +165,7 @@ namespace Orbit.Controllers
             return File(imageEntity.UserProfileBannerImageByteType, "image/png");
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task<IActionResult> UpdateProfile(User user, string id, [FromServices] ApplicationDbContext context)
         {
             var usr = await _userService.GetUserByIdentifierAsync(id);
@@ -180,7 +180,7 @@ namespace Orbit.Controllers
             usr.UserDescription = user.UserDescription;
             await context.SaveChangesAsync();
             HttpContext.Session.Clear();
-            HttpContext.Session.SetObject("User", usr);
+            HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(usr));
 
             return Ok();
         }
