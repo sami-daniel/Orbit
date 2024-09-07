@@ -80,8 +80,10 @@ namespace Orbit.Application.Services
             {
                 users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == userIdentifier);
             }
-
-            users = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userIdentifier);
+            else
+            {
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userIdentifier);
+            }
 
             return users.FirstOrDefault();
         }

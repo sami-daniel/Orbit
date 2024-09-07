@@ -9,9 +9,11 @@ using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
+using Orbit.Filters;
 
 namespace Orbit.Controllers
 {
+    [EnsureUserNotCreated]
     [Route("[controller]")]
     public class AccountController : Controller
     {
