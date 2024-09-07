@@ -8,10 +8,11 @@ using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Filters;
 
 namespace Orbit.Controllers
 {
+    [EnsureUserNotCreated]
     [Authorize]
     public class UserController : Controller
     {
