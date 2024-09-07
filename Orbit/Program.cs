@@ -97,7 +97,8 @@ namespace Orbit
 
             app.UseSession();
 
-            app.MapDefaultControllerRoute();
+            app.MapControllerRoute("default",
+                                    pattern: "{controller=account}/{action=index}");
 
             app.MapHub<ChatHub>("/chathub");
 
