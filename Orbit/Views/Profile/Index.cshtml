@@ -23,7 +23,7 @@
 <form class="background-img" id="form-banner" enctype="multipart/form-data">
 
     <input type="file" name="backgroundImg" id="backgroundImg" />
-    <img src="@Url.Action("GetBannerImage", new { userID = Model.UserId })" alt="" />
+    <img src="@Url.Action("GetBannerImage", new { userID = Model.UserName })" alt="" />
     <label class="text-img" for="backgroundImg">Add an Image</label>
 </form>
 
@@ -32,7 +32,7 @@
         <form class="profile-img" id="profile-image-form" asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data">
 
             <input type="file" name="profileImage" id="profileImage" />
-            <img src="@Url.Action("GetProfileImage", new { userID = Model.UserId })" alt="~/images/image-profile.png" />
+            <img src="@Url.Action("GetProfileImage", new { userID = Model.UserName })" alt="~/images/image-profile.png" />
             <label class="profile-text-image" for="profileImage">Add an Image</label>
         </form>
         <div class="profile-description">
