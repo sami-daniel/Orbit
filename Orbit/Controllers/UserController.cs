@@ -14,6 +14,7 @@ namespace Orbit.Controllers
 {
     [EnsureUserNotCreated]
     [Authorize]
+    [Route("[controller]")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
