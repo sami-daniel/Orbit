@@ -28,8 +28,22 @@ namespace Orbit.Controllers
 
         [HttpGet]
         [Route("")]
-        public IActionResult Index()
+        public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
         {
+            if (formID == 1)
+            {
+                ViewBag.LoginModalActive = modalActive;
+                ViewBag.LoginError = errorMessage;
+            }
+            else if (formID == 2)
+            {
+                ViewBag.RegisModalActive = modalActive;
+                ViewBag.UserEmailError = userEmailError;
+                ViewBag.UserNameError = userNameError;
+                ViewBag.UserProfileError = userProfileError;
+                ViewBag.UserPasswordError = userPasswordError;
+            }
+
             return View();
         }
 
@@ -77,7 +91,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
 
-            return RedirectToActionPermanent("", "Profile");
+            return RedirectToActionPermanent("", "User");
         }
 
         [HttpPost]
@@ -120,7 +134,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
 
-            return RedirectToActionPermanent("", "Profile");
+            return RedirectToActionPermanent("", "User");
         }
 
         [HttpGet]
