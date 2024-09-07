@@ -13,12 +13,12 @@ using Orbit.Infrastructure.Data.Contexts;
 namespace Orbit.Controllers
 {
     [Authorize]
-    public class ProfileController : Controller
+    public class UserController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public ProfileController(IMapper mapper ,IUserService userService)
+        public UserController(IMapper mapper ,IUserService userService)
         {
             _userService = userService;
             _mapper = mapper;
@@ -33,6 +33,7 @@ namespace Orbit.Controllers
                 Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
                 var user = await _userService.GetUserByIdentifierAsync(usr.Value);
                 userResponse = _mapper.Map<User, UserResponse>(user!);
+                HttpContext.Session.SetObject("User", userResponse);
             }
 
             ViewBag.EditSectionUserName = userResponse!.UserName;
