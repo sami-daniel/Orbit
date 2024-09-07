@@ -1,7 +1,5 @@
-﻿@using Orbit.DTOs;
-@using Orbit.Domain.Entities
-
-@model User
+﻿
+@model UserResponse
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
@@ -24,7 +22,7 @@
 <main class="content-main">
     <div class="profiles-specs">
         <div class="profile-img">
-            <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserId })" alt="Profile Image" />
+            <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserName })" alt="Profile Image" />
         </div>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
@@ -40,8 +38,8 @@
                 }
             </p>
             <div class="profile-followers">
-                <p>Followers <span>@Model.Users!.Count</span></p>
-                <p>Following <span>@Model.Followers!.Count</span></p>
+                <p>Followers <span>@Model.Followers!.Count</span></p>
+                <p>Following <span>@Model.Users!.Count</span></p>
             </div>
         </div>
 
@@ -51,7 +49,7 @@
     </div>
 
 
-    @if(Model.IsPrivateProfile == 1)
+    @if(Model.IsPrivateProfile == true)
     {
         
         <div class="navigation-bar" display="none">
@@ -92,9 +90,9 @@
 
                 var formData = new FormData();
 
-                formData.append('id', @Model.UserId);
+                formData.append('id', '@Model.UserName');
                 $.ajax({
-                    url: '/Notifications/Index',
+                    url: '/notifications/Index',
                     type: 'POST',
                     data: {
                         user: "@Model.UserName",
@@ -108,10 +106,10 @@
                     }
                 });
 
-                formData.append('id', @Model.UserId);
+                formData.append('id', '@Model.UserName');
                 formData.append('followerUserName', '@ViewBag.ViewExternalUsernameFollower');
                 $.ajax({
-                    url: '/Profile/Follow',
+                    url: '/user/Follow',
                     type: 'POST',
                     data: formData,
                     processData: false,

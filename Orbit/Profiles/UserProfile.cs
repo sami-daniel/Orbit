@@ -19,9 +19,27 @@ public class UserProfile : Profile
                  .ForMember(dest => dest.IsPrivateProfile, opt => opt.MapFrom(src => src.IsPrivateProfile == "on" ? 1UL : 0UL));
 
         CreateMap<User, UserResponse>()
-                .ForMember(dest => dest.IsPrivateProfile, opt => opt.MapFrom(src => src.IsPrivateProfile == 1UL))
-                .PreserveReferences()
-                .ForMember(dest => dest.Followers, opt => opt.MapFrom(src => src.Followers.Select(f => f.Followers)))
-                .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users.Select(u => u.Users)));
+            .ForMember(dest => dest.IsPrivateProfile, opt => opt.MapFrom(src => src.IsPrivateProfile == 1UL))
+            .PreserveReferences()
+            .ForMember(dest => dest.Followers, opt => opt.MapFrom(src => src.Followers.Select(f => new UserResponse
+            {
+                UserName = f.UserName,
+                UserDescription = f.UserDescription,
+                UserEmail = f.UserEmail,
+                UserProfileBannerImageByteType = f.UserProfileBannerImageByteType,
+                UserProfileImageByteType = f.UserProfileImageByteType,
+                UserProfileName = f.UserProfileName,
+                IsPrivateProfile = f.IsPrivateProfile == 1UL,
+            })))
+            .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users.Select(u => new UserResponse
+            {
+                UserName = u.UserName,
+                UserDescription = u.UserDescription,
+                UserEmail = u.UserEmail,
+                UserProfileBannerImageByteType = u.UserProfileBannerImageByteType,
+                UserProfileImageByteType = u.UserProfileImageByteType,
+                UserProfileName = u.UserProfileName,
+                IsPrivateProfile = u.IsPrivateProfile == 1UL,
+            })));
     }
 }

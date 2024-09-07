@@ -16,23 +16,23 @@
         <span>Olá, @(Html.Raw(Model.UserProfileName ?? ""))</span>
     </div>
     <div class="logout-btn">
-        <a class="btn-logout" href="~/Account/Logout">Logout</a>
+        <a class="btn-logout" href="~/account/log-out">Logout</a>
     </div>
 </header>
 
 <form class="background-img" id="form-banner" enctype="multipart/form-data">
 
     <input type="file" name="backgroundImg" id="backgroundImg" />
-    <img src="@Url.Action("GetBannerImage", new { userID = Model.UserName })" alt="" />
+    <img src="@Url.Action("getbannerimage", new { userID = Model.UserName })" alt="" />
     <label class="text-img" for="backgroundImg">Add an Image</label>
 </form>
 
 <main class="content-main">
     <div class="profiles-specs">
-        <form class="profile-img" id="profile-image-form" asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data">
+        <form class="profile-img" id="profile-image-form" action="user/updateprofileimage" enctype="multipart/form-data">
 
             <input type="file" name="profileImage" id="profileImage" />
-            <img src="@Url.Action("GetProfileImage", new { userID = Model.UserName })" alt="~/images/image-profile.png" />
+            <img src="@Url.Action("getprofileimage", new { userID = Model.UserName })" alt="~/images/image-profile.png" />
             <label class="profile-text-image" for="profileImage">Add an Image</label>
         </form>
         <div class="profile-description">
@@ -110,7 +110,7 @@
                 var formData = new FormData($('#profile-image-form')[0]);
 
                 $.ajax({
-                    url: '/Profile/UploadProfileImage',
+                    url: '/user/UploadProfileImage',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -129,7 +129,7 @@
                 var formData = new FormData($('#form-banner')[0]);
 
                 $.ajax({
-                    url: '/Profile/UploadBannerImage',
+                    url: '/user/UploadBannerImage',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -149,9 +149,9 @@
                 event.preventDefault();
 
                 var formData = new FormData($('#form-to-edit')[0]);
-
+                formData.append('id', '@Model.UserName');
                 $.ajax({
-                    url: '/Profile/UpdateProfile',
+                    url: '/user/UpdateProfile',
                     type: 'PUT',
                     data: formData,
                     processData: false,

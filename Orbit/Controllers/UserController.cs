@@ -9,6 +9,7 @@ using Orbit.Domain.Entities;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 using Orbit.Filters;
+using Orbit.Infrastructure.Data.Contexts;
 
 namespace Orbit.Controllers
 {
@@ -19,7 +20,7 @@ namespace Orbit.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserController(IMapper mapper ,IUserService userService)
+        public UserController(IMapper mapper, IUserService userService)
         {
             _userService = userService;
             _mapper = mapper;
@@ -28,14 +29,10 @@ namespace Orbit.Controllers
         public async Task<IActionResult> Index()
         {
             UserResponse? userResponse = HttpContext.Session.GetObject<UserResponse>("User");
-
-            if (userResponse == null)
-            {
-                Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
-                var user = await _userService.GetUserByIdentifierAsync(usr.Value);
-                userResponse = _mapper.Map<User, UserResponse>(user!);
-                HttpContext.Session.SetObject("User", userResponse);
-            }
+            Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
+            var user = await _userService.GetAllUserAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
+            userResponse = _mapper.Map<User, UserResponse>(user.First());
+            HttpContext.Session.SetObject("User", userResponse);
 
             ViewBag.EditSectionUserName = userResponse!.UserName;
             ViewBag.EditSectionProfileName = userResponse!.UserProfileName;
@@ -44,170 +41,162 @@ namespace Orbit.Controllers
             return View(userResponse);
         }
 
-        //[HttpGet]
-        //[Route("[controller]/watch/{username}")]
-        //public async Task<IActionResult> ViewExternal(string username)
-        //{
-        //    var users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == username);
-        //    var user = await users.FirstOrDefaultAsync();
+        [HttpGet]
+        [Route("{username}")]
+        public async Task<IActionResult> ViewExternal(string username, string? returnTo)
+        {
+            var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers,Users");
+            var user = users.FirstOrDefault();
 
-        //    Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
-        //    var usersAL = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == usr.Value);
-        //    var userAl = await usersAL.FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return RedirectToRoute(returnTo);
+            }
 
-        //    ViewBag.ViewExternalUsernameFollower = userAl!.UserName;
+            Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
+            var usersAL = await _userService.GetAllUserAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
+            var userAl = usersAL.First();
 
-        //    if (user is null)
-        //        return NotFound();
+            ViewBag.ViewExternalUsernameFollower = userAl!.UserName;
 
-        //    return View(user);
-        //}
+            if (user is null)
+                return NotFound();
 
-        //[HttpGet]
-        //public async Task<IActionResult> Search([FromQuery] string username)
-        //{
-        //    if (string.IsNullOrEmpty(username))
-        //    {
-        //        return BadRequest("Query não pode ser vazia!");
-        //    }
+            return View(_mapper.Map<User, UserResponse>(user));
+        }
 
-        //    string normalizeQuery = username.ToLower().Trim();
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Search([FromQuery] string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return BadRequest("Query não pode ser vazia!");
+            }
 
-        //    var profiles = await _userService.GetAllUserAsync();
-        //    profiles = profiles.Where(u => u.UserName.Contains(username));
-        //    var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserProfileImageByteType });
+            string normalizeQuery = username.ToLower().Trim();
 
-        //    return Ok(matchProfiles);
-        //}
+            var profiles = await _userService.GetAllUserAsync();
+            profiles = profiles.Where(u => u.UserName.Contains(username));
+            var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserProfileImageByteType });
 
-        //[HttpPost]
-        //public async Task<IActionResult> UploadProfileImage(IFormFile profileImage)
-        //{
-        //    if (profileImage != null && profileImage.Length > 0)
-        //    {
-        //        using (var memoryStream = new MemoryStream())
-        //        {
-        //            await profileImage.CopyToAsync(memoryStream);
-        //            var us = HttpContext.Session.GetObject<User>("User")!.UserName;
-        //            var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
+            return Ok(matchProfiles);
+        }
 
-        //            profile.UserProfileImageByteType = memoryStream.ToArray();
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UploadProfileImage(IFormFile profileImage, [FromServices] ApplicationDbContext context)
+        {
+            if (profileImage != null && profileImage.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await profileImage.CopyToAsync(memoryStream);
+                    var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                    var profile = await _userService.GetUserByIdentifierAsync(us);
 
-        //            _context.Update(profile);
-        //            await _context.SaveChangesAsync();
-        //        }
+                    profile!.UserProfileImageByteType = memoryStream.ToArray();
+                    await context.SaveChangesAsync();
+                }
 
-        //        return NoContent();
-        //    }
+                return NoContent();
+            }
 
-        //    return BadRequest(profileImage);
-        //}
+            return BadRequest(profileImage);
+        }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetProfileImage([FromQuery] uint userID)
-        //{
-        //    var imageEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userID);
-        //    if (imageEntity == null || imageEntity.UserProfileImageByteType == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProfileImage([FromQuery] string userID)
+        {
+            var imageEntity = await _userService.GetUserByIdentifierAsync(userID);
+            if (imageEntity == null || imageEntity.UserProfileImageByteType == null)
+            {
+                return NotFound();
+            }
 
-        //    return File(imageEntity.UserProfileImageByteType, "image/png");
-        //}
+            return File(imageEntity.UserProfileImageByteType, "image/png");
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> UploadBannerImage(IFormFile backgroundImg)
-        //{
-        //    if (backgroundImg != null && backgroundImg.Length > 0)
-        //    {
-        //        using (var memoryStream = new MemoryStream())
-        //        {
-        //            await backgroundImg.CopyToAsync(memoryStream);
-        //            var us = HttpContext.Session.GetObject<User>("User")!.UserName; // This is unstable because
-        //                                                                            // the image only can be
-        //                                                                            // updated if the user is recently
-        //                                                                            // logged, because the profile controller
-        //                                                                            // don't set the User in the section, 
-        //                                                                            // but only verify if is alredy on session.
-        //                                                                            // Otherwhise, just proceed the flow
-        //            var profile = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UploadBannerImage(IFormFile backgroundImg, [FromServices] ApplicationDbContext context)
+        {
+            if (backgroundImg != null && backgroundImg.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await backgroundImg.CopyToAsync(memoryStream);
+                    var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                    var profile = await _userService.GetUserByIdentifierAsync(us);
 
-        //            profile.UserProfileBannerImageByteType = memoryStream.ToArray();
+                    profile!.UserProfileBannerImageByteType = memoryStream.ToArray();
+                    await context.SaveChangesAsync();
+                }
 
-        //            _context.Update(profile);
-        //            await _context.SaveChangesAsync();
-        //        }
+                return NoContent();
+            }
 
-        //        return NoContent();
-        //    }
+            return BadRequest(backgroundImg);
+        }
 
-        //    return BadRequest(backgroundImg);
-        //}
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Follow(string id, string followerUserName, [FromServices] ApplicationDbContext applicationDbContext)
+        {
+            if (followerUserName == null)
+            {
+                return BadRequest("Follower user name não pode ser vazio!");
+            }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Follow(int id, string followerUserName)
-        //{
-        //    if (followerUserName == null)
-        //    {
-        //        return BadRequest("Follower user name não pode ser vazio!");
-        //    }
+            var userToBeFollowed = await _userService.GetUserByIdentifierAsync(id);
+            var follower = await _userService.GetUserByIdentifierAsync(followerUserName);
 
-        //    var usrToFollow = await _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserId == id).FirstAsync();
-        //    var follower = await _context.Users.Where(u => u.UserName == followerUserName).FirstOrDefaultAsync();
+            userToBeFollowed!.Followers.Add(follower!);
+            await applicationDbContext.SaveChangesAsync();
 
-        //    usrToFollow.Users.Add(follower!);
+            return Ok();
+        }
 
-        //    await _context.SaveChangesAsync();
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetBannerImage([FromQuery] string userID)
+        {
+            var imageEntity = await _userService.GetUserByIdentifierAsync(userID);
+            if (imageEntity == null || imageEntity.UserProfileBannerImageByteType == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok();
-        //}
+            return File(imageEntity.UserProfileBannerImageByteType, "image/png");
+        }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetBannerImage([FromQuery] uint userID)
-        //{
-        //    var imageEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userID);
-        //    if (imageEntity == null || imageEntity.UserProfileBannerImageByteType == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPut]
+        public async Task<IActionResult> UpdateProfile(User user, string id, [FromServices] ApplicationDbContext context)
+        {
+            var usr = await _userService.GetUserByIdentifierAsync(id);
 
-        //    return File(imageEntity.UserProfileBannerImageByteType, "image/png");
-        //}
+            if (usr == null)
+            {
+                return NotFound();
+            }
 
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateProfile(User user, int id)
-        //{
-        //    var usr = await _context.Users.FindAsync(uint.Parse(id.ToString()));
+            usr.UserProfileName = user.UserProfileName;
+            usr.UserName = user.UserName;
+            usr.UserDescription = user.UserDescription;
+            await context.SaveChangesAsync();
+            HttpContext.Session.Clear();
+            HttpContext.Session.SetObject("User", usr);
 
-        //    if (usr == null)
-        //    {
-        //        return NotFound();
-        //    }
+            return Ok();
+        }
 
-        //    usr.UserProfileName = user.UserProfileName;
-        //    usr.UserName = user.UserName;
-        //    usr.UserDescription = user.UserDescription;
-        //    HttpContext.Session.Clear();
-        //    HttpContext.Session.SetObject("User", usr);
-        //    await _context.SaveChangesAsync();
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfileDescription(string desc, [FromServices] ApplicationDbContext context)
+        {
+            var us = HttpContext.Session.GetObject<User>("User")!.UserName;
 
-        //    return Ok();
-        //}
+            var profileToUpdate = await _userService.GetUserByIdentifierAsync(us);
 
-        //[HttpPost]
-        //public async Task<IActionResult> UpdateProfileDescription(string desc)
-        //{
-        //    var us = HttpContext.Session.GetObject<User>("User")!.UserName;
+            profileToUpdate!.UserDescription = desc;
 
-        //    var profileToUpdate = await _context.Users.FirstOrDefaultAsync(u => u.UserName == us);
+            await context.SaveChangesAsync();
 
-        //    profileToUpdate!.UserDescription = desc;
-
-        //    _context.Users.Update(profileToUpdate);
-
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }

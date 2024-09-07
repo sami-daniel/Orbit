@@ -93,7 +93,7 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
 
-            return RedirectToActionPermanent("", "User");
+            return RedirectToActionPermanent("", "user");
         }
 
         [HttpPost]
