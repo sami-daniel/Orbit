@@ -400,16 +400,61 @@ div label {
     animation: fadeOut 0.5s forwards;
 }
 
-@media screen and (max-width: 768px) {
-    .main-account .container div p{
-        width:auto;
+/*
+    Responsividade
+*/
+
+@media screen and (max-width: 767px) {
+    .main-account .container div p {
+        width: auto;
     }
 
     .main-account footer div {
         text-align: center;
     }
 
-    .main-account footer div button:last-child {
-        margin-top: 3%;
+        .main-account footer div button:last-child {
+            margin-top: 3%;
+        }
+
+    .main-account .modal-background .content {
+        width: 100%;
+    }
+
+    .main-account .modal-background .content .div-login .login-options .btn-options {
+        width:75%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .main-account .modal-background .content {
+        width: 75%;
+    }
+
+    .main-account .modal-background .content .div-login .login-options .btn-options {
+            width: 60%;
+    }
+}
+
+
+/*
+    Responsividade para o Galaxy Z Fold ou dispositivos com telas abaixo de 400px
+*/
+
+@media screen and (max-width: 400px){
+    .main-account .modal-background .content {
+        width: 100%;
+    }
+
+    .form-title{
+        font-size: 1.2em;
+    }
+
+    .main-account .modal-background .content .div-login .login-options .btn-options {
+        width: 90%;
+    }
+
+    .main-account .modal-background .content .div-signIn .login-options .btn-options {
+        width: 90%;
     }
 }
