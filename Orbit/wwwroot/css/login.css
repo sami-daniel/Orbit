@@ -140,7 +140,7 @@ body.modal-open {
 
 .content {
   border: 1px solid rgb(255, 255, 255, 0.5);
-  width: 30%;
+  width: 50vw;
   min-height: 65vh!important auto;
   border-radius: 5px;
   background-color: black;
@@ -298,7 +298,7 @@ div label {
 }
 
     .content .div-signIn .first-step .login-options .btn-options {
-        width: 60%;
+        min-width: 35%;
         padding: 20px;
         margin-top: 5%;
         display: inline-flex;
@@ -335,7 +335,7 @@ div label {
 }
 
 .content .forms .login-options .btn-options {
-    width: 60%;
+    min-width: 35%;
     padding: 20px;
     margin-top: 2%;
     display: inline-flex;
@@ -404,7 +404,7 @@ div label {
     Responsividade
 */
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 401px) and (max-width: 767px) {
     .main-account .container div p {
         width: auto;
     }
@@ -426,7 +426,7 @@ div label {
     }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (min-width: 768px) and (max-width: 1024px) {
     .main-account .modal-background .content {
         width: 75%;
     }
@@ -442,6 +442,16 @@ div label {
 */
 
 @media screen and (max-width: 400px){
+    .main-account footer div {
+        text-align: center;
+    }
+
+        .main-account footer div button:last-child {
+            margin-top: 3%;
+        }
+    .main-account .container div p {
+        width: auto;
+    }
     .main-account .modal-background .content {
         width: 100%;
     }
@@ -456,5 +466,18 @@ div label {
 
     .main-account .modal-background .content .div-signIn .login-options .btn-options {
         width: 90%;
+    }
+}
+
+/*
+    Responsividade dos Botoes para telas de computadores
+*/
+
+@media screen and (min-width: 1025px) and (max-width: 1650px){
+    .main-account .modal-background .content .div-login .login-options .btn-options {
+        width: 60%;
+    }
+    .main-account .modal-background .content .div-signIn .login-options .btn-options {
+        width: 60%;
     }
 }
