@@ -399,3 +399,17 @@ div label {
 .fade-out {
     animation: fadeOut 0.5s forwards;
 }
+
+@media screen and (max-width: 768px) {
+    .main-account .container div p{
+        width:auto;
+    }
+
+    .main-account footer div {
+        text-align: center;
+    }
+
+    .main-account footer div button:last-child {
+        margin-top: 3%;
+    }
+}
