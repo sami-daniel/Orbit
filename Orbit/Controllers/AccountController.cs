@@ -50,7 +50,7 @@ namespace Orbit.Controllers
         }
 
         [HttpPost]
-        [Route("create-user")]
+        [Route("/create-user")]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())

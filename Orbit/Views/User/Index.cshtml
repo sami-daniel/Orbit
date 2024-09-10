@@ -23,7 +23,7 @@
 <form class="background-img" id="form-banner" enctype="multipart/form-data">
 
     <input type="file" name="backgroundImg" id="backgroundImg" />
-    <img src="@Url.Action("getbannerimage", new { userID = Model.UserName })" alt="" />
+    <img src="@Url.Action("getbannerimage", new { userID = Model.UserName })" alt="Banner Image"/>
     <label class="text-img" for="backgroundImg">Add an Image</label>
 </form>
 
@@ -32,6 +32,7 @@
         <form class="profile-img" id="profile-image-form" action="user/updateprofileimage" enctype="multipart/form-data">
 
             <input type="file" name="profileImage" id="profileImage" />
+            
             <img src="@Url.Action("getprofileimage", new { userID = Model.UserName })" alt="~/images/image-profile.png" />
             <label class="profile-text-image" for="profileImage">Add an Image</label>
         </form>
@@ -198,4 +199,5 @@
 
         connection.start().catch(err => console.error(err.toString()));
     </script>
+
 }

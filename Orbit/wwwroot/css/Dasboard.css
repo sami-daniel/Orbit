@@ -57,7 +57,7 @@ body{
 
 .background-img{
     width:100%;
-    height:30vh;
+    height:50vh;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -65,25 +65,30 @@ body{
     transition: .4s;
     cursor:pointer;
     overflow: hidden;
+    position:relative;
 }
 
-.background-img .text-img{
-    text-transform:uppercase;
-    letter-spacing:2px;
-    font-weight:800;
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:.4s;
-}
+    .background-img .text-img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        background-color: rgba(0,0,0,.5);
+        cursor: pointer;
+        font-size: 1.5em;
+        transition: .3s all linear;
+    }
 
     .background-img img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display:none;
+        display:block;
     }
 
 .background-img input[type="file"]{
@@ -95,7 +100,9 @@ body{
 }
 
 .background-img:hover .text-img{
-    color:black;
+    color:white;
+    opacity:1;
+    
 }
 
 .content-main{
@@ -183,7 +190,7 @@ body{
 
 }
 
-.content-main .profiles-specs .profile-img a:hover label{
+.content-main .profiles-specs .profile-img:hover label{
     opacity:1;
 }
 
