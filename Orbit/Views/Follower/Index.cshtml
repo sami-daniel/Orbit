@@ -13,10 +13,8 @@
         @foreach (var follower in Model)
         {
             <div class="users-containers">
-                <h3>@follower.UserName</h3>
-                <p>@follower.UserEmail</p>
-
-                @*para cada seguidor que o usuario tem isso daqui vai repetir essa div*@
+                <a href="../user/@follower.UserName"><h3>@follower.UserName</h3></a>
+                <a href="../user/@follower.UserName">@follower.UserEmail</a>
             </div>
         }
     </div>
