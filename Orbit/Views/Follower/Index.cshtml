@@ -1,0 +1,14 @@
+﻿@model IEnumerable<User>
+
+<h2>Seguidores</h2>
+
+@foreach(var follower in Model)
+{
+    <div>
+        <h3>@follower.UserName</h3>
+        <p>@follower.UserEmail</p>
+        etc...
+
+        @*para cada seguidor que o usuario tem isso daqui vai repetir essa div*@
+    </div>
+}

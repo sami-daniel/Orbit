@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Orbit.Controllers
+namespace Orbit.Controllers;
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    [Route("/")]
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View("Views/Shared/Error.cshtml");
-        }
-
+        return RedirectToActionPermanent("index", "account");
     }
 }

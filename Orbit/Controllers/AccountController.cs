@@ -1,33 +1,35 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Orbit.Application.Dtos.Requests;
-using Orbit.Application.Dtos.Responses;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
+using Orbit.DTOs.Requests;
+using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 using Orbit.Filters;
-using Orbit.Infrastructure.Data.Contexts;
-using System.Security.Claims;
 
 namespace Orbit.Controllers
 {
-    [EnsureProfileNotCreated]
+    [EnsureUserNotCreated]
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
+        public AccountController(IMapper mapper, IUserService userService, IWebHostEnvironment webHostEnvironment)
         {
+            _mapper = mapper;
             _userService = userService;
             _webHostEnvironment = webHostEnvironment;
-            _context = context;
         }
 
+        [HttpGet]
+        [Route("")]
         public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
         {
             if (formID == 1)
@@ -47,14 +49,8 @@ namespace Orbit.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult CreateUser()
-        {
-            return RedirectToAction("", "Profile");
-        }
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Route("/create-user")]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
@@ -75,22 +71,9 @@ namespace Orbit.Controllers
                 return BadRequest(ModelState);
             }
 
-            User user;
+            var user = _mapper.Map<User>(userAddRequest);
 
-            try
-            {
-                var usr = userAddRequest.ToUser();
-                await _context.Users.AddAsync(usr);
-                await _context.SaveChangesAsync();
-                user = usr; 
-            }
-            catch (ArgumentException ex)
-            {
-                ViewBag.SummaryErrors = ex.Message;
-                ViewBag.RegisModalActive = true;
-
-                return RedirectToAction("Index", new { modalActive = true });
-            }
+            await _userService.AddUserAsync(user);
 
             List<Claim> claims =
             [
@@ -108,14 +91,14 @@ namespace Orbit.Controllers
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-            HttpContext.Session.SetObject("User", user);
+            HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
 
-            return RedirectToActionPermanent("", "Profile");
+            return RedirectToActionPermanent("", "user");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromForm] string? input_login, [FromForm] string? password)
+        [Route("login")]
+        public async Task<IActionResult> Login([FromForm] string? inputLogin, [FromForm] string? password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
             // porem, para o model binder realizar a vinculação de dados, o nome do
@@ -123,26 +106,12 @@ namespace Orbit.Controllers
             // na página, então o nome do parametro permanece inalterado, assumindo sua
             // dupla função
 
-            if (input_login == null || password == null)
+            if (inputLogin == null || password == null)
             {
                 return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
-            input_login = input_login.Trim();
-            password = password.Trim();
-
-            IEnumerable<User> users;
-
-            if (input_login.Contains('@'))
-            {
-                users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserEmail == input_login);
-            }
-            else
-            {
-                users = _context.Users.Include(u => u.Users).Include(u => u.Followers).Where(u => u.UserName == input_login);
-            }
-
-            var user = users.FirstOrDefault();
+            var user = await _userService.GetUserByIdentifierAsync(inputLogin);
 
             if (user == null || password != user.UserPassword)
             {
@@ -165,42 +134,17 @@ namespace Orbit.Controllers
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-            HttpContext.Session.SetObject("User", user);
+            HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
 
-            return RedirectToActionPermanent("", "Profile");
+            return RedirectToActionPermanent("", "User");
         }
 
         [HttpGet]
+        [Route("log-out")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<bool> CheckEmail([FromForm] string email)
-        {
-            if (string.IsNullOrEmpty(email))
-            {
-                return true;
-            }
-
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(new { UserEmail = email });
-
-            return !users.Any();
-        }
-
-        [HttpPost]
-        public async Task<bool> CheckUsername([FromForm] string username)
-        {
-            if (string.IsNullOrEmpty(username))
-            {
-                return true;
-            }
-
-            IEnumerable<UserResponse> users = await _userService.FindUsersAsync(new { UserName = username });
-
-            return !users.Any();
         }
     }
 }

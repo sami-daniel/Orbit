@@ -1,85 +1,150 @@
-﻿using Orbit.Application.Dtos.Requests;
-using Orbit.Application.Dtos.Responses;
-using Orbit.Application.Helpers;
+﻿using System.Linq.Expressions;
+using Orbit.Application.Exceptions;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
-using Orbit.Infrastructure.Repositories.Interfaces;
+using Orbit.Infrastructure.UnitOfWork.Interfaces;
 
 namespace Orbit.Application.Services
 {
+    /// <summary>
+    /// Serviço para gerenciar operações relacionadas ao usuário.
+    /// </summary>
     public class UserService : IUserService
     {
-#pragma warning disable CS0618
         private readonly IUnitOfWork _unitOfWork;
 
+        /// <summary>
+        /// Inicializa uma nova instância da classe <see cref="UserService"/>.
+        /// </summary>
+        /// <param name="unitOfWork">A unidade de trabalho para acesso ao repositório.</param>
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UserResponse> AddUserAsync(UserAddRequest userAddRequest)
+        /// <summary>
+        /// Adiciona um novo usuário de forma assíncrona.
+        /// </summary>
+        /// <param name="user">O objeto User a ser adicionado.</param>
+        /// <exception cref="UserAlredyExistsException">Lançada quando um usuário com o mesmo identificador já existe.</exception>
+        public async Task AddUserAsync(User user)
         {
-            ArgumentNullException.ThrowIfNull(nameof(userAddRequest));
-            if (!ValidationHelper.IsValid(userAddRequest))
+            try
             {
-                throw new ArgumentException("Dados invalidos para o usuario!");
+                UserServiceHelpers.ValidateUser(user);
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
-            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.FindAsync(new { UserEmail = userAddRequest.UserEmail});
-            IEnumerable<Domain.Entities.User> usernames = await _unitOfWork.User.FindAsync(new { UserName = userAddRequest.UserName });
-
-            if (users.Any())
+            using (var transaction = await _unitOfWork.StartTransactionAsync())
             {
-                throw new ArgumentException("E-mail já cadastrado anteriormente!");
-            }
-            if (usernames.Any())
-            {
-                throw new ArgumentException("Username já cadastrado anteriormente!");
-            }
+                try
+                {
+                    await _unitOfWork.UserRepository.InsertAsync(user);
+                    await _unitOfWork.CompleteAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
 
-            Domain.Entities.User user = userAddRequest.ToUser();
-            await _unitOfWork.User.AddAsync(user);
-            _ = _unitOfWork.Complete();
-
-            return user.ToUserResponse();
+                    throw new UserAlredyExistsException("O usuário com esse identificador já existe!");
+                }
+            }
         }
 
-        public async Task<IEnumerable<UserResponse>> FindUsersAsync(object conditions)
+        /// <summary>
+        /// Obtém todos os usuários de forma assíncrona.
+        /// </summary>
+        /// <param name="filter">Expressão para filtrar os usuários.</param>
+        /// <param name="orderBy">Função para ordenar os usuários.</param>
+        /// <param name="includeProperties">Propriedades a serem incluídas na consulta.</param>
+        /// <returns>Uma coleção de objetos User.</returns>
+        public async Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "")
         {
-            var filteredUsers = await _unitOfWork.User.FindAsync(conditions);
-            return filteredUsers.Select(u => u.ToUserResponse());
+            return await _unitOfWork.UserRepository.GetAsync(filter, orderBy, includeProperties);
         }
 
-        public async Task<IEnumerable<UserResponse>> FindUsersAsync(object conditions, params string[] navProperties)
+        /// <summary>
+        /// Obtém um usuário pelo identificador de forma assíncrona.
+        /// </summary>
+        /// <param name="userIdentifier">O identificador do usuário (nome de usuário ou email).</param>
+        /// <returns>O objeto User correspondente ou null se não encontrado.</returns>
+        public async Task<User?> GetUserByIdentifierAsync(string userIdentifier)
         {
-            var filteredUsers = await _unitOfWork.User.FindAsync(conditions, navProperties);
-            return filteredUsers.Select(u => u.ToUserResponse());
-        }
+            IEnumerable<User>? users = null;
 
-        [Obsolete("Esse metodo retorna uma lista completa de todos os usuários. A iteração sobre essa coleção causará instabilidade e uso excessivo de recursos. Use FindAsync em vez de GetAllUsersAsync")]
-        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
-        {
-            IEnumerable<Domain.Entities.User> users = await _unitOfWork.User.GetAllAsync();
-            List<UserResponse> usersResponses = [];
-            foreach (Domain.Entities.User user in users)
+            if (userIdentifier.Contains('@'))
             {
-                usersResponses.Add(user.ToUserResponse());
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == userIdentifier);
+            }
+            else
+            {
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userIdentifier);
             }
 
-            return usersResponses;
+            return users.FirstOrDefault();
         }
 
-        
-        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync(params string[] navProperties)
+        /// <summary>
+        /// Atualiza um usuário existente de forma assíncrona.
+        /// </summary>
+        /// <param name="userIdentifier">O identificador do usuário (nome de usuário ou email).</param>
+        /// <param name="updatedUser">O objeto User com as informações atualizadas.</param>
+        /// <exception cref="UserAlredyExistsException">Lançada quando um usuário com o mesmo identificador já existe.</exception>
+        /// <exception cref="UserNotFoundException">Lançada quando o usuário com o identificador fornecido não é encontrado.</exception>
+        public async Task UpdateUserAsync(string userIdentifier, User updatedUser)
         {
-            IEnumerable<User> users = await _unitOfWork.User.GetAllAsync(navProperties);
-            List<UserResponse> userResponses = [];
-            foreach (User user in users)
+            IEnumerable<User>? users = null;
+
+            try
             {
-                userResponses.Add(user.ToUserResponse());
+                UserServiceHelpers.ValidateUser(updatedUser);
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
-            return userResponses;
+            if (userIdentifier.Contains('@'))
+            {
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == userIdentifier);
+            }
+
+            users = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userIdentifier);
+
+            var user = users.FirstOrDefault();
+
+            if (user != null)
+            {
+                user.UserEmail = updatedUser.UserEmail;
+                user.UserDescription = updatedUser.UserDescription;
+                user.UserProfileImageByteType = updatedUser.UserProfileImageByteType;
+                user.UserProfileName = updatedUser.UserProfileName;
+                user.UserPassword = updatedUser.UserPassword;
+                user.UserName = updatedUser.UserName;
+
+                using (var transaction = await _unitOfWork.StartTransactionAsync())
+                {
+                    try
+                    {
+                        await _unitOfWork.CompleteAsync();
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+
+                        throw new UserAlredyExistsException("O usuário com esse identificador já existe!");
+                    }
+                }
+            }
+            else
+            {
+                throw new UserNotFoundException("O usuário com esse identificador não foi encontrado!");
+            }
         }
     }
 }

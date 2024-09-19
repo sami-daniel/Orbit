@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Orbit.Domain\Orbit.Domain.csproj" />
     <ProjectReference Include="..\Orbit.Infrastructure\Orbit.Infrastructure.csproj" />
   </ItemGroup>
