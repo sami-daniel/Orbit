@@ -14,7 +14,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 
 - [ASP.NET Core SDK](https://dotnet.microsoft.com/download) (versão 8.0 ou superior)
 - [Git](https://git-scm.com/downloads)
-- [MySql](https://dev.mysql.com/downloads/workbench/)
+- [MySql](https://dev.mysql.com/downloads/mysql/)
 
 ## Instruções para Rodar o Projeto 
 
@@ -23,21 +23,9 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 Abra o terminal e execute o seguinte comando para clonar o repositório do projeto:
 
 ``` sh
-git clone -b bedrock https://github.com/sami-daniel/orbit.git
+git clone https://github.com/sami-daniel/orbit.git
 cd Orbit
 ```
-
-### Passo 2: Abrir o Projeto
-
-No terminal abra o projeto em um editor:
-# Visual Studio Code
-``` sh
-code .
-```
-OU
-
-# Visual Studio
-Dois cliques no arquivo .sln
 
 ### Passo 3: Restaurar Dependências 
 No terminal restaure as dependências do projeto:
@@ -50,37 +38,77 @@ No terminal compile o projeto:
 ``` sh
 dotnet build
 ```
+### Passo 5: Salvar string de conexão
+Salvar a 'Environment Variable' com a string de conexão do banco de dados. 
+Talvez seja nescessário reiniciar o computador para a variável entrar em vigor: 
+``` PowerSheel
+setx ConnectionStrings__OrbitConnection "server=localhost;database=orbitdatabase;uid={seuusuariodomysql};pwd={suasenhadomysql}" # Essa string pode ser sua string de conexão, desde que habilite conectar com o servidor e ter acesso ao banco
+```
 
-### Passo 5: Script do banco de dados
-No cmd do MySql ou no MySql Workbench rode o script abaixo:
+### Passo 6: Executar o código do banco de dados
+Execute o código a seguir no command line do MySql ou no Workbench
 ``` MySqlCmd
+-- MySQL Workbench Forward Engineering
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-CREATE SCHEMA IF NOT EXISTS `orbitdatabase` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+SHOW WARNINGS;
+-- -----------------------------------------------------
+-- Schema orbitdatabase
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `orbitdatabase` ;
 
+-- -----------------------------------------------------
+-- Schema orbitdatabase
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `orbitdatabase` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+SHOW WARNINGS;
+USE `orbitdatabase` ;
+
+-- -----------------------------------------------------
+-- Table `orbitdatabase`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `orbitdatabase`.`user` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `orbitdatabase`.`user` (
-  `user_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_name` VARCHAR(100) NOT NULL,
-  `user_email` VARCHAR(200) NOT NULL,
-  `user_date_of_birth` DATE NOT NULL,
-  `user_password` VARCHAR(200) NOT NULL,
-  `user_description` MEDIUMTEXT NULL DEFAULT NULL,
-  `user_image_byte_type` LONGBLOB NULL DEFAULT NULL,
-  `user_profile_name` VARCHAR(200) NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) VISIBLE,
-  UNIQUE INDEX `user_email_UNIQUE` (`user_email` ASC) VISIBLE,
-  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE)
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `user_email` VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `user_password` VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `user_profile_name` VARCHAR(255) NOT NULL,
+  `user_description` TEXT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
+  `user_profile_image_byte_type` LONGBLOB NULL DEFAULT NULL,
+  `user_profile_banner_image_byte_type` LONGBLOB NULL DEFAULT NULL,
+  `is_private_profile` BIT(1) NOT NULL,
+  PRIMARY KEY (`user_id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8mb3;
 
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `user_name_UNIQUE` ON `orbitdatabase`.`user` (`user_name` ASC) VISIBLE;
+
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `user_email_UNIQUE` ON `orbitdatabase`.`user` (`user_email` ASC) VISIBLE;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `orbitdatabase`.`follower`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `orbitdatabase`.`follower` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `orbitdatabase`.`follower` (
-  `follower_id` INT(10) UNSIGNED NOT NULL,
-  `user_id` INT(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`follower_id`, `user_id`),
-  INDEX `fk_follower_user1_idx` (`user_id` ASC) VISIBLE,
+  `user_id` INT UNSIGNED NOT NULL,
+  `follower_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`user_id`, `follower_id`),
   CONSTRAINT `follower_ibfk_1`
     FOREIGN KEY (`follower_id`)
     REFERENCES `orbitdatabase`.`user` (`user_id`)
@@ -92,19 +120,16 @@ CREATE TABLE IF NOT EXISTS `orbitdatabase`.`follower` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DEFAULT CHARACTER SET = utf8mb3;
 
+SHOW WARNINGS;
+CREATE INDEX `follower_id` ON `orbitdatabase`.`follower` (`follower_id` ASC) VISIBLE;
+
+SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-```
-
-### Passo 6: Salvar string de conexão
-Salvar a 'Environment Variable' com a string de conexão do banco de dados. 
-Talvez seja nescessário reiniciar o computador para a variável entrar em vigor: 
-``` PowerSheel
-setx ConnectionStrings__OrbitConnection "server=localhost;database=orbitdatabase;uid={seuusuariodomysql};pwd={suasenhadomysql}"
 ```
 
 ### Passo 7: Rodar o Projeto
