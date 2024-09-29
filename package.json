@@ -1,0 +1,19 @@
+{
+  "name": "orbit",
+  "version": "1.0.0",
+  "description": "![version](https://img.shields.io/badge/version-1.2.0-black.svg) <br> ![Orbit](https://img.shields.io/badge/Orbit-black.svg)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "babel-loader": "^9.2.1",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
