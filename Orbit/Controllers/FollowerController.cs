@@ -15,10 +15,11 @@ public class FollowerController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var user = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
-        var users = await _userService.GetUserByIdentifierAsync(user);
+        var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers");
+        var user = users.First();
 
-        var followers = users!.Followers;
+        var followers = user!.Followers;
 
         return View(followers);
     }

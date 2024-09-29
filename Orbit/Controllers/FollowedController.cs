@@ -16,10 +16,12 @@ public class FollowedController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var user = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
-        var users = await _userService.GetUserByIdentifierAsync(user);
+        var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Users");
+        var user = users.First();
 
-        var followed = users!.Users;
-        return View(followed);
+        var followeds = user!.Users;
+
+        return View(followeds);
     }
 }

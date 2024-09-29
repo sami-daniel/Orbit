@@ -1,14 +1,28 @@
 ﻿@model IEnumerable<User>
 
-<h2>Seguidores</h2>
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
 
-@foreach (var followed in Model)
-{
-    <div>
-        <h3>@followed.UserName</h3>
-        <p>@followed.UserEmail</p>
-        etc...
-
-        @*para cada seguidor que o usuario tem isso daqui vai repetir essa div*@
+<header>
+    <h2>Seguindo</h2>
+</header>
+<main class="container">
+    <div class="container-followers">
+        @foreach (var followed in Model)
+        {
+            <div class="users-containers">
+                <a href="../user/@followed.UserName"><h3>@followed.UserName</h3></a>
+                <a href="../user/@followed.UserName">@followed.UserEmail</a>
+            </div>
+        }
     </div>
+</main>
+
+@section links {
+    <link rel="stylesheet" href="~/css/Followers.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+          rel="stylesheet">
 }
