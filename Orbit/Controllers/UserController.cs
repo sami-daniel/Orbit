@@ -184,19 +184,5 @@ namespace Orbit.Controllers
 
             return Ok();
         }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateProfileDescription(string desc, [FromServices] ApplicationDbContext context)
-        {
-            var us = HttpContext.Session.GetObject<User>("User")!.UserName;
-
-            var profileToUpdate = await _userService.GetUserByIdentifierAsync(us);
-
-            profileToUpdate!.UserDescription = desc;
-
-            await context.SaveChangesAsync();
-
-            return NoContent();
-        }
     }
 }

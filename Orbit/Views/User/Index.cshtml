@@ -32,7 +32,7 @@
         <form class="profile-img" id="profile-image-form" action="user/updateprofileimage" enctype="multipart/form-data">
 
             <input type="file" name="profileImage" id="profileImage" />
-            
+
             <img src="@Url.Action("getprofileimage", new { userID = Model.UserName })" alt="~/images/image-profile.png" />
             <label class="profile-text-image" for="profileImage">Add an Image</label>
         </form>
@@ -50,8 +50,8 @@
                 }
             </p>
             <div class="profile-followers">
-                <a href="../Follower">Followers <span>@Model.Followers!.Count</span></a>
-                <a href="../Followed">Following <span>@Model.Users!.Count</span></a>
+                <a href="../interaction/followers">Followers <span>@Model.Followers!.Count</span></a>
+                <a href="../interaction/followed">Following <span>@Model.Users!.Count</span></a>
             </div>
         </div>
 
@@ -192,7 +192,7 @@
                 .fadeIn(400)
                 .delay(5000)
                 .fadeOut(400, function () {
-                    
+
                 });
         });
 
