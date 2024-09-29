@@ -153,6 +153,22 @@ namespace Orbit.Controllers
             return Ok();
         }
 
+        public async Task<IActionResult> Unfollow(string id, string followerUserName, [FromServices] ApplicationDbContext applicationDbContext)
+        {
+            if (followerUserName == null)
+            {
+                return BadRequest("Follower user name não pode ser vazio!");
+            }
+
+            var userToBeFollowed = await _userService.GetAllUserAsync(u => u.UserName == id, includeProperties: "Followers");
+            var follower = await _userService.GetUserByIdentifierAsync(followerUserName);
+
+            userToBeFollowed.First().Followers.Remove(follower!);
+            await applicationDbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBannerImage([FromQuery] string userID)
         {
