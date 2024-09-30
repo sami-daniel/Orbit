@@ -7,11 +7,11 @@
 <main class="container">
     <div class="contacts-container">
         <h2>Contacts</h2>
-        @foreach (var user in Model.Followers)
+        @foreach (var user in Model.Followers.Concat(Model.Users))
         {
-            <div class="contact-user">
+            <div class="contact-user" data-user-id="@user.UserName">
                 <div class="profile-img">
-                    <img src="@Url.Action("GetProfileImage", "Profile", new { userID = user.UserId })" alt="Profile Image" />
+                    <img src="@Url.Action("GetProfileImage", "User", new { userID = user.UserId })" alt="Profile Image" />
                 </div>
                 <div class="profile-name">@user.UserName</div>
             </div>
@@ -43,6 +43,7 @@
 
 @section links {
     <link rel="stylesheet" href="~/css/Chat.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Dasboard.css" asp-append-version="true">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
@@ -56,6 +57,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        let recipient = null;
+
+        $('.contact-user').click((event) => {
+            recipient = $(event.currentTarget).data('user-id');
+            $(event.currentTarget).addClass('active-btn');
+        });
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")
             .build();
@@ -66,17 +74,32 @@
             return console.error(err.toString());
         });
 
-        connection.on("ReceiveMessage", function (user, message) {
-            $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong> ' + message + '</div>');
+        connection.on("ReceiveMessage", function (user, userChecker, message) {
+            if (recipient == userChecker)
+            {
+                $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong> ' + message + '</div>');
+            }
         });
 
         $('#btn-submit').click((event) => {
             event.preventDefault();
             var message = $('#input-message').val();
-            connection.invoke("SendMessage", '@Model.UserName', message).catch(function (err) {
-                return console.error(err.toString());
-            });
-            $('#input-message').val('');
+            if (message != null && message != '')
+            {
+                $('.messages').append('<div class="user-message"><strong>Eu:</strong>' + message + '</div>');
+            }
+            if (recipient)
+            {
+                connection.invoke("SendMessage", recipient, "@Model.UserName", message)
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+                $('#input-message').val('');
+            }
+            else
+            {
+                alert('Selecione um contato para enviar a mensagem');
+            }
         });
     </script>
 

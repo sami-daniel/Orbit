@@ -23,15 +23,18 @@ namespace Orbit.Controllers
         public async Task<IActionResult> Index()
         {
             var name = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var users = await _context.Users.Where(u => u.UserName == name).Include(u => u.Followers).ToListAsync();
+            var users = await _context.Users.Where(u => u.UserName == name)
+                                            .Include(u => u.Users)
+                                            .Include(u => u.Followers)
+                                            .ToListAsync();
             var user = users.FirstOrDefault();
 
             return View(user);
         }
 
-        public async Task<IActionResult> Send(string user, string message)
+        public async Task<IActionResult> Send(string user, string userChecker, string message)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", user, message);
+            await _hubContext.Clients.User(user).SendAsync("ReceiveMessage", user, message);
             return NoContent();
         }
     }
