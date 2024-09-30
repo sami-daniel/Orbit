@@ -153,6 +153,7 @@ namespace Orbit.Controllers
             return Ok();
         }
 
+        [HttpGet("[action]")]
         public async Task<IActionResult> Unfollow(string id, string followerUserName, [FromServices] ApplicationDbContext applicationDbContext)
         {
             if (followerUserName == null)
