@@ -44,14 +44,21 @@
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit" id="btn-follow">Follow Profile</button>
+            @if (Model.Followers.Any(u => u.UserName == ViewBag.ViewExternalUsernameFollower))
+            {
+                <button class="btn-edit" id="btn-unfollow">Unfollow Profile</button>
+            }
+            else
+            {
+                <button class="btn-edit" id="btn-follow">Follow Profile</button>
+            }
         </div>
     </div>
 
 
     @if(Model.IsPrivateProfile == true)
     {
-        
+
         <div class="navigation-bar" display="none">
             <div class="content-nav">Publications</div>
             <div class="content-nav">Projects</div>
@@ -121,6 +128,26 @@
                         alert('Ocorreu um erro ao seguir o perfil: ', xhr.responseText);
                     }
                 });
+            });
+
+            $('#btn-unfollow').click(() => {
+                var formData = new FormData();
+                formData.append('id', '@Model.UserName');
+                formData.append('followerUserName', '@ViewBag.ViewExternalUsernameFollower');
+
+                $.ajax(
+                    {
+                        url: '/user/Unfollow',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response)
+                        {
+                            alert("Unffoloww com sucesso!");
+                        }
+                    }
+                );
             });
         });
     </script>
