@@ -14,7 +14,6 @@ using Orbit.Filters;
 namespace Orbit.Controllers
 {
     [EnsureUserNotCreated]
-    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -29,7 +28,7 @@ namespace Orbit.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("[controller]")]
         public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
         {
             if (formID == 1)
@@ -49,8 +48,7 @@ namespace Orbit.Controllers
             return View();
         }
 
-        [HttpPost]
-        [Route("/create-user")]
+        [HttpPost("[controller]/create-user")]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
@@ -96,8 +94,7 @@ namespace Orbit.Controllers
             return RedirectToActionPermanent("", "user");
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("[controller]/login")]
         public async Task<IActionResult> Login([FromForm] string? inputLogin, [FromForm] string? password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
@@ -139,8 +136,7 @@ namespace Orbit.Controllers
             return RedirectToActionPermanent("", "User");
         }
 
-        [HttpGet]
-        [Route("log-out")]
+        [HttpGet("[controller]/log-out")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
