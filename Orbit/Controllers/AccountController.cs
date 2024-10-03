@@ -105,14 +105,14 @@ namespace Orbit.Controllers
 
             if (inputLogin == null || password == null)
             {
-                return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
+                return RedirectToAction("index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
             var user = await _userService.GetUserByIdentifierAsync(inputLogin);
 
             if (user == null || password != user.UserPassword)
             {
-                return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
+                return RedirectToAction("index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
             List<Claim> claims =
@@ -133,14 +133,14 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
 
-            return RedirectToActionPermanent("", "User");
+            return RedirectToActionPermanent("", "user");
         }
 
         [HttpGet("[controller]/log-out")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index");
+            return RedirectToAction("index");
         }
     }
 }
