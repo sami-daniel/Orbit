@@ -1,6 +1,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
 }
+
 <div id="particles-js"></div>
 <main class="main-account">
     <header>
@@ -22,7 +23,7 @@
         <div class="content">
 
             <div class="div-signIn" id="divSignIn">
-                <form method="POST" action="account/create-user" class="form-name forms" id="reg-form">
+                <form method="POST" action="account/create-user" enctype="application/x-www-form-urlencoded" class="form-name forms" id="reg-form">
                     <div class="first-step">
                         <div class="top-header">
                             <button class="form-btn" id="closeBtn">
@@ -194,10 +195,25 @@
 
     @if (ViewBag.RegisModalActive != null && ViewBag.RegisModalActive == true)
     {
-        <script>
-            $(document).ready(() => {
-                $('#openSignIn').click();
-            });
-        </script>
+        @switch(ViewBag.PartNumber)
+        {
+            case 2:
+                <script>
+                    $(document).ready(() => {
+                        $('#openSignIn').click();
+                        $('#email').val('a@a.com'); // Just an random email to pass the validation
+                        $('#nextBtn').click();
+                        $('#email').val('');
+                    });
+                </script>
+            break;
+            default:
+                <script>
+                    $(document).ready(() => {
+                        $('#openSignIn').click();
+                    });
+                </script>
+            break;
+        }
     }
 }

@@ -3,7 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Orbit.Application.Exceptions;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
@@ -29,21 +29,29 @@ namespace Orbit.Controllers
 
         [HttpGet]
         [Route("[controller]")]
-        public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
+        public IActionResult Index(bool? modalActive,
+                                   string? generalError,
+                                   string? errorMessage,
+                                   int formID,
+                                   string? userEmailError,
+                                   string? userNameError,
+                                   string? userProfileError,
+                                   string? userPasswordError)
         {
             if (formID == 1)
             {
                 ViewBag.LoginModalActive = modalActive;
                 ViewBag.LoginError = errorMessage;
+
+                return View();
             }
-            else if (formID == 2)
-            {
-                ViewBag.RegisModalActive = modalActive;
-                ViewBag.UserEmailError = userEmailError;
-                ViewBag.UserNameError = userNameError;
-                ViewBag.UserProfileError = userProfileError;
-                ViewBag.UserPasswordError = userPasswordError;
-            }
+
+            ViewBag.RegisModalActive = modalActive;
+            ViewBag.UserEmailError = userEmailError;
+            ViewBag.UserNameError = userNameError;
+            ViewBag.UserProfileError = userProfileError;
+            ViewBag.UserPasswordError = userPasswordError;
+            ViewBag.PartNumber = formID;
 
             return View();
         }
@@ -71,7 +79,28 @@ namespace Orbit.Controllers
 
             var user = _mapper.Map<User>(userAddRequest);
 
-            await _userService.AddUserAsync(user);
+            try
+            {
+                await _userService.AddUserAsync(user);
+            }
+            catch (UserAlredyExistsException ex)
+            when (ex.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return RedirectToAction("index", new { modalActive = true,
+                                                       userEmailError = ex.Message});
+            }
+            catch (UserAlredyExistsException ex)
+            when (ex.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return RedirectToAction("index", new { modalActive = true,
+                                                       userNameError = ex.Message,
+                                                       formID = 2});
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("index", new { modalActive = true,
+                                                       generalError = ex.Message});
+            }
 
             List<Claim> claims =
             [

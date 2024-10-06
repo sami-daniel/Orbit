@@ -20,35 +20,23 @@
     </div>
 </header>
 
-<form class="background-img" id="form-banner" enctype="multipart/form-data">
-
+<form class="background-img" id="form-banner">
     <input type="file" name="backgroundImg" id="backgroundImg" />
-    <img src="@Url.Action("getbannerimage", new { userID = Model.UserName })" alt="Banner Image"/>
+    <img src="@Url.Action("get-banner-image", "user", new { userName = Model.UserName })" alt="Banner Image"/>
     <label class="text-img" for="backgroundImg">Add an Image</label>
 </form>
 
 <main class="content-main">
     <div class="profiles-specs">
-        <form class="profile-img" id="profile-image-form" action="user/updateprofileimage" enctype="multipart/form-data">
-
+        <form class="profile-img" id="profile-image-form" enctype="multipart/form-data">
             <input type="file" name="profileImage" id="profileImage" />
-
-            <img src="@Url.Action("getprofileimage", new { userID = Model.UserName })" alt="~/images/image-profile.png" />
+            <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="~/images/image-profile.png" />
             <label class="profile-text-image" for="profileImage">Add an Image</label>
         </form>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
             <p>@Html.Raw("@")@Model.UserName</p>
-            <p>
-                @if (Model.UserDescription == null)
-                {
-                    <text>➕Adicionar descrição</text>
-                }
-                else
-                {
-                    <text>@Model.UserDescription</text>
-                }
-            </p>
+            <p>@Model.UserDescription</p>
             <div class="profile-followers">
                 <a href="../interaction/followers">Followers <span>@Model.Followers!.Count</span></a>
                 <a href="../interaction/followed">Following <span>@Model.Users!.Count</span></a>
@@ -65,16 +53,18 @@
         <button class="form-btn" id="closeBtn">
             <img src="~/images/xmark-solid.svg" class="icons" width="40px" />
         </button>
-        <form id="form-to-edit" class="form-edit">
+        <form method="post" action="user/update-profile/@Model.UserName?returnTo=@Url.PageLink()" enctype="multipart/form-data" class="form-edit">
             <h2 class="edit-title">Edit Profile</h2>
             <div class="username-container">
-                <input type="text" name="UserName" id="" value="@ViewBag.EditSectionUserName" placeholder="Username" />
+                <input type="text" name="UserName" value="@Model.UserName" placeholder="Username" />
             </div>
             <div class="profileName-container">
-                <input type="text" name="UserProfileName" id="" value="@ViewBag.EditSectionProfileName" placeholder="Profile Name" />
+                <input type="text" name="UserProfileName" value="@Model.UserProfileName" placeholder="Profile Name" />
             </div>
             <div class="description-text">
-                <textarea id="descricao-textarea" name="UserDescription" value="@ViewBag.EditSectionDesc" placeholder="Description"></textarea>
+                <textarea id="descricao-textarea" name="UserDescription" placeholder="Description">
+                    @Model.UserDescription
+                </textarea>
             </div>
             <div class="submit-container">
                 <input type="submit" id="submit-edit" placeholder="Submit" />
@@ -94,17 +84,15 @@
     <link rel="stylesheet" href="~/css/Dasboard.css" asp-append-version="true">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"rel="stylesheet">
 }
 
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
             asp-fallback-test="window.jQuery"></script>
-
-    <script src="~/js/profile-page.js"></script>
-    <script src="~/js/interaction.js"></script>
+    <script src="~/js/profile-page.js" asp-append-version="true"></script>
+    <script src="~/js/interaction.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -131,7 +119,6 @@
                 .fadeIn(400)
                 .delay(5000)
                 .fadeOut(400, function () {
-
                 });
         });
 
