@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # MySql - Backup files
 *.bak
+
+# vscode files
+**/.vscode
