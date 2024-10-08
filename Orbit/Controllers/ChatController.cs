@@ -2,40 +2,56 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+using Orbit.Application.Interfaces;
 using Orbit.Hubs;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Models;
 
 namespace Orbit.Controllers
 {
     [Authorize]
     public class ChatController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUserService _userService;
         private readonly IHubContext<ChatHub> _hubContext;
 
-        public ChatController(ApplicationDbContext context, IHubContext<ChatHub> hubContext)
+        public ChatController(IUserService userService, IHubContext<ChatHub> hubContext)
         {
-            _context = context;
             _hubContext = hubContext;
+            _userService = userService;
         }
 
-        public async Task<IActionResult> Index()
+        [Route("[controller]/{participantname?}")]
+        public async Task<IActionResult> Index(string? participantname)
         {
-            var name = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var users = await _context.Users.Where(u => u.UserName == name)
-                                            .Include(u => u.Users)
-                                            .Include(u => u.Followers)
-                                            .ToListAsync();
-            var user = users.FirstOrDefault();
 
-            return View(user);
+            var hostname = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value!;
+
+            var hosts = await _userService.GetAllUserAsync(u => u.UserName == hostname, includeProperties: "Followers,Users");
+            var host = hosts.First();
+
+            if (participantname == null)
+            {
+                return View(new ChatContext
+                {
+                    Host = host
+                });
+            }
+
+            var participants = await _userService.GetAllUserAsync(u => u.UserName == participantname &&
+                                                                      u.Followers.Contains(host) ||
+                                                                      u.Users.Contains(host));
+
+            if (!participants.Any())
+            {
+                return NotFound();
+            }
+
+            return View(new ChatContext
+            {
+                Host = host,
+                Guest = participants.First()
+            });
         }
 
-        public async Task<IActionResult> Send(string user, string userChecker, string message)
-        {
-            await _hubContext.Clients.User(user).SendAsync("ReceiveMessage", user, message);
-            return NoContent();
-        }
     }
 }

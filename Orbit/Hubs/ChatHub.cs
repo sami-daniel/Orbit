@@ -4,9 +4,9 @@ namespace Orbit.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string user, string userChecker, string message)
+        public async Task SendChatMessage(string user, string message)
         {
-            await Clients.User(user).SendAsync("ReceiveMessage", user, userChecker, message);
+            await Clients.User(user).SendAsync("ReceiveChatMessage", user, message);
         }
     }
 }

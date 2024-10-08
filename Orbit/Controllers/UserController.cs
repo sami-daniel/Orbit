@@ -80,8 +80,6 @@ namespace Orbit.Controllers
             userToBeFollowed!.Followers.Add(follower!);
             await applicationDbContext.SaveChangesAsync();
 
-            _hubContext.Clients.All
-
             return RedirectPermanent(returnTo);
         }
 

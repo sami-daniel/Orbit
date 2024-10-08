@@ -1,43 +1,67 @@
-﻿@model User
+﻿@model ChatContext
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+
+    var union = new HashSet<User>();
+
+    foreach (var user in Model.Host.Users)
+    {
+        union.Add(user);
+    }
+
+    foreach (var user in Model.Host.Users)
+    {
+        union.Add(user);
+    }
 }
 
 <main class="container">
     <div class="contacts-container">
         <h2>Contacts</h2>
-        @foreach (var user in Model.Followers.Concat(Model.Users))
+        @foreach (var user in union)
         {
-            <div class="contact-user" data-user-id="@user.UserName">
-                <div class="profile-img">
-                    <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })" alt="Profile Image" />
+            <a href="@Url.Action($"{user.UserName}")">
+                <div class="contact-user">
+                    <div class="profile-img">
+                        <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })" alt="Profile Image" />
+                    </div>
+                    <div class="profile-name">@user.UserName</div>
                 </div>
-                <div class="profile-name">@user.UserName</div>
-            </div>
+            </a>
         }
     </div>
     <div class="messages-container">
-        <header class="info-container">
-            <div class="profile-img">
-                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
-            </div>
-            <div class="profile-name"><span>@Model.UserProfileName</span></div>
-        </header>
+        @if (Model.Guest == null)
+        {
+            <header class="info-container">
+                <div class="profile-img">
+                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Host.UserName })" alt="Profile Image" />
+                </div>
+                <div class="profile-name"><span>@Model.Host.UserName</span></div>
+            </header>
+        }
+        else
+        {
+            <header class="info-container">
+                <div class="profile-img">
+                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Guest.UserName })" alt="Profile Image" />
+                </div>
+                <div class="profile-name"><span>@Model.Guest.UserName</span></div>
+            </header>
+        }
         <main class="messages">
             <div class="contact-message"></div>
             <div class="user-message"></div>
         </main>
         <footer>
             <div class="input-container">
-                <form>
-                    <input type="text" name="" id="input-message" placeholder="Send message" />
-                    <input type="button" id="btn-submit" value="Send" />
-                </form>
+                <input type="text" name="" id="input-message" placeholder="Send message" />
+                <input type="button" id="btn-submit" value="Send" />
             </div>
         </footer>
     </div>
-    <input type="hidden" value="@Model.UserName" id="sender">
+    <input type="hidden" value="@Model.Guest?.UserName" id="guest">
 </main>
 
 @section links {
@@ -48,68 +72,15 @@
         rel="stylesheet">
 }
 
-@section scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
-        integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
-        integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        let recipient = null;
-
-
-        $('.contact-user').click((event) => {
-            recipient = $(event.currentTarget).data('user-id');
-
-            if ($(event.currentTarget).hasClass('active-btn')) {
-            // If it has, remove it (toggle off)
-            $(event.currentTarget).removeClass('active-btn');
-            } else {
-            // Remove 'active-btn' from any other element that has it
-            $('.contact-user.active-btn').removeClass('active-btn');
-
-            // Add 'active-btn' to the clicked element
-            $(event.currentTarget).addClass('active-btn');
-        }
-
-        });
-
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chatHub")
-            .build();
-
-        connection.start().then(function () {
-            console.log("Connected");
-        }).catch(function (err) {
-            return console.error(err.toString());
-        });
-
-        connection.on("ReceiveMessage", function (user, userChecker, message) {
-            if (recipient == userChecker) {
-                $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong>' + '<span>' + message + '</span>' + '</div>');
-            }
-        });
-
-        $('#btn-submit').click((event) => {
-            event.preventDefault();
-            var message = $('#input-message').val();
-            if (message != null && message != '') {
-                $('.messages').append('<div class="user-message"><strong>Eu:</strong>' + '<span>' + message  + '</span>' + '</div>');
-            }
-            if (recipient) {
-                connection.invoke("SendMessage", recipient, "@Model.UserName", message)
-                    .catch(function (err) {
-                        return console.error(err.toString());
-                    });
-                $('#input-message').val('');
-            }
-            else {
-                alert('Selecione um contato para enviar a mensagem');
-            }
-        });
-    </script>
-
+@if (Model.Guest != null)
+{
+    @section scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
+            asp-fallback-test="window.jQuery"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
+            asp-fallback-src="~/libs/signalR/signalr.js"
+            asp-fallback-test="signalR"></script>
+        <script src="~/js/chat.js" asp-append-version="true"></script>
+    }
 }
