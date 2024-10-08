@@ -4,12 +4,14 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 using Orbit.Filters;
+using Orbit.Hubs;
 using Orbit.Infrastructure.Data.Contexts;
 
 namespace Orbit.Controllers
@@ -19,11 +21,13 @@ namespace Orbit.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public UserController(IMapper mapper, IUserService userService)
+        public UserController(IMapper mapper, IUserService userService, IHubContext<NotificationHub> hubContext)
         {
             _userService = userService;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         [HttpGet("[controller]")]
@@ -75,6 +79,8 @@ namespace Orbit.Controllers
 
             userToBeFollowed!.Followers.Add(follower!);
             await applicationDbContext.SaveChangesAsync();
+
+            _hubContext.Clients.All
 
             return RedirectPermanent(returnTo);
         }

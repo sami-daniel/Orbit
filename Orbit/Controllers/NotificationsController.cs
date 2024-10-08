@@ -18,7 +18,7 @@ namespace Orbit.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string user, string message)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", user, message);
+            await _hubContext.Clients.User(user).SendAsync("ReceiveNotification", user, message);
             return NoContent();
         }
     }
