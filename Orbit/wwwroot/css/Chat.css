@@ -12,6 +12,11 @@ body {
     height:99vh;
 }
 
+:root{
+    --border-color: rgba(255, 255, 255, 0.2);
+    --active-color: rgb(255, 255, 255, .9);
+}
+
 .container{
     width:100%;
     height:100%;
@@ -22,22 +27,30 @@ body {
 
 .contacts-container {
     width: 30%;
-    height: 99vh;
-    border: 1px solid white;
-    padding:10px;
+    height: calc(99vh + 10px);
+    border: 1px solid var(--border-color);
 }
+
 
 .messages-container {
     width: 70%;
-    height: 99vh;
-    border: 1px solid white;
-    padding: 10px;
+    height: calc(99vh + 10px);
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
 .contacts-container h2{
-    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     margin-top:2%;
+    border-bottom: 1px solid var(--border-color);
+    width: 100%;
+    height: 60px !important;
+}
+
+.contacts-container .contact-user.active-btn .profile-name{
+    color: black;
 }
 
 .contact-message {
@@ -50,11 +63,9 @@ body {
 .contact-user{
     width: 100%;
     height:50px !important;
-    border:1px solid white;
+    border:1px solid var(--border-color);
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-top:5%;
 }
 .profile-name{
     text-align:left;
@@ -74,16 +85,17 @@ body {
 .info-container {
     width: 100%;
     height: 70px !important;
-    border: 1px solid white;
+    border: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 20px;
 }
 
 .messages{
     width:100%;
-    height:85%;
-    border:1px solid white;
+    height:calc(90% - 20px);
+    border:1px solid var(--border-color);
 }
 
 footer{
@@ -94,27 +106,52 @@ footer{
     width:100%;
 }
 
+.input-container form{
+    display: flex;
+}
+
 .input-container input:first-child{
     width:85%;
     color:white;
     font-size:1.5em;
     outline:none;
-    border:1px solid white;
+    border:1px solid var(--border-color);
     background:transparent;
-    height:40px;
+    height:45px;
+    padding: 20px;
 }
+
 .input-container input:last-child{
     color:white;
     background:transparent;
-    padding:10px;
-    width:13%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width:200px;
     outline:none;
-    border:1px solid white;
+    border:1px solid var(--border-color);
     background:transparent;
+    transition: ease-in .3s;
+    cursor: pointer;
+}
+
+.input-container input:last-child:hover{
+    background-color: white;
+    color: black;
 }
 
 .user-message{
     width: 100%;
     display: block;
     text-align: right;
+}
+
+.active-btn{
+    background-color: var(--active-color);
+    color: black;
+}
+
+.contact-user.active-btn{
+    background-color: var(--active-color);
 }

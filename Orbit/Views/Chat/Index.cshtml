@@ -20,7 +20,8 @@
     <div class="messages-container">
         <header class="info-container">
             <div class="profile-img">
-                <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserId })" alt="Profile Image" />
+                <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserId })"
+                    alt="Profile Image" />
             </div>
             <div class="profile-name">@Model.UserProfileName</div>
         </header>
@@ -31,33 +32,34 @@
         <footer>
             <div class="input-container">
                 <form>
-                    <input type="text" name="" id="input-message" placeholder="Enviar mensagem" />
-                    <input type="button" id="btn-submit" value="Enviar" />
+                    <input type="text" name="" id="input-message" placeholder="Send message" />
+                    <input type="button" id="btn-submit" placeholder="Send" />
                 </form>
             </div>
         </footer>
     </div>
 </main>
 
-
-
 @section links {
     <link rel="stylesheet" href="~/css/Chat.css" asp-append-version="true">
-    <link rel="stylesheet" href="~/css/Dasboard.css" asp-append-version="true">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
 }
 
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
-            asp-fallback-test="window.jQuery"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
+        integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
+        integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         let recipient = null;
+
 
         $('.contact-user').click((event) => {
             recipient = $(event.currentTarget).data('user-id');
@@ -75,8 +77,7 @@
         });
 
         connection.on("ReceiveMessage", function (user, userChecker, message) {
-            if (recipient == userChecker)
-            {
+            if (recipient == userChecker) {
                 $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong> ' + message + '</div>');
             }
         });
@@ -84,20 +85,17 @@
         $('#btn-submit').click((event) => {
             event.preventDefault();
             var message = $('#input-message').val();
-            if (message != null && message != '')
-            {
+            if (message != null && message != '') {
                 $('.messages').append('<div class="user-message"><strong>Eu:</strong>' + message + '</div>');
             }
-            if (recipient)
-            {
+            if (recipient) {
                 connection.invoke("SendMessage", recipient, "@Model.UserName", message)
-                .catch(function (err) {
-                    return console.error(err.toString());
-                });
+                    .catch(function (err) {
+                        return console.error(err.toString());
+                    });
                 $('#input-message').val('');
             }
-            else
-            {
+            else {
                 alert('Selecione um contato para enviar a mensagem');
             }
         });
