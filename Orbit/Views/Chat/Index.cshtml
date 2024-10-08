@@ -64,7 +64,13 @@
 
         $('.contact-user').click((event) => {
             recipient = $(event.currentTarget).data('user-id');
-            $(event.currentTarget).addClass('active-btn');
+            if(!$(event.currentTarget).hasClass('active-btn')){
+                $(event.currentTarget).addClass('active-btn')
+            }
+            else{
+                $(event.currentTarget).removeClass('active-btn');
+            }
+            
         });
 
         const connection = new signalR.HubConnectionBuilder()
