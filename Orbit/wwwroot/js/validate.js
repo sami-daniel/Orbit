@@ -4,12 +4,12 @@
       UserEmail: {
         required: true,
         email: true,
-        maxlength: 200,
+        maxlength: 255,
         remote: {
-          url: "http://localhost:5216/Account/CheckEmail",
+          url: "account/validate-user",
           type: "POST",
           data: {
-            email: function () {
+            uid: function () {
               return $('#email').val();
             }
           }
@@ -18,13 +18,13 @@
       UserName: {
         required: true,
         minlength: 5,
-        maxlength: 100,
+        maxlength: 255,
         pattern: /^[a-zA-Z0-9_]*$/,
         remote: {
-          url: "http://localhost:5216/Account/CheckUsername",
+          url: "account/validate-user",
           type: "POST",
           data: {
-            username: function () {
+            uid: function () {
               return $('#uname').val();
             }
           }
@@ -32,12 +32,12 @@
       },
       UserPassword: {
         required: true,
-        maxlength: 200,
+        maxlength: 255,
         pattern: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
       },
       UserProfileName: {
         required: true,
-        maxlength: 200
+        maxlength: 255
       },
       IsPrivateProfile: {
         required: false
