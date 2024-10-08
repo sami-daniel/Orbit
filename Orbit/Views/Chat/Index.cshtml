@@ -22,7 +22,7 @@
             <div class="profile-img">
                 <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
             </div>
-            <div class="profile-name">@Model.UserProfileName</div>
+            <div class="profile-name"><span>@Model.UserProfileName</span></div>
         </header>
         <main class="messages">
             <div class="contact-message"></div>
@@ -32,7 +32,7 @@
             <div class="input-container">
                 <form>
                     <input type="text" name="" id="input-message" placeholder="Send message" />
-                    <input type="button" id="btn-submit" placeholder="Send" />
+                    <input type="button" id="btn-submit" value="Send" />
                 </form>
             </div>
         </footer>
@@ -62,12 +62,17 @@
 
         $('.contact-user').click((event) => {
             recipient = $(event.currentTarget).data('user-id');
-            if(!$(event.currentTarget).hasClass('active-btn')){
-                $(event.currentTarget).addClass('active-btn')
-            }
-            else{
-                $(event.currentTarget).removeClass('active-btn');
-            }
+
+            if ($(event.currentTarget).hasClass('active-btn')) {
+            // If it has, remove it (toggle off)
+            $(event.currentTarget).removeClass('active-btn');
+            } else {
+            // Remove 'active-btn' from any other element that has it
+            $('.contact-user.active-btn').removeClass('active-btn');
+        
+            // Add 'active-btn' to the clicked element
+            $(event.currentTarget).addClass('active-btn');
+        }
             
         });
 
@@ -83,7 +88,7 @@
 
         connection.on("ReceiveMessage", function (user, userChecker, message) {
             if (recipient == userChecker) {
-                $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong> ' + message + '</div>');
+                $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong>' + '<span>' + message + '</span>' + '</div>');
             }
         });
 
@@ -91,7 +96,7 @@
             event.preventDefault();
             var message = $('#input-message').val();
             if (message != null && message != '') {
-                $('.messages').append('<div class="user-message"><strong>Eu:</strong>' + message + '</div>');
+                $('.messages').append('<div class="user-message"><strong>Eu:</strong>' + '<span>' + message  + '</span>' + '</div>');
             }
             if (recipient) {
                 connection.invoke("SendMessage", recipient, "@Model.UserName", message)
