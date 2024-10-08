@@ -11,7 +11,7 @@
         {
             <div class="contact-user" data-user-id="@user.UserName">
                 <div class="profile-img">
-                    <img src="@Url.Action("GetProfileImage", "User", new { userID = user.UserId })" alt="Profile Image" />
+                    <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserId })" alt="Profile Image" />
                 </div>
                 <div class="profile-name">@user.UserName</div>
             </div>
@@ -20,7 +20,7 @@
     <div class="messages-container">
         <header class="info-container">
             <div class="profile-img">
-                <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserId })" alt="Profile Image" />
+                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserId })" alt="Profile Image" />
             </div>
             <div class="profile-name">@Model.UserProfileName</div>
         </header>
