@@ -79,9 +79,9 @@ namespace Orbit
             }
             else
             {
-                app.UseExceptionHandler("home");
+                app.UseExceptionHandler("/home");
 
-                app.UseStatusCodePagesWithReExecute("home", "?statusCode={0}");
+                app.UseStatusCodePagesWithReExecute("/home", "?statusCode={0}");
 
                 app.UseHsts();
             }

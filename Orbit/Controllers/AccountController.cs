@@ -171,5 +171,17 @@ namespace Orbit.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("index");
         }
+
+        [HttpPost("[controller]/validate-user")]
+        public async Task<IActionResult> ValidateUser(string uid)
+        {
+            var user = await _userService.GetUserByIdentifierAsync(uid);
+            if (user == null)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
+        }
     }
 }
