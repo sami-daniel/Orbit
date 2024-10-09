@@ -23,7 +23,7 @@
         <div class="content">
 
             <div class="div-signIn" id="divSignIn">
-                <form method="POST" action="account/create-user" enctype="application/x-www-form-urlencoded" class="form-name forms" id="reg-form">
+                <form method="POST" action="/account/create-user" enctype="application/x-www-form-urlencoded" class="form-name forms" id="reg-form">
                     <div class="first-step">
                         <div class="top-header">
                             <button class="form-btn" id="closeBtn">
@@ -113,7 +113,7 @@
                     <h2 class="form-title"> Faça o login na OrbIt</h2>
                 </div>
 
-                <form method="post" class="forms" action="account/login" id="log-form">
+                <form method="post" class="forms" action="/account/login" id="log-form">
                     @if (ViewBag.LoginError != null)
                     {
                         <div class="container-error">

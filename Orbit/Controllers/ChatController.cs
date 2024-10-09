@@ -1,10 +1,8 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Orbit.Application.Interfaces;
-using Orbit.Hubs;
-using Orbit.Models;
+using Orbit.Domain.Entities;
 
 namespace Orbit.Controllers
 {
@@ -12,16 +10,16 @@ namespace Orbit.Controllers
     public class ChatController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly IMessageService _messageService;
 
-        public ChatController(IUserService userService, IHubContext<ChatHub> hubContext)
+        public ChatController(IUserService userService, IMessageService messageService)
         {
-            _hubContext = hubContext;
             _userService = userService;
+            _messageService = messageService;
         }
 
-        [Route("[controller]/{participantname?}")]
-        public async Task<IActionResult> Index(string? participantname)
+        [HttpGet("[controller]/{guestname?}")]
+        public async Task<IActionResult> Index([FromRoute] string? guestname)
         {
 
             var hostname = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value!;
@@ -29,7 +27,7 @@ namespace Orbit.Controllers
             var hosts = await _userService.GetAllUserAsync(u => u.UserName == hostname, includeProperties: "Followers,Users");
             var host = hosts.First();
 
-            if (participantname == null)
+            if (guestname == null)
             {
                 return View(new ChatContext
                 {
@@ -37,9 +35,7 @@ namespace Orbit.Controllers
                 });
             }
 
-            var participants = await _userService.GetAllUserAsync(u => u.UserName == participantname &&
-                                                                      u.Followers.Contains(host) ||
-                                                                      u.Users.Contains(host));
+            var participants = await _userService.GetAllUserAsync(u => u.UserName == guestname && (u.Followers.Contains(host) || u.Users.Contains(host)));
 
             if (!participants.Any())
             {
@@ -53,5 +49,29 @@ namespace Orbit.Controllers
             });
         }
 
+        [HttpPost("[controller]/save-message")]
+        public async Task<IActionResult> SaveMessage([FromForm] Message message, [FromForm] string from)
+        {
+            if (message == null)
+            {
+                return BadRequest();
+            }
+
+            await _messageService.AddMessageAsync(message, from);
+            return Ok();
+        }
+
+        [HttpGet("[controller]/load-messages")]
+        public async Task<IActionResult> LoadMessages([FromQuery] string username, [FromQuery] string with)
+        {
+            var messages = await _messageService.GetAllMessagesAsync(username, with);
+
+            if (!messages.Any())
+            {
+                return Json(new List<Message>());
+            }
+
+            return Ok(messages);
+        }
     }
 }

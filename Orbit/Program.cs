@@ -32,6 +32,8 @@ namespace Orbit
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
             .LogTo(m => Debug.WriteLine(m)));
 
+            builder.Services.AddSingleton<IMessageService, MessageService>();
+
             builder.Services.AddAutoMapper(opt =>
             {
                 opt.AddProfile<UserProfile>();
