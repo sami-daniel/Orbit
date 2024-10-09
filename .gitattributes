@@ -63,4 +63,4 @@
 *.RTF   diff=astextplain
 
 # Ignore vendored files
-Orbit/wwwroot/libs/jQuery/jquery.min.js linguist-vendored
+Orbit/wwwroot/libs/** linguist-vendored=true
