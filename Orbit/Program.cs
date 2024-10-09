@@ -28,10 +28,11 @@ namespace Orbit
             });
 
             builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection"),
+            opt.UseMySql(connectionString: builder.Configuration.GetConnectionString("OrbitConnection") ?? throw new InvalidOperationException("Connection string not found"),
              serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
-            .LogTo(m => Debug.WriteLine(m))
-            .EnableSensitiveDataLogging());
+            .LogTo(m => Debug.WriteLine(m)));
+
+            builder.Services.AddSingleton<IMessageService, MessageService>();
 
             builder.Services.AddAutoMapper(opt =>
             {
@@ -80,9 +81,9 @@ namespace Orbit
             }
             else
             {
-                app.UseExceptionHandler("home");
+                app.UseExceptionHandler("/home");
 
-                app.UseStatusCodePagesWithReExecute("home", "?statusCode={0}");
+                app.UseStatusCodePagesWithReExecute("/home", "?statusCode={0}");
 
                 app.UseHsts();
             }

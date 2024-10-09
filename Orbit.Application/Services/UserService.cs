@@ -38,21 +38,25 @@ namespace Orbit.Application.Services
                 throw;
             }
 
-            using (var transaction = await _unitOfWork.StartTransactionAsync())
-            {
-                try
-                {
-                    await _unitOfWork.UserRepository.InsertAsync(user);
-                    await _unitOfWork.CompleteAsync();
-                    await transaction.CommitAsync();
-                }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
+            var usersFromEmail = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == user.UserEmail);
 
-                    throw new UserAlredyExistsException("O usuário com esse identificador já existe!");
-                }
+            if (usersFromEmail.Any())
+            {
+                throw new UserAlredyExistsException($"O usuário com o email {usersFromEmail.First().UserEmail} já está cadastrado!");
             }
+
+            var usersFromName = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == user.UserName);
+
+            if (usersFromName.Any())
+            {
+                throw new UserAlredyExistsException($"O usuário com o nome de usuário {usersFromName.First().UserName} já está cadastrado!");
+            }
+
+            user.UserEmail = user.UserEmail.ToLower();
+
+            await _unitOfWork.UserRepository.InsertAsync(user);
+            await _unitOfWork.CompleteAsync();
+
         }
 
         /// <summary>
@@ -74,11 +78,12 @@ namespace Orbit.Application.Services
         /// <returns>O objeto User correspondente ou null se não encontrado.</returns>
         public async Task<User?> GetUserByIdentifierAsync(string userIdentifier)
         {
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(userIdentifier, nameof(userIdentifier));
             IEnumerable<User>? users = null;
 
             if (userIdentifier.Contains('@'))
             {
-                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == userIdentifier);
+                users = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail.ToLower() == userIdentifier);
             }
             else
             {

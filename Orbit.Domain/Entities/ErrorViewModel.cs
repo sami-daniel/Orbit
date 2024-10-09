@@ -1,4 +1,4 @@
-﻿namespace Orbit.Models
+﻿namespace Orbit.Domain.Entities
 {
     public class ErrorViewModel
     {

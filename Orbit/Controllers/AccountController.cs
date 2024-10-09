@@ -3,7 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Orbit.Application.Exceptions;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
@@ -14,7 +14,6 @@ using Orbit.Filters;
 namespace Orbit.Controllers
 {
     [EnsureUserNotCreated]
-    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -29,28 +28,35 @@ namespace Orbit.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public IActionResult Index(bool? modalActive, string? errorMessage, int formID, string? userEmailError, string? userNameError, string? userProfileError, string? userPasswordError)
+        [Route("[controller]")]
+        public IActionResult Index(bool? modalActive,
+                                   string? generalError,
+                                   string? errorMessage,
+                                   int formID,
+                                   string? userEmailError,
+                                   string? userNameError,
+                                   string? userProfileError,
+                                   string? userPasswordError)
         {
             if (formID == 1)
             {
                 ViewBag.LoginModalActive = modalActive;
                 ViewBag.LoginError = errorMessage;
+
+                return View();
             }
-            else if (formID == 2)
-            {
-                ViewBag.RegisModalActive = modalActive;
-                ViewBag.UserEmailError = userEmailError;
-                ViewBag.UserNameError = userNameError;
-                ViewBag.UserProfileError = userProfileError;
-                ViewBag.UserPasswordError = userPasswordError;
-            }
+
+            ViewBag.RegisModalActive = modalActive;
+            ViewBag.UserEmailError = userEmailError;
+            ViewBag.UserNameError = userNameError;
+            ViewBag.UserProfileError = userProfileError;
+            ViewBag.UserPasswordError = userPasswordError;
+            ViewBag.PartNumber = formID;
 
             return View();
         }
 
-        [HttpPost]
-        [Route("/create-user")]
+        [HttpPost("[controller]/create-user")]
         public async Task<IActionResult> CreateUser([FromForm] UserAddRequest userAddRequest)
         {
             if (!ModelState.IsValid && !_webHostEnvironment.IsDevelopment())
@@ -73,7 +79,28 @@ namespace Orbit.Controllers
 
             var user = _mapper.Map<User>(userAddRequest);
 
-            await _userService.AddUserAsync(user);
+            try
+            {
+                await _userService.AddUserAsync(user);
+            }
+            catch (UserAlredyExistsException ex)
+            when (ex.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return RedirectToAction("index", new { modalActive = true,
+                                                       userEmailError = ex.Message});
+            }
+            catch (UserAlredyExistsException ex)
+            when (ex.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return RedirectToAction("index", new { modalActive = true,
+                                                       userNameError = ex.Message,
+                                                       formID = 2});
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("index", new { modalActive = true,
+                                                       generalError = ex.Message});
+            }
 
             List<Claim> claims =
             [
@@ -96,8 +123,7 @@ namespace Orbit.Controllers
             return RedirectToActionPermanent("", "user");
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("[controller]/login")]
         public async Task<IActionResult> Login([FromForm] string? inputLogin, [FromForm] string? password)
         {
             // ERRATA: O atributo email pode assumir dois valores - email ou username
@@ -108,14 +134,14 @@ namespace Orbit.Controllers
 
             if (inputLogin == null || password == null)
             {
-                return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
+                return RedirectToAction("index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
             var user = await _userService.GetUserByIdentifierAsync(inputLogin);
 
             if (user == null || password != user.UserPassword)
             {
-                return RedirectToAction("Index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
+                return RedirectToAction("index", new { modalActive = true, errorMessage = "Usuário ou senha inválidos!", formID = 1 });
             }
 
             List<Claim> claims =
@@ -136,15 +162,26 @@ namespace Orbit.Controllers
 
             HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
 
-            return RedirectToActionPermanent("", "User");
+            return RedirectToActionPermanent("", "user");
         }
 
-        [HttpGet]
-        [Route("log-out")]
+        [HttpGet("[controller]/log-out")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index");
+            return RedirectToAction("index");
+        }
+
+        [HttpPost("[controller]/validate-user")]
+        public async Task<IActionResult> ValidateUser(string uid)
+        {
+            var user = await _userService.GetUserByIdentifierAsync(uid);
+            if (user == null)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
         }
     }
 }

@@ -1,20 +1,19 @@
-﻿@model IEnumerable<User>
+@model IEnumerable<User>
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
 }
 
 <header>
-    <h2>Seguidores</h2>
+    <h2>Seguindo</h2>
 </header>
-
 <main class="container">
     <div class="container-followers">
-        @foreach (var follower in Model)
+        @foreach (var followed in Model)
         {
             <div class="users-containers">
-                <a href="../user/@follower.UserName"><h3>@follower.UserName</h3></a>
-                <a href="../user/@follower.UserName">@follower.UserEmail</a>
+                <a href="../user/@followed.UserName"><h3>@followed.UserName</h3></a>
+                <a href="../user/@followed.UserName">@followed.UserEmail</a>
             </div>
         }
     </div>

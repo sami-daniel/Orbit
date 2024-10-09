@@ -1,38 +1,77 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Orbit.Hubs;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Application.Interfaces;
+using Orbit.Domain.Entities;
 
 namespace Orbit.Controllers
 {
     [Authorize]
     public class ChatController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly IUserService _userService;
+        private readonly IMessageService _messageService;
 
-        public ChatController(ApplicationDbContext context, IHubContext<ChatHub> hubContext)
+        public ChatController(IUserService userService, IMessageService messageService)
         {
-            _context = context;
-            _hubContext = hubContext;
+            _userService = userService;
+            _messageService = messageService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet("[controller]/{guestname?}")]
+        public async Task<IActionResult> Index([FromRoute] string? guestname)
         {
-            var name = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var users = await _context.Users.Where(u => u.UserName == name).Include(u => u.Followers).ToListAsync();
-            var user = users.FirstOrDefault();
 
-            return View(user);
+            var hostname = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value!;
+
+            var hosts = await _userService.GetAllUserAsync(u => u.UserName == hostname, includeProperties: "Followers,Users");
+            var host = hosts.First();
+
+            if (guestname == null)
+            {
+                return View(new ChatContext
+                {
+                    Host = host
+                });
+            }
+
+            var participants = await _userService.GetAllUserAsync(u => u.UserName == guestname && (u.Followers.Contains(host) || u.Users.Contains(host)));
+
+            if (!participants.Any())
+            {
+                return NotFound();
+            }
+
+            return View(new ChatContext
+            {
+                Host = host,
+                Guest = participants.First()
+            });
         }
 
-        public async Task<IActionResult> Send(string user, string message)
+        [HttpPost("[controller]/save-message")]
+        public async Task<IActionResult> SaveMessage([FromForm] Message message, [FromForm] string from)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", user, message);
-            return NoContent();
+            if (message == null)
+            {
+                return BadRequest();
+            }
+
+            await _messageService.AddMessageAsync(message, from);
+            return Ok();
+        }
+
+        [HttpGet("[controller]/load-messages")]
+        public async Task<IActionResult> LoadMessages([FromQuery] string username, [FromQuery] string with)
+        {
+            var messages = await _messageService.GetAllMessagesAsync(username, with);
+
+            if (!messages.Any())
+            {
+                return Json(new List<Message>());
+            }
+
+            return Ok(messages);
         }
     }
 }
