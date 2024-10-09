@@ -63,4 +63,4 @@
 *.RTF   diff=astextplain
 
 # Ignore vendored files
-Orbit/wwwroot/libs/** linguist-vendored=true
+Orbit/wwwroot/libs/* linguist-vendored=true
