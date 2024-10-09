@@ -9,10 +9,10 @@ $(document).ready(function() {
         return console.error(err.toString());
     });
 
-    connection.on("ReceiveChatMessage", function(user, message) {
+    connection.on("ReceiveChatMessage", function(_, message) {
         const timeStamp = new Date().toLocaleString();
         let stamp = dayjs(timeStamp).format("HH:mm:ss").toString();
-        $('.messages').append('<div class="contact-message"><strong>' + user + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
+        $('.messages').append('<div class="contact-message"><strong>' + $('#guest').val() + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
     });
 
     $('#btn-submit').click((event) => {
