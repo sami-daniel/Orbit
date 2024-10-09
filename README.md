@@ -6,8 +6,6 @@
 
 Bem-vindo ao Orbit, uma rede social inovadora projetada para conectar profissionais de tecnologia, incluindo programadores, designers, engenheiros de software, especialistas em TI e outros profissionais do setor. Nosso objetivo é proporcionar um espaço dinâmico e colaborativo onde esses profissionais possam interagir, compartilhar conhecimentos, trabalhar em projetos conjuntos e explorar novas oportunidades de carreira.
 
-Esta é a versão 1.2.0 do projeto. Atualmente contamos com um sistema de login e cadastro, redirecionamento para a página de perfil e pesquisa de usuarios com base no nome
-
 ## Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina:
