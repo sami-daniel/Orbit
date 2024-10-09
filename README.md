@@ -23,7 +23,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 Abra o terminal e execute o seguinte comando para clonar o repositório do projeto:
 
 ``` sh
-git clone https://github.com/sami-daniel/orbit.git
+git clone https://github.com/sami-daniel/Orbit.git
 cd Orbit
 ```
 
@@ -38,11 +38,13 @@ No terminal compile o projeto:
 ``` sh
 dotnet build
 ```
+
 ### Passo 5: Salvar string de conexão
 Salvar a 'Environment Variable' com a string de conexão do banco de dados. 
 Talvez seja nescessário reiniciar o computador para a variável entrar em vigor: 
 ``` PowerSheel
 setx ConnectionStrings__OrbitConnection "server=localhost;database=orbitdatabase;uid={seuusuariodomysql};pwd={suasenhadomysql}" # Essa string pode ser sua string de conexão, desde que habilite conectar com o servidor e ter acesso ao banco
+setx ConnectionStrings__Firebase "https://orbit-f5fea-default-rtdb.firebaseio.com/"
 ```
 
 ### Passo 6: Executar o código do banco de dados
@@ -137,6 +139,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 cd Orbit
 dotnet run
 ```
+
 ### Passo 8: Abrir o projeto
 No CMD saídas semelhantes a essa abaixo aparecerão. Copie o link web, semelhante a
 esse e cole no navegador:
