@@ -12,10 +12,17 @@ public interface IUnitOfWork : IDisposable
     /// <summary>
     /// Obtém o repositório para a entidade <see cref="User"/>.
     /// </summary>
-    /// <value>
-    /// Uma instância do repositório para a entidade <see cref="User"/>.
-    /// </value>
     public IUserRepository UserRepository { get; }
+
+    /// <summary>
+    /// Obtém o repositório para a entidade <see cref="Post"/>
+    /// </summary>
+    public IPostRepository PostRepository { get; }
+
+    /// <summary>
+    /// Obtém o repositório para a entidade <see cref="Like"/>
+    /// </summary>
+    public ILikeRepository LikeRepository { get; }
 
     /// <summary>
     /// Salva todas as alterações feitas no contexto atual de banco de dados.

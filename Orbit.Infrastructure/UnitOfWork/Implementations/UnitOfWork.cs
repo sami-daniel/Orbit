@@ -18,14 +18,20 @@ public class UnitOfWork : IUnitOfWork
     /// </summary>
     public IUserRepository UserRepository { get; }
 
+    public IPostRepository PostRepository { get; }
+
+    public ILikeRepository LikeRepository { get; }
+
     /// <summary>
     /// Inicializa uma nova instância da classe <see cref="UnitOfWork"/>.
     /// </summary>
     /// <param name="userRepository">O repositório de usuários.</param>
     /// <param name="applicationDbContext">O contexto do banco de dados da aplicação.</param>
-    public UnitOfWork(IUserRepository userRepository, ApplicationDbContext applicationDbContext)
+    public UnitOfWork(IUserRepository userRepository, ILikeRepository likeRepository, IPostRepository postRepository, ApplicationDbContext applicationDbContext)
     {
         UserRepository = userRepository;
+        PostRepository = postRepository;
+        LikeRepository = likeRepository;
         _context = applicationDbContext;
     }
 

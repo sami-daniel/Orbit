@@ -29,6 +29,7 @@ public class UserService : IUserService
     /// <exception cref="UserAlredyExistsException">Lançada quando um usuário com o mesmo identificador já existe.</exception>
     public async Task AddUserAsync(User user)
     {
+
         try
         {
             UserServiceHelpers.ValidateUser(user);
@@ -36,20 +37,6 @@ public class UserService : IUserService
         catch (Exception)
         {
             throw;
-        }
-
-        var usersFromEmail = await _unitOfWork.UserRepository.GetAsync(u => u.UserEmail == user.UserEmail);
-
-        if (usersFromEmail.Any())
-        {
-            throw new UserAlredyExistsException($"O usuário com o email {usersFromEmail.First().UserEmail} já está cadastrado!");
-        }
-
-        var usersFromName = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == user.UserName);
-
-        if (usersFromName.Any())
-        {
-            throw new UserAlredyExistsException($"O usuário com o nome de usuário {usersFromName.First().UserName} já está cadastrado!");
         }
 
         user.UserEmail = user.UserEmail.ToLower();
