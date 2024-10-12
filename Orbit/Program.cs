@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
+using Firebase.Database.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Application.Interfaces;
@@ -67,9 +68,15 @@ internal class Program
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+        builder.Services.AddScoped<IPostRepository, PostRepository>();
+
+        builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         builder.Services.AddScoped<IUserService, UserService>();
+
+        builder.Services.AddScoped<IPostService, PostService>();
 
         builder.Services.AddSignalR();
 

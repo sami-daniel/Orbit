@@ -12,5 +12,5 @@ public interface IPostService
     /// </summary>
     /// <param name="post">O post a ser adicionado.</param>
     /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
-    Task AddPostAsync(Post post);
+    Task AddPostAsync(Post post, string postOwnerName);
 }

@@ -2,6 +2,7 @@
 using System.Net.NetworkInformation;
 using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -36,6 +37,13 @@ public class UserController : Controller
         UserResponse? userResponse = HttpContext.Session.GetObject<UserResponse>("User");
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
         var user = await _userService.GetAllUserAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
+        if (user.FirstOrDefault() == null)
+        {
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("index", "account");
+        }
+
         userResponse = _mapper.Map<User, UserResponse>(user.First());
         HttpContext.Session.SetObject("User", userResponse);
 

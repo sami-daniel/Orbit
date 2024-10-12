@@ -14,7 +14,7 @@ public class PostService : IPostService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task AddPostAsync(Post post)
+    public async Task AddPostAsync(Post post, string postOwnerName)
     {
         try
         {
@@ -24,7 +24,15 @@ public class PostService : IPostService
         {
             throw;
         }
+        var postOwner = await _unitOfWork.UserRepository.GetAsync(f => f.UserName == postOwnerName);
 
+        if (!postOwnerName.Any())
+        {
+            throw new ArgumentException("User not found");
+        }
+
+        post.User = postOwner.First();
+        post.UserId = postOwner.First().UserId;
         await _unitOfWork.PostRepository.InsertAsync(post);
     }
 }
