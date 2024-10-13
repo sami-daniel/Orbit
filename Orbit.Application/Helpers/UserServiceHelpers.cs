@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 using Orbit.Application.Exceptions;
 using Orbit.Domain.Entities;
 
+namespace Orbit.Application.Helpers;
+
 internal static class UserServiceHelpers
 {
     /// <summary>

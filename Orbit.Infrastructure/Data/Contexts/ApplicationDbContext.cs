@@ -18,6 +18,52 @@ public partial class ApplicationDbContext : DbContext
             .UseCollation("utf8mb4_0900_ai_ci")
             .HasCharSet("utf8mb4");
 
+        modelBuilder.Entity<Like>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("likes");
+
+            entity.HasIndex(e => e.UserId, "like_ibfk_1");
+
+            entity.HasIndex(e => e.PostId, "like_ibfk_2");
+
+            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.Post).WithMany()
+                .HasForeignKey(d => d.PostId)
+                .HasConstraintName("like_ibfk_2");
+
+            entity.HasOne(d => d.User).WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("like_ibfk_1");
+        });
+
+        modelBuilder.Entity<Post>(entity =>
+        {
+            entity.HasKey(e => e.PostId).HasName("PRIMARY");
+
+            entity.ToTable("post");
+
+            entity.HasIndex(e => e.UserId, "post_ibfk_1");
+
+            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.PostContent).HasColumnName("post_content");
+            entity.Property(e => e.PostDate)
+                .HasColumnType("datetime")
+                .HasColumnName("post_date");
+            entity.Property(e => e.PostImageByteType).HasColumnName("post_image_byte_type");
+            entity.Property(e => e.PostLikes).HasColumnName("post_likes");
+            entity.Property(e => e.PostVideoByteType).HasColumnName("post_video_byte_type");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("post_ibfk_1");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PRIMARY");

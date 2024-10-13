@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `orbitdatabase`.`user` (
   `is_private_profile` BIT(1) NOT NULL,
   PRIMARY KEY (`user_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 0
 DEFAULT CHARACTER SET = utf8mb3;
 
 SHOW WARNINGS;
@@ -76,6 +76,39 @@ SHOW WARNINGS;
 CREATE INDEX `follower_id` ON `orbitdatabase`.`follower` (`follower_id` ASC) VISIBLE;
 
 SHOW WARNINGS;
+
+CREATE TABLE IF NOT EXISTS `orbitdatabase`.`post` (
+  `post_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `post_content` LONGTEXT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `post_date` DATETIME NOT NULL,
+  `post_image_byte_type` LONGBLOB NULL DEFAULT NULL,
+  `post_video_byte_type` LONGBLOB NULL DEFAULT NULL,
+  `post_likes` INT UNSIGNED NOT NULL DEFAULT 0,
+  CONSTRAINT `post_ibfk_1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `orbitdatabase`.`user` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 0;
+
+SHOW WARNINGS;
+
+CREATE TABLE IF NOT EXISTS `orbitdatabase`.`likes` (
+	`user_id` INT UNSIGNED,
+	`post_id` INT UNSIGNED NOT NULL,
+	CONSTRAINT `like_ibfk_1`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `orbitdatabase`.`user` (`user_id`)
+		ON DELETE SET NULL
+		ON UPDATE CASCADE,
+	CONSTRAINT `like_ibfk_2`
+		FOREIGN KEY (`post_id`)
+		REFERENCES `orbitdatabase`.`post` (`post_id`)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

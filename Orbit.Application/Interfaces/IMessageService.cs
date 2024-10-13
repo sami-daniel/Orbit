@@ -1,10 +1,9 @@
 using Orbit.Domain.Entities;
 
-namespace Orbit.Application.Interfaces
+namespace Orbit.Application.Interfaces;
+
+public interface IMessageService
 {
-    public interface IMessageService
-    {
-        Task<IEnumerable<Message>> GetAllMessagesAsync(string user, string with);
-        Task AddMessageAsync(Message message, string from);
-    }
+    Task<IEnumerable<Message>> GetAllMessagesAsync(string user, string with);
+    Task AddMessageAsync(Message message, string from);
 }
