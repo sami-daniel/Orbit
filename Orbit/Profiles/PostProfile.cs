@@ -1,6 +1,7 @@
 using AutoMapper;
 using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
+using Orbit.DTOs.Responses;
 
 namespace Orbit.Profiles;
 
@@ -15,9 +16,11 @@ public class PostProfile : Profile
                 .ForMember(p => p.UserId, opt => opt.Ignore())
                 .ForMember(p => p.PostImageByteType, opt => opt.MapFrom(src => ConvertToByteArrayFromIFormFile(src.PostImageByteType)))
                 .ForMember(p => p.PostVideoByteType, opt => opt.MapFrom(src => ConvertToByteArrayFromIFormFile(src.PostVideoByteType)));
+
+        CreateMap<Post, PostResponse>();
     }
 
-    private byte[]? ConvertToByteArrayFromIFormFile(IFormFile? file)
+    private static byte[]? ConvertToByteArrayFromIFormFile(IFormFile? file)
     {
         if (file == null)
         {
