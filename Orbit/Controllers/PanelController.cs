@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Orbit.Controllers
+namespace Orbit.Controllers;
+
+public class PanelController : Controller
 {
-    public class PanelController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

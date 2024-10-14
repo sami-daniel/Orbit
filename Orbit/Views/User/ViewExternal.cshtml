@@ -15,43 +15,47 @@
 </header>
 
 <div class="background-img">
-    <img src="" alt="" />
+    <img src="@Url.Action("get-banner-image", "user", new { userName = Model.UserName })" alt="Banner Image" />
     <span class="text-img">Background image</span>
 </div>
 
 <main class="content-main">
     <div class="profiles-specs">
         <div class="profile-img">
-            <img src="@Url.Action("GetProfileImage", "Profile", new { userID = Model.UserName })" alt="Profile Image" />
+            <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
         </div>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
             <p>@Html.Raw("@")@Model.UserName</p>
-            <p>
-                @if (Model.UserDescription == null)
-                {
-                    <text>➕Adicionar descrição</text>
-                }
-                else
-                {
-                    <text>@Model.UserDescription</text>
-                }
-            </p>
+            <p>@Model.UserDescription</p>
             <div class="profile-followers">
-                <p>Followers <span>@Model.Followers!.Count</span></p>
-                <p>Following <span>@Model.Users!.Count</span></p>
+                <a href="../interaction/followers">Followers <span>@Model.Followers!.Count</span></a>
+                <a href="../interaction/followed">Following <span>@Model.Users!.Count</span></a>
             </div>
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit" id="btn-follow">Follow Profile</button>
+            @if (Model.Followers.Any(u => u.UserName == ViewBag.ViewExternalUsernameFollower))
+            {
+                <form method="post" enctype="multipart/form-data" action="unfollow?returnTo=@Url.PageLink()">
+                    <input type="hidden" name="id" value="@Model.UserName" />
+                    <input type="hidden" name="followerUserName" value="@ViewBag.ViewExternalUsernameFollower" />
+                    <button class="btn-edit" id="btn-unfollow">Unfollow Profile</button>
+                </form>
+            }
+            else
+            {
+                <form method="post" enctype="multipart/form-data" action="follow?returnTo=@Url.PageLink()">
+                    <input type="hidden" name="id" value="@Model.UserName" />
+                    <input type="hidden" name="followerUserName" value="@ViewBag.ViewExternalUsernameFollower" />
+                    <button class="btn-edit" id="btn-follow">Follow Profile</button>
+                </form>
+            }
         </div>
     </div>
 
-
-    @if(Model.IsPrivateProfile == true)
+    @if (!Model.IsPrivateProfile)
     {
-        
         <div class="navigation-bar" display="none">
             <div class="content-nav">Publications</div>
             <div class="content-nav">Projects</div>
@@ -59,16 +63,9 @@
             <div class="content-nav">Media</div>
         </div>
     }
-    else
-    {
-        <div class="navigation-bar">
-            <div class="content-nav">Publications</div>
-            <div class="content-nav">Projects</div>
-            <div class="content-nav">Curriculum</div>
-            <div class="content-nav">Media</div>
-        </div>
-    }
 
+    <input type="hidden" value="@Model.UserName" id="user">
+    <input type="hidden" value="@ViewBag.ViewExternalUsernameFollower" id="follower">
 </main>
 
 @section links {
@@ -86,13 +83,8 @@
     <script>
         $(document).ready(() => {
             $('#btn-follow').click(() => {
-                event.preventDefault();
-
-                var formData = new FormData();
-
-                formData.append('id', '@Model.UserName');
                 $.ajax({
-                    url: '/notifications/Index',
+                    url: '/notifications/',
                     type: 'POST',
                     data: {
                         user: "@Model.UserName",
@@ -106,19 +98,21 @@
                     }
                 });
 
-                formData.append('id', '@Model.UserName');
-                formData.append('followerUserName', '@ViewBag.ViewExternalUsernameFollower');
+            });
+
+            $('#btn-unfollow').click(() => {
                 $.ajax({
-                    url: '/user/Follow',
+                    url: '/notifications/',
                     type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                    data: {
+                        user: "@Model.UserName",
+                        message: `O usuário @ViewBag.ViewExternalUsernameFollower deixou de te seguir!`
+                    },
                     success: function (response) {
-                        alert('Perfil seguido com sucesso!');
+                        console.log(response);
                     },
                     error: function (xhr, status, error) {
-                        alert('Ocorreu um erro ao seguir o perfil: ', xhr.responseText);
+                        console.log(error)
                     }
                 });
             });

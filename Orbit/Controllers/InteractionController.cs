@@ -16,7 +16,7 @@ public class InteractionController : Controller
     }
 
     [HttpGet("followers")]
-    public async Task<IActionResult> GetFollowers()
+    public async Task<IActionResult> GetFollowers([FromQuery] string userName)
     {
         var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers");

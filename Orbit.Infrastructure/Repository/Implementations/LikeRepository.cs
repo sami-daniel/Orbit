@@ -1,4 +1,4 @@
-﻿using Orbit.Domain.Entities;
+using Orbit.Domain.Entities;
 using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.Repository.Core.Implementations;
 using Orbit.Infrastructure.Repository.Interfaces;
@@ -6,15 +6,15 @@ using Orbit.Infrastructure.Repository.Interfaces;
 namespace Orbit.Infrastructure.Repository.Implementations;
 
 /// <summary>
-/// Implementação do repositório de Usuários.
+/// Implementação do repositório de Likes.
 /// </summary>
-public class UserRepository : Repository<User>, IUserRepository
+public class LikeRepository : Repository<Like>, ILikeRepository
 {
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UserRepository"/> com o contexto de banco de dados fornecido.
+    /// Inicializa uma nova instância da classe <see cref="LikeRepository"/> com o contexto de banco de dados fornecido.
     /// </summary>
     /// <param name="context">O <see cref="ApplicationDbContext"/> a ser fornecido.</param>
-    public UserRepository(ApplicationDbContext context) : base(context)
+    public LikeRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

@@ -141,7 +141,7 @@ body.modal-open {
 .content {
   border: 1px solid rgb(255, 255, 255, 0.5);
   width: 50vw;
-  min-height: 65vh!important auto;
+  min-height: 65vh;
   border-radius: 5px;
   background-color: black;
   position: relative;
@@ -424,6 +424,9 @@ div label {
     .main-account .modal-background .content .div-login .login-options .btn-options {
         width:75%;
     }
+    .main-account .modal-background .content .div-signIn .login-options .btn-options {
+      width: 75%;
+    } 
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -433,6 +436,9 @@ div label {
 
     .main-account .modal-background .content .div-login .login-options .btn-options {
             width: 60%;
+    }
+    .main-account .modal-background .content .div-signIn .login-options .btn-options {
+      width: 60%;
     }
 }
 
