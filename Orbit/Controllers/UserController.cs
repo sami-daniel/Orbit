@@ -3,6 +3,7 @@ using System.Net.NetworkInformation;
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -146,6 +147,14 @@ public class UserController : Controller
         usr.UserName = user.UserName;
         usr.UserDescription = user.UserDescription;
         await context.SaveChangesAsync();
+        var claims = User.Claims;
+        var newClaims = new List<Claim>(claims);
+        newClaims.Remove(claims.First(c => c.Type == ClaimTypes.NameIdentifier));
+        newClaims.Add(new Claim(ClaimTypes.NameIdentifier, usr.UserName));
+        await HttpContext.SignOutAsync();
+        var identity = new ClaimsIdentity(newClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         HttpContext.Session.Clear();
         HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(usr));
 
@@ -191,8 +200,8 @@ public class UserController : Controller
             using (var memoryStream = new MemoryStream())
             {
                 await profileImage.CopyToAsync(memoryStream);
-                var us = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
-                var profile = await _userService.GetUserByIdentifierAsync(us);
+                var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+                var profile = await _userService.GetUserByIdentifierAsync(username);
 
                 profile!.UserProfileImageByteType = memoryStream.ToArray();
                 await context.SaveChangesAsync();
