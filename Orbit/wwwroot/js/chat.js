@@ -13,6 +13,7 @@ $(document).ready(function() {
         const timeStamp = new Date().toLocaleString();
         let stamp = dayjs(timeStamp).format("HH:mm:ss").toString();
         $('.messages').append('<div class="contact-message"><strong>' + $('#guest').val() + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
+        scrollToBottom();
     });
 
     $('#btn-submit').click((event) => {
@@ -49,6 +50,7 @@ $(document).ready(function() {
                     $('#input-message').val('');
                 });
         }
+        scrollToBottom();
     });
 
     $(document).keydown(function(event) {
@@ -57,3 +59,8 @@ $(document).ready(function() {
         }
     });
 });
+
+function scrollToBottom(){
+    const messageDiv = document.getElementById("message");
+    messageDiv.scrollTop = messageDiv.scrollHeight;
+}

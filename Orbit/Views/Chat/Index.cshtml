@@ -15,7 +15,8 @@
             <a href="@Url.Action($"{user.UserName}")">
                 <div class="contact-user">
                     <div class="profile-img">
-                        <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })" alt="Profile Image" />
+                        <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
+                            alt="Profile Image" />
                     </div>
                     <div class="profile-name">@user.UserProfileName</div>
                 </div>
@@ -27,7 +28,8 @@
         {
             <header class="info-container">
                 <div class="profile-img">
-                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Host.UserName })" alt="Profile Image" />
+                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Host.UserName })"
+                        alt="Profile Image" />
                 </div>
                 <div class="profile-name"><span>@Model.Host.UserName</span></div>
             </header>
@@ -39,18 +41,20 @@
         {
             <header class="info-container">
                 <div class="profile-img">
-                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Guest.UserName })" alt="Profile Image" />
+                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Guest.UserName })"
+                        alt="Profile Image" />
                 </div>
-                <div class="profile-name"><span>@Model.Guest.UserName</span></div>
+                <div class="profile-name"><span>@Model.Guest.UserProfileName</span></div>
             </header>
-            <main class="messages">
-                <div class="contact-message"></div>
-                <div class="user-message"></div>
+            <main class="messages" id="message">
+
             </main>
             <footer>
                 <div class="input-container">
                     <input type="text" name="" id="input-message" placeholder="Send message" />
-                    <input type="button" id="btn-submit" value="Send" />
+                    <button type="submit" id="btn-submit">
+                        <i class="fi fi-bs-paper-plane"></i>
+                    </button>
                 </div>
             </footer>
         }
@@ -65,19 +69,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
         rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 }
 
 @if (Model.Guest != null)
 {
     @section scripts {
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
-            asp-fallback-test="window.jQuery"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
-            asp-fallback-src="~/libs/signalR/signalr.js"
-            asp-fallback-test="signalR"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/dayjs.min.js"></script>
-        <script src="~/js/chat.js" asp-append-version="true"></script>
-        <script src="~/js/load-messages.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
+        asp-fallback-src="~/libs/signalR/signalr.js" asp-fallback-test="signalR"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/dayjs.min.js"></script>
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+    <script src="~/js/load-messages.js" asp-append-version="true"></script>
     }
 }
