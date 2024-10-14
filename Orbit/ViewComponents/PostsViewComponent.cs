@@ -8,7 +8,7 @@ using Orbit.Infrastructure.Data.Contexts;
 
 namespace Orbit.ViewComponents;
 
-public class PostsViewComponents : ViewComponent
+public class PostsViewComponent : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync([FromServices] IPostService postService, [FromServices] ApplicationDbContext context, [FromServices] IMapper mapper, int skip = 0, int take = 50)
     {
