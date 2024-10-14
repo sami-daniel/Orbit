@@ -1,6 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Orbit.Application.Helpers;
 using Orbit.Application.Interfaces;
 using Orbit.Domain.Entities;
+using Orbit.Infrastructure.Data.Contexts;
 using Orbit.Infrastructure.UnitOfWork.Interfaces;
 
 namespace Orbit.Application.Services;
@@ -34,5 +37,16 @@ public class PostService : IPostService
         post.User = postOwner.First();
         post.UserId = postOwner.First().UserId;
         await _unitOfWork.PostRepository.InsertAsync(post);
+    }
+
+    public async Task<IEnumerable<Post>> GetPaginatedPostAsync(int skip, int take, ApplicationDbContext applicationDbContext)
+    {
+        return await applicationDbContext.Posts
+        .OrderBy(p => p.PostId)
+        .Skip(skip)
+        .Take(take)
+        .ToListAsync();
+
+
     }
 }
