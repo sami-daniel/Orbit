@@ -22,8 +22,8 @@
             .build();
 
         connection.on("ReceiveNotification", (user, message) => {
-            $("<div>")
-                .text("Nova notificação: " + message)
+            $(`<a href='chat/${message}'>`)
+                .text(`${message} mandou-lhe uma mensagem!`)
                 .css({
                     position: 'fixed',
                     top: '10px',

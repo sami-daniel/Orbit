@@ -54,5 +54,11 @@ $(document).ready(() => {
         } else {
             $('.messages').append('<div class="contact-message"><strong>' + guestname + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
         }
-    });
+      });
+    scrollToBottom();
 });
+
+function scrollToBottom(){
+  const messageDiv = document.getElementById("message");
+  messageDiv.scrollTop = messageDiv.scrollHeight;
+}

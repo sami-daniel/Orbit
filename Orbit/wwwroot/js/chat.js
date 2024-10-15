@@ -1,25 +1,24 @@
 $(document).ready(function() {
-    const notificationConnection = new signalR.HubConnectionBuilder()
-    .withUrl("/notification")
-    .build();
-
-    notificationConnection.start().then(function(){
-        console.log("Connected!");
-    }).catch(function(err) {
-        return console.error(err.toString());
-    });
-
-    const connection = new signalR.HubConnectionBuilder()
+    const messageConnection = new signalR.HubConnectionBuilder()
         .withUrl("/chathub")
         .build();
 
-    connection.start().then(function() {
+    const notificationConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/notification")
+        .build();
+
+    notificationConnection.start().then(function() {
+        console.log("Connected");
+    }).catch(function(err) {
+        return console.error(err.toString());
+    });
+    messageConnection.start().then(function() {
         console.log("Connected");
     }).catch(function(err) {
         return console.error(err.toString());
     });
 
-    connection.on("ReceiveChatMessage", function(_, message) {
+    messageConnection.on("ReceiveChatMessage", function(_, message) {
         const timeStamp = new Date();
         let stamp = dayjs(timeStamp).format("HH:mm:ss").toString();
         $('.messages').append('<div class="contact-message"><strong>' + $('#guest').val() + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
@@ -34,7 +33,7 @@ $(document).ready(function() {
             const timeStamp = new Date();
             let stamp = dayjs(timeStamp).format("HH:mm:ss").toString();
             $('.messages').append('<div class="user-message"><strong>Eu:</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
-            connection.invoke("SendChatMessage", $("#guest").val(), message)
+            messageConnection.invoke("SendChatMessage", $("#guest").val(), message)
                 .then(() => {
                     $.ajaxSetup({
                         async: true
@@ -46,7 +45,7 @@ $(document).ready(function() {
                             message: {
                                 content: message,
                                 to: $("#guest").val(),
-                                timeStamp: new Date()
+                                timeStamp: new Date().toLocaleString()
                             },
                             from: $("#host").val()
                         }
@@ -59,8 +58,7 @@ $(document).ready(function() {
                 .finally(() => {
                     $('#input-message').val('');
                 });
-
-            notificationConnection.invoke("SendNotification", $("#guest").val(), `Usuario ${$("#host").val()} enviou-lhe uma mensagem!`);
+            notificationConnection.invoke("SendNotification", $("#guest").val(), $("#host").val());
         }
         scrollToBottom();
     });
