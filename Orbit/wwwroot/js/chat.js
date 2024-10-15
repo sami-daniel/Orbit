@@ -1,4 +1,14 @@
 $(document).ready(function() {
+    const notificationConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/notification")
+    .build();
+
+    notificationConnection.start().then(function(){
+        console.log("Connected!");
+    }).catch(function(err) {
+        return console.error(err.toString());
+    });
+
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/chathub")
         .build();
@@ -49,6 +59,8 @@ $(document).ready(function() {
                 .finally(() => {
                     $('#input-message').val('');
                 });
+
+            notificationConnection.invoke("SendNotification", $("#guest").val(), `Usuario ${$("#host").val()} enviou-lhe uma mensagem!`);
         }
         scrollToBottom();
     });
