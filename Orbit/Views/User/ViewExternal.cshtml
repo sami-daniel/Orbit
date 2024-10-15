@@ -1,5 +1,4 @@
-﻿
-@model UserResponse
+﻿@model UserResponse
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
@@ -14,15 +13,15 @@
     </div>
 </header>
 
-<div class="background-img">
+<div class="background-img-guest">
     <img src="@Url.Action("get-banner-image", "user", new { userName = Model.UserName })" alt="Banner Image" />
-    <span class="text-img">Background image</span>
 </div>
 
 <main class="content-main">
     <div class="profiles-specs">
         <div class="profile-img">
-            <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
+            <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })"
+                alt="Profile Image" />
         </div>
         <div class="profile-description">
             <h2>@Model.UserName</h2>
@@ -73,13 +72,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
 }
 
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            asp-fallback-src="~/libs/jQuery/js/jquery.min.js"
-            asp-fallback-test="window.jQuery"></script>
+        asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
     <script>
         $(document).ready(() => {
             $('#btn-follow').click(() => {
