@@ -18,7 +18,7 @@ $(document).ready(() => {
                 const { content, timeStamp, to } = element;
                 hostMessages.push({
                     message: content,
-                    timeStamp: new Date(timeStamp).toLocaleString(),
+                    timeStamp: new Date(timeStamp),
                     to
                 });
             });
@@ -38,7 +38,7 @@ $(document).ready(() => {
                 const { content, timeStamp, to } = element;
                 guestMessages.push({
                     message: content,
-                    timeStamp: new Date(timeStamp).toLocaleString(),
+                    timeStamp: new Date(timeStamp),
                     to
                 });
             });
