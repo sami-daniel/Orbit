@@ -48,6 +48,7 @@ $(document).ready(function() {
                 .finally(() => {
                     $('#input-message').val('');
                 });
+            connection.invoke("SendNotification", $("#guest").val(), `Usuario ${$("#host").val()} enviou-lhe uma mensagem!`);
         }
     });
 

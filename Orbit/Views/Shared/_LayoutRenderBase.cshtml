@@ -1,15 +1,46 @@
 ﻿<!DOCTYPE html>
 
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @await RenderSectionAsync("links", required: false)
 </head>
+
 <body>
     <div>
         @RenderBody()
     </div>
     @await RenderSectionAsync("scripts", required: false)
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notification")
+            .build();
+
+        connection.on("ReceiveNotification", (user, message) => {
+            $("<div>")
+                .text("Nova notificação: " + message)
+                .css({
+                    position: 'fixed',
+                    top: '10px',
+                    right: '10px',
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    color: 'black',
+                    borderRadius: '5px',
+                    zIndex: 1000
+                })
+                .appendTo("body")
+                .fadeIn(400)
+                .delay(5000)
+                .fadeOut(400, function () {
+                });
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+    </script>
 </body>
+
 </html>
