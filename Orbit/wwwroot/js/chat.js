@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     messageConnection.on("ReceiveChatMessage", function(_, message) {
-        const timeStamp = new Date();
+        const timeStamp = new Date(); // FIXME
         let stamp = dayjs(timeStamp).format("HH:mm:ss").toString();
         $('.messages').append('<div class="contact-message"><strong>' + $('#guest').val() + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
         scrollToBottom();
