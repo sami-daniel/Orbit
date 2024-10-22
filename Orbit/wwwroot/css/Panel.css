@@ -7,9 +7,13 @@
     font-family: "Josefin Sans", sans-serif;
 }
 
+:root{
+    --bordercolor:1px solid rgba(255,255,255,0.5);
+}
+
 body {
     background-color:black;
-    height:100vh;
+    height:calc(100vh - 50px);
 }
 
 .container{
@@ -21,8 +25,8 @@ body {
 .aside {
     padding: 20px;
     width: 15%;
-    height: 99vh;
-    border-right: 1px solid white;
+    height: calc(99vh - 25px);
+    border-right: var(--bordercolor);
     overflow:hidden;
 }
 
@@ -110,7 +114,7 @@ body {
     height:50px;
     overflow:hidden;
     object-fit:cover;
-    border:1px solid white;
+    border:var(--bordercolor);
     border-radius:50%;
 }
 
@@ -124,26 +128,26 @@ body {
 
 .container .center-div{
     width: 70%;
-    height:98vh;
-    overflow-y:auto;
-    border-right:1px solid white;
+    height: calc(99vh - 20px);
+    border-right:var(--bordercolor);
+    overflow: hidden;
 }
 
 .container .center-div .search-container{
-    border-bottom:1px solid white;
+    border-bottom:var(--bordercolor);
     width:100%;
     height:10vh;
     padding:20px;
     display:grid;
     place-items:center;
-    position:relative;
+    position: relative;
 }
 
 .container .center-div .search-container input{
     width:75%;
     height:4vh;
     border-radius: 100px;
-    border:1px solid white;
+    border:var(--bordercolor);
     outline:none;
     font-size:1.1em;
     color:white;
@@ -162,3 +166,105 @@ body {
     left:195px;
     z-index:1;
 }
+
+.posts-container{
+    width: 100%;
+    height: 100%;
+    overflow-y:auto;
+}
+
+.posts-container .content{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+    border-bottom: var(--bordercolor);
+}
+
+.posts-container .content .post-infos{
+    width: 100%;
+    color: white;
+}
+
+.posts-container .content .post-infos .profile-infos{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.posts-container .content .post-infos .profile-infos .username-profile{
+    margin-left: 2%;
+    color: white;
+}
+
+.posts-container .content .post-infos .profile-infos .img-profile{
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.posts-container .content .post-infos .profile-infos .img-profile img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.posts-container .content .post-infos .post-text{
+    color: white;
+    font-size: 1.2em;
+    padding: 20px;
+}
+
+.posts-container .content .post-img{
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.posts-container .content .post-img .img-container{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.posts-container .content .post-img .img-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.posts-container .content .post-interactions{
+    width: 100%;
+    padding: 10px;
+}
+
+.icons{
+    font-size: 1.1em;
+    margin: 1%;
+    transition: all .3s ease-in;
+    cursor: pointer;
+}
+
+.icons:hover:first-child{
+    color: red;
+}
+
+.icons:hover:nth-child(2){
+    color: cadetblue;
+}
+
+.icons:hover:last-child{
+    color: darkgray;
+}
+
