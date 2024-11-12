@@ -1,10 +1,9 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Orbit.Application.Interfaces;
-using Orbit.Application.Services;
-using Orbit.Domain.Entities;
+using Orbit.Data.Contexts;
 using Orbit.DTOs.Responses;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Models;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.ViewComponents;
 

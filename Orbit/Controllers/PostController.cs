@@ -1,11 +1,9 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Orbit.Application.Interfaces;
-using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
-using Orbit.DTOs.Responses;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Models;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 

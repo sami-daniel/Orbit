@@ -1,9 +1,11 @@
-using Orbit.Models;
+﻿namespace Orbit.Models;
 
-namespace Orbit.DTOs.Responses;
-
-public class PostResponse
+public partial class Post
 {
+    public uint PostId { get; set; }
+
+    public uint UserId { get; set; }
+
     public string PostContent { get; set; } = null!;
 
     public DateTime PostDate { get; set; }
@@ -14,5 +16,5 @@ public class PostResponse
 
     public uint PostLikes { get; set; }
 
-    public User User { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

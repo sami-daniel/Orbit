@@ -1,20 +1,16 @@
-﻿using System.Net.Http.Headers;
-using System.Net.NetworkInformation;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Orbit.Application.Interfaces;
-using Orbit.Domain.Entities;
+using Orbit.Data.Contexts;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
-using Orbit.Filters;
 using Orbit.Hubs;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Models;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 

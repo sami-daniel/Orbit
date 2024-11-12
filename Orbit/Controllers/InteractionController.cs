@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Orbit.Application.Interfaces;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 

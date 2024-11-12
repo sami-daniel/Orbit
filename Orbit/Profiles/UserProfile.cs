@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
 using Orbit.DTOs.Responses;
+using Orbit.Models;
 
 namespace Orbit.Profiles;
 

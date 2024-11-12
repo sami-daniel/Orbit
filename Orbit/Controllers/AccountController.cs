@@ -3,13 +3,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Orbit.Application.Exceptions;
-using Orbit.Application.Interfaces;
-using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 using Orbit.Filters;
+using Orbit.Models;
+using Orbit.Services.Exceptions;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 
@@ -86,20 +86,29 @@ public class AccountController : Controller
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
         {
-            return RedirectToAction("index", new { modalActive = true,
-                                                   userEmailError = ex.Message});
+            return RedirectToAction("index", new
+            {
+                modalActive = true,
+                userEmailError = ex.Message
+            });
         }
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
         {
-            return RedirectToAction("index", new { modalActive = true,
-                                                   userNameError = ex.Message,
-                                                   formID = 2});
+            return RedirectToAction("index", new
+            {
+                modalActive = true,
+                userNameError = ex.Message,
+                formID = 2
+            });
         }
         catch (Exception ex)
         {
-            return RedirectToAction("index", new { modalActive = true,
-                                                   generalError = ex.Message});
+            return RedirectToAction("index", new
+            {
+                modalActive = true,
+                generalError = ex.Message
+            });
         }
 
         List<Claim> claims =
@@ -160,7 +169,7 @@ public class AccountController : Controller
         };
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-        HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
+        HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
 
         return RedirectToActionPermanent("", "user");
     }
