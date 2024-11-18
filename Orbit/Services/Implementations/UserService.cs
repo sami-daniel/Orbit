@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Frozen;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Models;
 using Orbit.Services.Exceptions;
 using Orbit.Services.Helpers;
@@ -142,5 +144,33 @@ public class UserService : IUserService
 
     public async Task FollowUserAsync(string followerUsername, string userToBeFollowedUserName)
     {
+        var follower = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == followerUsername, includeProperties: "Users");
+        var followedUser = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userToBeFollowedUserName, includeProperties: "Followers");
+
+        if (!follower.Any())
+        {
+            throw new UserNotFoundException($"The user with username '{followerUsername} not exists on data source.");
+        }
+
+        if (!followedUser.Any())
+        {
+            throw new UserNotFoundException($"The user with username '{userToBeFollowedUserName} not exists on data source.");
+        }
+
+        using (var transaction = await _unitOfWork.StartTransactionAsync())
+        {
+            try
+            {
+                followedUser.First().Followers.Add(follower.First());
+                follower.First().Users.Add(followedUser.First());
+                await _unitOfWork.CompleteAsync();
+                await transaction.CommitAsync();
+            }
+            catch (DbUpdateException)
+            {
+                // Fail quietly
+                await transaction.RollbackAsync();
+            }
+        }
     }
 }

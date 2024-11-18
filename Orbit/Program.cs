@@ -33,15 +33,6 @@ internal class Program
          serverVersion: new MySqlServerVersion(new Version(8, 4, 0)))
         .LogTo(m => Debug.WriteLine(m)));
 
-        var context = builder.Services.BuildServiceProvider()
-                                      .CreateScope().ServiceProvider
-                                      .GetRequiredService<ApplicationDbContext>();
-        
-        using (context)
-        {
-            context.Database.Migrate();
-        }
-
         builder.Services.AddSingleton<IMessageService, MessageService>();
 
         builder.Services.AddAutoMapper(opt =>
@@ -90,6 +81,14 @@ internal class Program
         builder.Services.AddSignalR();
 
         var app = builder.Build();
+
+        var context = app.Services.CreateScope().ServiceProvider
+                                  .GetRequiredService<ApplicationDbContext>();
+        
+        using (context)
+        {
+            context.Database.Migrate();
+        }
 
         if (app.Environment.IsDevelopment())
         {

@@ -72,7 +72,7 @@ public class UserController : Controller
     }
 
     [HttpPost("[controller]/follow")]
-    public async Task<IActionResult> Follow([FromForm] string id, [FromQuery] string returnTo, [FromForm] string followerUserName, [FromServices] ApplicationDbContext applicationDbContext)
+    public async Task<IActionResult> Follow([FromForm] string id, [FromQuery] string returnTo, [FromForm] string followerUserName)
     {
         if (followerUserName == null)
         {
@@ -82,8 +82,17 @@ public class UserController : Controller
         var userToBeFollowed = await _userService.GetUserByIdentifierAsync(id);
         var follower = await _userService.GetUserByIdentifierAsync(followerUserName);
 
-        userToBeFollowed!.Followers.Add(follower!);
-        await applicationDbContext.SaveChangesAsync();
+        if (follower == null)
+        {
+            return BadRequest($"The follower user with the username '{followerUserName} not exists.");
+        }
+
+        if (userToBeFollowed == null)
+        {
+            return BadRequest($"The user to be followed with the username '{userToBeFollowed} not exists.");
+        }
+
+        await _userService.FollowUserAsync(follower.UserName, userToBeFollowed.UserName);
 
         return RedirectPermanent(returnTo);
     }
