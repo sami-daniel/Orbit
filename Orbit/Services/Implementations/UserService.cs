@@ -173,4 +173,36 @@ public class UserService : IUserService
             }
         }
     }
+
+    public async Task UnfollowUserAsync(string followerUsername, string userToBeUnfollowedUserName)
+    {
+        var follower = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == followerUsername, includeProperties: "Users");
+        var followedUser = await _unitOfWork.UserRepository.GetAsync(u => u.UserName == userToBeUnfollowedUserName, includeProperties: "Followers");
+
+        if (!follower.Any())
+        {
+            throw new UserNotFoundException($"The user with username '{followerUsername} not exists on data source.");
+        }
+
+        if (!followedUser.Any())
+        {
+            throw new UserNotFoundException($"The user with username '{userToBeUnfollowedUserName} not exists on data source.");
+        }
+
+        using (var transaction = await _unitOfWork.StartTransactionAsync())
+        {
+            try
+            {
+                followedUser.First().Followers.Remove(follower.First());
+                follower.First().Users.Remove(followedUser.First());
+                await _unitOfWork.CompleteAsync();
+                await transaction.CommitAsync();
+            }
+            catch (DbUpdateException)
+            {
+                // Fail quietly
+                await transaction.RollbackAsync();
+            }
+        }
+    }
 }

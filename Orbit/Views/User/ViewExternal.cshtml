@@ -28,8 +28,8 @@
             <p>@Html.Raw("@")@Model.UserName</p>
             <p>@Model.UserDescription</p>
             <div class="profile-followers">
-                <a href="../interaction/followers">Followers <span>@Model.Followers!.Count</span></a>
-                <a href="../interaction/followed">Following <span>@Model.Users!.Count</span></a>
+                <a href="../interaction/followers?userName=@Model.UserName">Followers <span>@Model.Followers!.Count</span></a>
+                <a href="../interaction/followed?userName=@Model.UserName">Following <span>@Model.Users!.Count</span></a>
             </div>
         </div>
 
@@ -78,42 +78,4 @@
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         asp-fallback-src="~/libs/jQuery/js/jquery.min.js" asp-fallback-test="window.jQuery"></script>
-    <script>
-        $(document).ready(() => {
-            $('#btn-follow').click(() => {
-                $.ajax({
-                    url: '/notifications/',
-                    type: 'POST',
-                    data: {
-                        user: "@Model.UserName",
-                        message: `O usuário @ViewBag.ViewExternalUsernameFollower começou a te seguir!`
-                    },
-                    success: function (response) {
-                        console.log(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error)
-                    }
-                });
-
-            });
-
-            $('#btn-unfollow').click(() => {
-                $.ajax({
-                    url: '/notifications/',
-                    type: 'POST',
-                    data: {
-                        user: "@Model.UserName",
-                        message: `O usuário @ViewBag.ViewExternalUsernameFollower deixou de te seguir!`
-                    },
-                    success: function (response) {
-                        console.log(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error)
-                    }
-                });
-            });
-        });
-    </script>
 }

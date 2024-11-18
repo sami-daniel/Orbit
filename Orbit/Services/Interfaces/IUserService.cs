@@ -43,4 +43,11 @@ public interface IUserService
     /// <param name="userToBeFollowedUserName">O identificador do usuário que irá ser seguido.</param>
     /// <returns></returns>
     Task FollowUserAsync(string followerUsername, string userToBeFollowedUserName);
+
+    /// <summary>
+    /// Deixa de seguir um usuário no sistema.
+    /// </summary>
+    /// <param name="followerUsername">O identificador do usuário que irá deixar de seguir.</param>
+    /// <param name="userToBeUnfollowedUserName">O identificador do usuário que irá deixar de ser seguido.</param>
+    Task UnfollowUserAsync(string followerUsername, string userToBeUnfollowedUserName);
 }

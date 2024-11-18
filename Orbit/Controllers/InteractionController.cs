@@ -16,9 +16,13 @@ public class InteractionController : Controller
     }
 
     [HttpGet("followers")]
-    public async Task<IActionResult> GetFollowers([FromQuery] string userName)
+    public async Task<IActionResult> GetFollowers([FromQuery] string? userName)
     {
-        var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        string username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        if (userName != null)
+        {
+            username = userName;
+        }
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers");
         var user = users.First();
 
@@ -28,14 +32,18 @@ public class InteractionController : Controller
     }
 
     [HttpGet("followed")]
-    public async Task<IActionResult> GetFollowed()
+    public async Task<IActionResult> GetFollowed([FromQuery] string? userName)
     {
-        var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        string username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        if (userName != null)
+        {
+            username = userName;
+        }
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Users");
         var user = users.First();
 
-        var followeds = user!.Users;
+        var followedAccounts = user!.Users;
 
-        return View(followeds);
+        return View(followedAccounts);
     }
 }

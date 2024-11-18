@@ -99,6 +99,8 @@ public class UserController : Controller
 
         await _userService.FollowUserAsync(follower.UserName, userToBeFollowed.UserName);
 
+        await _hubContext.Clients.User(userToBeFollowed.UserName).SendAsync("ReceiveNotification", userToBeFollowed.UserName,$"<a style=\"color:black\" href=\"../user/{follower.UserName}\">{follower.UserName} seguiu você!</a>");
+
         return RedirectPermanent(returnTo);
     }
 
@@ -110,11 +112,13 @@ public class UserController : Controller
             return BadRequest("Follower user name não pode ser vazio!");
         }
 
-        var userToBeFollowed = await _userService.GetAllUserAsync(u => u.UserName == id, includeProperties: "Followers");
-        var follower = await _userService.GetUserByIdentifierAsync(followerUserName);
+        var userBeingUnfollowed = await _userService.GetAllUserAsync(u => u.UserName == id, includeProperties: "Followers");
+        var userFollower = await _userService.GetUserByIdentifierAsync(followerUserName);
 
-        userToBeFollowed.First().Followers.Remove(follower!);
+        userBeingUnfollowed.First().Followers.Remove(userFollower!);
         await applicationDbContext.SaveChangesAsync();
+
+        await _hubContext.Clients.User(userBeingUnfollowed!.First().UserName).SendAsync("ReceiveNotification", userFollower!.UserName, $"<a style=\"color:black\" href=\"user/{userFollower.UserName}\">{userFollower.UserName} deixou de seguir você!</a>");
 
         return RedirectPermanent(returnTo);
     }

@@ -17,4 +17,33 @@ public partial class Post
     public uint PostLikes { get; set; }
 
     public virtual User User { get; set; } = null!;
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        Post post = (Post)obj;
+
+        return PostId == post.PostId
+               && UserId == post.UserId
+               && PostContent == post.PostContent
+               && PostDate == post.PostDate
+               && PostImageByteType == post.PostImageByteType
+               && PostVideoByteType == post.PostVideoByteType
+               && PostLikes == post.PostLikes;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(PostId,
+                                UserId,
+                                PostContent,
+                                PostDate,
+                                PostImageByteType,
+                                PostVideoByteType,
+                                PostLikes);
+    }
 }

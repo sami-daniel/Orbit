@@ -58,7 +58,7 @@ $(document).ready(function() {
                 .finally(() => {
                     $('#input-message').val('');
                 });
-            notificationConnection.invoke("SendNotification", $("#guest").val(), $("#host").val());
+            notificationConnection.invoke("SendNotification", $("#guest").val(), `<a href='/chat/${$("#guest").val()}'>Nova mensagem de ${$("#host").val()}</a>`);
         }
         scrollToBottom();
     });
