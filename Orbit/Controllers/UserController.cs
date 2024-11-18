@@ -49,18 +49,19 @@ public class UserController : Controller
 
     [HttpGet]
     [Route("[controller]/{username}")]
-    public async Task<IActionResult> ViewExternal(string username, string? returnTo)
+    public async Task<IActionResult> ViewExternal(string username)
     {
+        if (username == HttpContext.Session.GetObject<UserResponse>("User")!.UserName)
+        {
+            return RedirectToAction("Index", "User");
+        }
+
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers,Users");
         var user = users.FirstOrDefault();
 
-        if (user == null && returnTo != null)
+        if (user == null)
         {
-            return RedirectToRoute(returnTo);
-        }
-        else if (user == null && returnTo == null)
-        {
-            return RedirectToAction("Index", "User");
+            return NotFound("User not found.");
         }
 
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);

@@ -82,9 +82,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.IsPrivateProfile)
-                .HasColumnType("bit(1)")
-                .HasColumnName("is_private_profile");
             entity.Property(e => e.UserProfileBannerImageByteType).HasColumnName("user_profile_banner_image_byte_type");
             entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
