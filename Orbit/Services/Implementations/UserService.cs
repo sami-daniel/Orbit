@@ -139,4 +139,8 @@ public class UserService : IUserService
             throw new UserNotFoundException("O usuário com esse identificador não foi encontrado!");
         }
     }
+
+    public async Task FollowUserAsync(string followerUsername, string userToBeFollowedUserName)
+    {
+    }
 }

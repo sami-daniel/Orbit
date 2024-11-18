@@ -35,4 +35,12 @@ public interface IUserService
     /// <param name="userIdentifier">O identificador do usuário, que pode ser um email ou o nome do usuário.</param>
     /// <param name="user">O <see cref="User"/> contendo os dados atualizados do perfil.</param>
     Task UpdateUserAsync(string userIdentifier, User user);
+
+    /// <summary>
+    /// Segue um usuário no sistema.
+    /// </summary>
+    /// <param name="followerUsername">O identificador do usuário que irá seguir.</param>
+    /// <param name="userToBeFollowedUserName">O identificador do usuário que irá ser seguido.</param>
+    /// <returns></returns>
+    Task FollowUserAsync(string followerUsername, string userToBeFollowedUserName);
 }
