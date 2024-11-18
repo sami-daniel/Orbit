@@ -54,9 +54,13 @@ public class UserController : Controller
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers,Users");
         var user = users.FirstOrDefault();
 
-        if (user == null)
+        if (user == null && returnTo != null)
         {
             return RedirectToRoute(returnTo);
+        }
+        else if (user == null && returnTo == null)
+        {
+            return RedirectToAction("Index", "User");
         }
 
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
