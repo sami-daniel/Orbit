@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Laraue.EfCoreTriggers.Common.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Models;
 
 namespace Orbit.Data.Contexts;
