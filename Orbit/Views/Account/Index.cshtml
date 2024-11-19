@@ -1,155 +1,18 @@
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
 }
+<div class="container">
+    <h2>
+    Welcome to OrbIt
+    </h2>
 
-<div id="particles-js"></div>
-<main class="main-account">
-    <header>
-        <h2 class="title">OrbIt</h2>
-    </header>
-    <section class="container">
-        <div class="text-exibition" data-aos="zoom-out-up">
-            <p>Acompanhe tudo no mundo da tecnologia conosco.</p>
-        </div>
-    </section>
-    <footer>
-        <div class="div-buttons">
-            <button class="btn" id="openLogin">Entrar</button>
-            <button class="btn" id="openSignIn">Cadastrar</button>
-        </div>
-    </footer>
+    <button>Click here to start</button>
+</div>
 
-    <div class="modal-background hidden" id="modalBackground">
-        <div class="content">
-
-            <div class="div-signIn" id="divSignIn">
-                <form method="POST" action="/account/create-user" enctype="application/x-www-form-urlencoded" class="form-name forms" id="reg-form">
-                    <div class="first-step">
-                        <div class="top-header">
-                            <button class="form-btn" id="closeBtn">
-                                <img src="~/images/xmark-solid.svg" class="icons" />
-                            </button>
-                            <h2 class="form-title">Crie sua conta no OrbIt</h2>
-                        </div>
-                        <div class="error">
-                            @ViewBag.UserEmailError
-                        </div>
-                        <div class="email-container">
-                            <label for="email">Email</label>
-                            <input type="email" required name="UserEmail" id="email" class="inputs" autocomplete="off" />
-                        </div>
-                        <div class="login-options">
-                            <button class="btn-options">
-                                Crie conta com Google <img src="~/images/Google.png" alt="Google" class="icons-btn" />
-                            </button>
-                            <button class="btn-options">
-                                Crie conta com Microsoft <img src="~/images/Microsoft.png" alt="Microsoft" class="icons-btn" />
-                            </button>
-                            <button class="btn-options">
-                                Crie conta com Apple <img src="~/images/Icon-Apple.png" alt="Apple" class="icons-btn" />
-                            </button>
-                        </div>
-                        <div class="next-container">
-                            <button class="next-btn" id="nextBtn">Avançar</button>
-                        </div>
-
-                    </div>
-
-                    <div class="last-step" id="lastStep">
-                        <div class="top-header">
-                            <button class="form-btn" id="backBtn">
-                                <img src="~/images/arrow-left-solid.svg" class="icons" />
-                            </button>
-                            <h2 class="form-title">Crie sua conta na Orbit</h2>
-                        </div>
-
-                        <div class="password-container">
-                            <div class="error">
-                                @ViewBag.UserNameError
-                            </div>
-                            <label class="pass" for="uname">Nome do usuário</label>
-                            <input type="text" required name="UserName" id="uname" class="inputs" autocomplete="off" />
-                        </div>
-
-                        <div class="password-container">
-                            <div class="error">
-                                @ViewBag.UserProfileError
-                            </div>
-                            <label class="pass" for="ProfileName">Nome do Perfil</label>
-                            <input type="text" required name="UserProfileName" id="ProfileName" class="inputs" autocomplete="off" />
-                        </div>
-
-                        <div class="password-container">
-                            <div class="error">
-                                @ViewBag.UserPasswordError
-                            </div>
-                            <label for="password">Senha</label>
-                            <input type="password" required name="UserPassword" id="password" class="inputs" autocomplete="off" />
-                        </div>
-
-                        <div class="terms-and-conditions">
-                            <input type="checkbox" name="terms" id="terms" />
-                            <label class="termos">
-                                Concorda com os Termos Politica e Serviços <a href="#">Termos de e serviços</a>
-                            </label>
-                        </div>
-                        <div class="next-container">
-                            <button class="next-btn" id="signInButton">Sign In</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="div-login" id="divLogin">
-                <div class="top-header">
-                    <button class="form-btn" id="closeBtnLogin">
-                        <img src="~/images/xmark-solid.svg" class="icons" />
-                    </button>
-                    <h2 class="form-title"> Faça o login na OrbIt</h2>
-                </div>
-
-                <form method="post" class="forms" action="/account/login" id="log-form">
-                    @if (ViewBag.LoginError != null)
-                    {
-                        <div class="container-error">
-                            @ViewBag.LoginError
-                        </div>
-                    }
-                    <div class="name-container">
-                        <label for="input-login">Email ou Nome de Usuário</label>
-                        <input type="text" required name="inputLogin" id="input-login" class="inputs" value="@(Html.Raw(ViewBag.InputLogin ?? ""))" />
-                    </div>
-                    <div class="Password-container">
-                        <label for="Password-Login">Senha</label>
-                        <input type="Password" required name="password" id="Password-Login" class="inputs" value="@(Html.Raw(ViewBag.InputPassword ?? ""))" />
-                    </div>
-                    <div class="login-options">
-                        <button class="btn-options">
-                            Crie conta com Google <img src="~/images/Google.png" alt="Google" class="icons-btn" />
-                        </button>
-                        <button class="btn-options">
-                            Crie conta com Microsoft <img src="~/images/Microsoft.png" alt="Microsoft" class="icons-btn" />
-                        </button>
-                        <button class="btn-options">
-                            Crie conta com Apple <img src="~/images/Icon-Apple.png" alt="Apple" class="icons-btn" />
-                        </button>
-                    </div>
-                    <div class="next-container">
-                        <button class="next-btn" id="LoginButton">Logar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-
-    </div>
-
-</main>
 
 
 @section links {
-    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Account.css" asp-append-version="true">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
