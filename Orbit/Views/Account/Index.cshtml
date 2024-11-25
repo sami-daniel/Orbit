@@ -10,7 +10,6 @@
 
 <div class="modal-container">
     <div class="modal-section">
-        <div class="images-section"></div>
         <div class="signUp-sections">
             <div class="login-div">
                 <div class="container-btn">
@@ -20,35 +19,33 @@
                 <h1>Login</h1>
 
                 <form action="">
-                    <div class="container-login-method">
-                        <label for="">Username or Email</label>
-                        <input type="text" >
+                    <div class="container-login-method">  
+                        <input type="text" required>
+                        <label for="">Username</label>
+                        <i class="fa-solid fa-user icons-forms"></i>
                     </div>
 
                     <div class="container-password">
+                        <input type="password" required>
                         <label for="">Password</label>
-                        <input type="password" placeholder="Password">
-                    </div>
-
-                    <div class="other-methods">
-                        <button>
-                            Google
-                        </button>
-                        <button>
-                            Microsoft
-                        </button>
-                        <button>
-                            Apple
-                        </button>
+                        <i class="fa-solid fa-lock icons-forms"></i>
+                        <p id="signUpDiv">Sign-Up</p>
                     </div>
 
                     <div class="btn-submit">
-                        <button type="submit">Login</button>
+                        <button type="submit">
+                            Login
+                            <i class="fa-solid fa-right-to-bracket .icons-buttons"></i>
+                            </button>
                     </div>
                 </form>
             </div>
             <div class="signIn-div">
-             <button type="button" name="btnHide" class="btnHide"><i class="fa-solid fa-xmark icons"></i></button>
+                <div class="container-btn">
+                    <button type="button" name="btnHide" class="btnHide"><i class="fa-solid fa-xmark icons"></i></button>
+                </div>
+
+                <h1>Sign-Up</h1>
             </div>
         </div>
     </div>

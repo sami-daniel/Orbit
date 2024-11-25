@@ -11,12 +11,22 @@ $(document).ready(function() {
 $("#btnShow").click(function(){
     $(".modal-container").fadeIn(1000,function (){
         $(this).css("display", "grid");
-        $(this).find(".modal-section").fadeIn(2000);
+        $(this).find(".modal-section").fadeIn(2000, function() {
+            $(this).find(".login-div").fadeIn(1000);
+        });
+    });
+});
+
+$("#signUpDiv").click(function (){
+    $(".login-div").fadeOut(1000, function() {
+        $(".signIn-div").fadeIn(1000);
     });
 });
 
 $(".btnHide").click(function(){
-    $(".modal-container").hide();
+    $(".modal-container").hide(function() {
+        $(".login-div").show();
+    });
 });
 
 
