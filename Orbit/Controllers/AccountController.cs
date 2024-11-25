@@ -128,6 +128,7 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
         HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
+        HttpContext.Session.SetString("is-first-time", bool.TrueString);
 
         return RedirectToActionPermanent("", "user");
     }
@@ -170,6 +171,7 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
         HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
+        HttpContext.Session.SetString("is-first-time", bool.FalseString);
 
         return RedirectToActionPermanent("", "user");
     }
