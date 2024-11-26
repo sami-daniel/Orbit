@@ -310,7 +310,7 @@ body{
   position: relative;
   width: auto;
   height: auto;
-  margin-top: 10%;
+  margin-top: 8%;
 }
 
 .modal-container .modal-section .signUp-sections .signUp-div form div:last-child{
@@ -319,6 +319,7 @@ body{
 
 .modal-container .modal-section .signUp-sections .signUp-div form .container-username label,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName label,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email label,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password label{
   font-size: 1em;
   color: var(--borderColor);
@@ -331,6 +332,7 @@ body{
 
 .modal-container .modal-section .signUp-sections .signUp-div form .container-username input,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input{
   background-color: transparent;
   color: white;
@@ -347,6 +349,8 @@ body{
 .modal-container .modal-section .signUp-sections .signUp-div form .container-username input:valid,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:focus,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:valid,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:focus,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:valid,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input:focus,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input:valid{
   border-color: white;
@@ -356,6 +360,8 @@ body{
 .modal-container .modal-section .signUp-sections .signUp-div form .container-username input:valid ~ label,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:focus ~ label,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:valid ~ label,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:focus ~ label,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:valid ~ label,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input:focus ~ label,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input:valid ~ label{
   margin-top: -15px;
@@ -367,6 +373,8 @@ body{
 .modal-container .modal-section .signUp-sections .signUp-div form .container-username input:valid ~ .icons-forms,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:focus ~ .icons-forms,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:valid ~ .icons-forms,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:focus ~ .icons-forms,
+.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:valid ~ .icons-forms,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input:focus ~ .icons-forms,
 .modal-container .modal-section .signUp-sections .signUp-div form .container-password input:valid ~ .icons-forms{
   color: white;
