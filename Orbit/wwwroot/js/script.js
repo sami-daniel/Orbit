@@ -19,7 +19,13 @@ $("#btnShow").click(function(){
 
 $("#signUpDiv").click(function (){
     $(".login-div").fadeOut(1000, function() {
-        $(".signIn-div").fadeIn(1000);
+        $(".signUp-div").fadeIn(500);
+    });
+});
+
+$("#loginDiv").click(function (){
+    $(".signUp-div").fadeOut(1000, function() {
+        $(".login-div").fadeIn(500);
     });
 });
 
