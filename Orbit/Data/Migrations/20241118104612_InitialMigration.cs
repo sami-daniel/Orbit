@@ -40,7 +40,8 @@ namespace Orbit.Data.Migrations
                     table.PrimaryKey("PRIMARY", x => x.user_id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb3")
-                .Annotation("Relational:Collation", "utf8mb3_general_ci");
+                .Annotation("Relational:Collation", "utf8mb3_general_ci")
+                .Annotation("Engine", "InnoDB");
 
             migrationBuilder.CreateTable(
                 name: "follower",
@@ -67,7 +68,8 @@ namespace Orbit.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb3")
-                .Annotation("Relational:Collation", "utf8mb3_general_ci");
+                .Annotation("Relational:Collation", "utf8mb3_general_ci")
+                .Annotation("Engine", "InnoDB");
 
             migrationBuilder.CreateTable(
                 name: "post",
@@ -94,7 +96,8 @@ namespace Orbit.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci")
+                .Annotation("Engine", "InnoDB");
 
             migrationBuilder.CreateTable(
                 name: "likes",
@@ -119,7 +122,8 @@ namespace Orbit.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci")
+                .Annotation("Mysql:Engine", "InnoDB");
 
             migrationBuilder.CreateIndex(
                 name: "follower_id",

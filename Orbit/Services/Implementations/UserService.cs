@@ -44,8 +44,21 @@ public class UserService : IUserService
 
         user.UserEmail = user.UserEmail.ToLower();
 
-        await _unitOfWork.UserRepository.InsertAsync(user);
-        await _unitOfWork.CompleteAsync();
+        try
+        {
+            await _unitOfWork.UserRepository.InsertAsync(user);
+            await _unitOfWork.CompleteAsync();
+        }
+        catch (DbUpdateException ex)
+        when (ex.InnerException!.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
+        {
+            throw new UserAlredyExistsException($"O usuário com o email {user.UserEmail} já existe!");
+        }
+        catch (DbUpdateException ex)
+        when (ex.InnerException!.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
+        {
+            throw new UserAlredyExistsException($"O usuário com o identificador {user.UserName} já existe!");
+        }
 
     }
 

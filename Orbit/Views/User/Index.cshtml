@@ -44,8 +44,8 @@
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit" id="openEditDiv">Edit Profile</button>
-            <a href="/chat" class="msg-btn">Messages</a>
+            <button class="btn-edit" id="openEditDiv">Editar Perfil</button>
+            <a href="/chat" class="msg-btn">Mensagens</a>
         </div>
     </div>
 
@@ -56,11 +56,20 @@
             </button>
             <form method="post" action="user/update-profile/@Model.UserName?returnTo=@Url.PageLink()" enctype="multipart/form-data" class="form-edit">
             <h2 class="edit-title">Edit Profile</h2>
+            <div>
+                Nome do usuário
+            </div>
             <div class="username-container">
                 <input type="text" name="UserName" value="@Model.UserName" placeholder="Username" />
             </div>
+            <div>
+                Nome do perfil
+            </div>
             <div class="profileName-container">
                 <input type="text" name="UserProfileName" value="@Model.UserProfileName" placeholder="Profile Name" />
+            </div>
+            <div>
+                Descrição
             </div>
             <div class="description-text">
                 <textarea id="descricao-textarea" name="UserDescription" placeholder="Description">
