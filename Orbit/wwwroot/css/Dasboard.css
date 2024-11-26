@@ -393,3 +393,21 @@ body{
     background-color:white;
     color:black;
 }
+
+@media screen and (max-width: 699px){
+    .content-top div:last-child{
+        position: static;
+        display: flex;
+        justify-content: end;
+        width: 100%;
+    }
+    .content-main .profiles-specs .edit-profile {
+        position: static;
+    }
+    .content-main .profiles-specs {
+        flex-flow: column;
+    }
+    .content-main .profiles-specs div{
+        margin-top: 40px;
+    }
+}
