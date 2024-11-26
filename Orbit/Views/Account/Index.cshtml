@@ -50,7 +50,8 @@
                 </div>
 
                 <h1>Sign-Up</h1>
-
+                <h1>@ViewBag.UserError</h1>
+                <h1>@ViewBag.UserEmailError</h1>
                 <form asp-action="create-user" asp-controller="account">
                     <div class="container-username">
                         <input type="text" asp-for="@Model.UserName">
@@ -131,6 +132,26 @@
         <script>
             $(document).ready(() => {
                 $('#openLogin').click();
+            });
+        </script>
+    }
+
+    @Url.ActionContext.HttpContext.Request.Query.TryGetValue("formID", out var formID);
+
+    @if (formID == "2")
+    {
+        <script>
+            $(document).ready(() => {
+                $('#btnShow').click();
+                $('#signUpDiv').click();
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            $(document).ready(() => {
+                $('#loginDiv').click();
             });
         </script>
     }

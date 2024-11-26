@@ -86,15 +86,18 @@ public class AccountController : Controller
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
         {
+            ViewBag.UserEmailError = ex.Message;
             return RedirectToAction("index", new
             {
                 modalActive = true,
-                userEmailError = ex.Message
+                userEmailError = ex.Message,
+                formID = 2
             });
         }
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
         {
+            ViewBag.UserError = ex.Message;
             return RedirectToAction("index", new
             {
                 modalActive = true,
