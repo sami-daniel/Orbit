@@ -53,7 +53,7 @@ public class AccountController : Controller
         ViewBag.UserPasswordError = userPasswordError;
         ViewBag.PartNumber = formID;
 
-        return View();
+        return View(new UserAddRequest());
     }
 
     [HttpPost("[controller]/create-user")]

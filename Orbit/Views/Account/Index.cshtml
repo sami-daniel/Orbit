@@ -1,6 +1,10 @@
+@model UserAddRequest
+
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
 }
+
+
 <div class="container">
     <label for="btnShow">
     Welcome to OrbIt
@@ -18,16 +22,16 @@
 
                 <h1>Login</h1>
 
-                <form action="">
+                <form asp-action="login" asp-controller="account">
                     <div class="container-login-method">  
-                        <input type="text" required>
-                        <label for="">Username</label>
+                        <input type="text" name="inputLogin" required>
+                        <label for="inputLogin">Username</label>
                         <i class="fa-solid fa-user icons-forms"></i>
                     </div>
 
                     <div class="container-password">
-                        <input type="password" required>
-                        <label for="">Password</label>
+                        <input type="password" name="password" required>
+                        <label for="password">Password</label>
                         <i class="fa-solid fa-lock icons-forms"></i>
                         <p>Don't have an account yet? <a id="signUpDiv">Sign up</a></p>
                     </div>
@@ -47,22 +51,22 @@
 
                 <h1>Sign-Up</h1>
 
-                <form action="">
+                <form asp-action="create-user" asp-controller="account">
                     <div class="container-username">
-                        <input type="text" required>
-                        <label for="">Username</label>
+                        <input type="text" asp-for="@Model.UserName">
+                        <label asp-for="@Model.UserName">Username</label>
                         <i class="fa-solid fa-user icons-forms"></i>
                     </div>
 
                     <div class="container-profileName">
-                        <input type="text" required>
-                        <label for="">Profile name</label>
+                        <input type="text" required asp-for="@Model.UserProfileName">
+                        <label asp-for="@Model.UserProfileName">Profile name</label>
                         <i class="fa-solid fa-circle-user icons-forms"></i>
                     </div>
 
                     <div class="container-password">
-                        <input type="text" required>
-                        <label for="">Password</label>
+                        <input type="text" required asp-for="@Model.UserPassword">
+                        <label asp-for="@Model.UserPassword">Password</label>
                         <i class="fa-solid fa-lock icons-forms"></i>
                         <p>Already have an account? <a id="loginDiv">Login</a></p>
                     </div>
