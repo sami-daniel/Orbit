@@ -23,7 +23,7 @@
                 <h1>Login</h1>
 
                 <form asp-action="login" asp-controller="account">
-                    <div class="container-login-method">  
+                    <div class="container-login-method">
                         <input type="text" name="inputLogin" required>
                         <label for="inputLogin">Username</label>
                         <i class="fa-solid fa-user icons-forms"></i>
@@ -56,23 +56,27 @@
                         <input type="text" asp-for="@Model.UserName">
                         <label asp-for="@Model.UserName">Username</label>
                         <i class="fa-solid fa-user icons-forms"></i>
+                        <span asp-validation-for="@Model.UserName"></span>
                     </div>
 
                     <div class="container-profileName">
                         <input type="text" required asp-for="@Model.UserProfileName">
                         <label asp-for="@Model.UserProfileName">Profile name</label>
                         <i class="fa-solid fa-circle-user icons-forms"></i>
+                        <span asp-validation-for="@Model.UserProfileName"></span>
                     </div>
 
                     <div class="container-email">
-                        <input type="text" required>
-                        <label for="">Email</label>
+                        <input type="text" required asp-for="@Model.UserEmail">
+                        <label asp-for="@Model.UserEmail">Email</label>
                         <i class="fa-solid fa-envelope icons-forms"></i>
+                        <span asp-validation-for="@Model.UserEmail"></span>
                     </div>
 
                     <div class="container-password">
                         <input type="text" required asp-for="@Model.UserPassword">
                         <label asp-for="@Model.UserPassword">Password</label>
+                        <span asp-validation-for="@Model.UserPassword"></span>
                         <i class="fa-solid fa-lock icons-forms"></i>
                         <p>Already have an account? <a id="loginDiv">Login</a></p>
                     </div>
@@ -115,13 +119,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"
             asp-fallback-src="~/libs/jQuery/js/additional-methods.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+    
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
 
     <script src="~/js/script.js" asp-append-version="true"></script>
     <script src="~/js/particle.js" asp-append-version="true"></script>
     <script src="~/js/behavior.js" asp-append-version="true"></script>
-    <script src="~/js/validate.js" asp-append-version="true"></script>
     @if (ViewBag.LoginModalActive != null && ViewBag.LoginModalActive == true)
     {
         <script>
@@ -129,29 +133,5 @@
                 $('#openLogin').click();
             });
         </script>
-    }
-
-    @if (ViewBag.RegisModalActive != null && ViewBag.RegisModalActive == true)
-    {
-        @switch(ViewBag.PartNumber)
-        {
-            case 2:
-                <script>
-                    $(document).ready(() => {
-                        $('#openSignIn').click();
-                        $('#email').val('a@a.com'); // Just an random email to pass the validation
-                        $('#nextBtn').click();
-                        $('#email').val('');
-                    });
-                </script>
-            break;
-            default:
-                <script>
-                    $(document).ready(() => {
-                        $('#openSignIn').click();
-                    });
-                </script>
-            break;
-        }
     }
 }
