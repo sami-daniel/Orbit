@@ -115,6 +115,18 @@ body{
   height: 100%;
 }
 
+.modal-container .container-errors{
+  width: fit-content;
+  height: 5vh;
+  border: 1px solid var(--borderColor);
+  margin: 2% auto;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--borderColor);
+}
+
 .modal-container .modal-section .signUp-sections .login-div .container-btn,
 .modal-container .modal-section .signUp-sections .signUp-div .container-btn{
   width: 100%;

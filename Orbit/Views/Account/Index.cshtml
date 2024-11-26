@@ -13,6 +13,16 @@
 </div>
 
 <div class="modal-container">
+                @if(ViewBag.UserError != null){
+                    <div class="container-errors">
+                        @ViewBag.UserError
+                    </div>
+                }
+                else if(ViewBag.UserEmailError != null){
+                    <div class="container-errors">
+                        @ViewBag.UserEmailError
+                    </div>
+                }
     <div class="modal-section">
         <div class="signUp-sections">
             <div class="login-div">
@@ -50,11 +60,9 @@
                 </div>
 
                 <h1>Sign-Up</h1>
-                <h1>@ViewBag.UserError</h1>
-                <h1>@ViewBag.UserEmailError</h1>
                 <form asp-action="create-user" asp-controller="account">
                     <div class="container-username">
-                        <input type="text" asp-for="@Model.UserName">
+                        <input type="text" asp-for="@Model.UserName" required>
                         <label asp-for="@Model.UserName">Username</label>
                         <i class="fa-solid fa-user icons-forms"></i>
                         <span asp-validation-for="@Model.UserName"></span>
