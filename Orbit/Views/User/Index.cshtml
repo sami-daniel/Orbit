@@ -10,7 +10,7 @@
 
 <header class="content-top">
     <div class="btn-back">
-        <img src="~/images/arrow-left-solid.svg" alt="Left-Arrow" />
+        <a href=""><i class="fa-solid fa-left-long icons"></i></a>
     </div>
     <div class="title-user">
         <span>Olá, @(Html.Raw(Model.UserProfileName ?? ""))</span>
@@ -22,7 +22,7 @@
 
 <form class="background-img" id="form-banner">
     <input type="file" name="backgroundImg" id="backgroundImg" />
-    <img src="@Url.Action("get-banner-image", "user", new { userName = Model.UserName })" alt="Banner Image"/>
+    <img src="@Url.Action("get-banner-image", "user", new { userName = Model.UserName })"/>
     <label class="text-img" for="backgroundImg">Add an Image</label>
 </form>
 
@@ -49,11 +49,12 @@
         </div>
     </div>
 
-    <div id="divEditProfile" class="container-edit">
-        <button class="form-btn" id="closeBtn">
-            <img src="~/images/xmark-solid.svg" class="icons" width="40px" />
-        </button>
-        <form method="post" action="user/update-profile/@Model.UserName?returnTo=@Url.PageLink()" enctype="multipart/form-data" class="form-edit">
+    <div class="modal-container-edit" id="modal-container-edit">
+        <div id="divEditProfile" class="container-edit">
+            <button class="form-btn" id="closeBtn">
+                <i class="fa-solid fa-xmark icons"></i>
+            </button>
+            <form method="post" action="user/update-profile/@Model.UserName?returnTo=@Url.PageLink()" enctype="multipart/form-data" class="form-edit">
             <h2 class="edit-title">Edit Profile</h2>
             <div class="username-container">
                 <input type="text" name="UserName" value="@Model.UserName" placeholder="Username" />
@@ -69,9 +70,11 @@
             <div class="submit-container">
                 <input type="submit" id="submit-edit" placeholder="Submit" />
             </div>
-        </form>
+            </form>
+        </div>
     </div>
 
+    
     <div class="navigation-bar">
         <div class="content-nav">Publications</div>
         <div class="content-nav">Projects</div>
@@ -93,6 +96,7 @@
             asp-fallback-test="window.jQuery"></script>
     <script src="~/js/profile-page.js" asp-append-version="true"></script>
     <script src="~/js/interaction.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 }
