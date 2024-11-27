@@ -191,7 +191,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.PreferenceName)
                 .HasMaxLength(255)
                 .HasColumnName("preference_name");
-            entity.HasIndex(e => e.PreferenceName, "preference_name_UNIQUE").IsUnique();
 
             entity.HasOne(d => d.Post).WithMany(p => p.PostPreferences)
                 .HasForeignKey(d => d.PostId)
