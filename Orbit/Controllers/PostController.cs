@@ -42,15 +42,38 @@ public class PostController : Controller
     }
 
     [HttpGet("[controller]/get-post-image/{postID}")]
-    public async Task<IActionResult> GetPostImage(int postID)
+    public async Task<IActionResult> GetPostImage(uint postID)
     {
-        ;
-
+        var post = await _postService.GetPostByIdAsync(postID);
+    
         if (post == null)
         {
-            return NotFound();
+            return NotFound("Post not found");
         }
 
-        return File(post.Image, "image/jpeg");
+        if (post.PostImageByteType == null)
+        {
+            return NotFound("Post has no image");
+        }
+
+        return File(post.PostImageByteType, "image/jpeg");
+    }
+
+    [HttpGet("[controller]/get-post-video/{postID}")]
+    public async Task<IActionResult> GetPostVideo(uint postID)
+    {
+        var post = await _postService.GetPostByIdAsync(postID);
+    
+        if (post == null)
+        {
+            return NotFound("Post not found");
+        }
+
+        if (post.PostVideoByteType == null)
+        {
+            return NotFound("Post has no video");
+        }
+
+        return File(post.PostVideoByteType, "video/mp4");
     }
 }

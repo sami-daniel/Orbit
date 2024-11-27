@@ -75,6 +75,18 @@ public class PostService : IPostService
         .ToListAsync();
     }
 
+    public async Task<Post?> GetPostByIdAsync(uint postId)
+    {
+        var post = await _unitOfWork.PostRepository.GetAsync(p => p.PostId == postId);
+
+        if (post == null)
+        {
+            return null;
+        }
+
+        return post.First();
+    }
+
     public async Task<IEnumerable<Post>> GetPostsRandomizedByUserPreferenceAsync(string username)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username)

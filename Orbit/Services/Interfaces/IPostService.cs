@@ -30,4 +30,11 @@ public interface IPostService
     /// <param name="userName">O nome do usuário.</param>
     /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém uma lista de postagens.</returns>
     Task<IEnumerable<Post>> GetPostsRandomizedByUserPreferenceAsync(string username);
+
+    /// <summary>
+    /// Obtém uma postagem por seu identificador.
+    /// </summary>
+    /// <param name="postId">O identificador da postagem.</param>
+    /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém a postagem. Nulo caso o post não exista.</returns>
+    Task<Post?> GetPostByIdAsync(uint postId);
 }
