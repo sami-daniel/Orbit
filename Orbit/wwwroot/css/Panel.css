@@ -30,6 +30,25 @@ body {
     overflow:hidden;
 }
 
+.post-modal{
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.post-modal .post-form{
+    display: none;
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    background-color: black;
+    border: 1px solid var(--bordercolor);
+}
+
 .aside .logo h2{
     text-align:center;
     font-size:2em;
@@ -124,6 +143,19 @@ body {
 
 .aside .container-profile .profile-info .name-container{
     margin-left:10%;
+}
+
+.aside .container-profile .profile-info .name-container h4::after{
+    content: "Ver perfil";
+    display: none;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    transition: all .4s ease;
+}
+
+.aside .container-profile:hover .profile-info .name-container h4::after{
+    display: block;
 }
 
 .container .center-div{
