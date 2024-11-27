@@ -145,7 +145,12 @@
     {
         <script>
             $(document).ready(() => {
-                $('#btnShow').click();
+                $(".modal-container").fadeIn(1000, function(){
+                    $(".modal-section").fadeIn(1000, function(){
+                        $(".login-div").hide();
+                        $(".signUp-div").fadeIn(1000);
+                    });
+                });
             });
         </script>
     }
