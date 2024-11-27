@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orbit.Data.Contexts;
 
@@ -11,9 +12,11 @@ using Orbit.Data.Contexts;
 namespace Orbit.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126210138_AddCurriculumByteTypeFieldInTableUser")]
+    partial class AddCurriculumByteTypeFieldInTableUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,35 +108,6 @@ namespace Orbit.Data.Migrations
                     b.ToTable("post", (string)null);
                 });
 
-            modelBuilder.Entity("Orbit.Models.PostPreference", b =>
-                {
-                    b.Property<uint>("PreferenceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned")
-                        .HasColumnName("preference_id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("PreferenceId"));
-
-                    b.Property<uint>("PostId")
-                        .HasColumnType("int unsigned");
-
-                    b.Property<string>("PreferenceName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("preference_name");
-
-                    b.HasKey("PreferenceId")
-                        .HasName("PRIMARY");
-
-                    b.HasIndex(new[] { "PostId" }, "post_preference_ibfk_1");
-
-                    b.HasIndex(new[] { "PreferenceName" }, "preference_name_UNIQUE")
-                        .IsUnique();
-
-                    b.ToTable("post_preference", (string)null);
-                });
-
             modelBuilder.Entity("Orbit.Models.User", b =>
                 {
                     b.Property<uint>("UserId")
@@ -142,6 +116,10 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("user_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("UserId"));
+
+                    b.Property<byte[]>("UserCurriculumByteType")
+                        .HasColumnType("longblob")
+                        .HasColumnName("user_curriculum_byte_type");
 
                     b.Property<string>("UserDescription")
                         .HasColumnType("mediumtext")
@@ -204,32 +182,6 @@ namespace Orbit.Data.Migrations
                     MySqlEntityTypeBuilderExtensions.UseCollation(b, "utf8mb3_general_ci");
                 });
 
-            modelBuilder.Entity("Orbit.Models.UserPreference", b =>
-                {
-                    b.Property<uint>("PreferenceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned")
-                        .HasColumnName("preference_id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("PreferenceId"));
-
-                    b.Property<string>("PreferenceName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("preference_name");
-
-                    b.Property<uint>("UserId")
-                        .HasColumnType("int unsigned");
-
-                    b.HasKey("PreferenceId")
-                        .HasName("PRIMARY");
-
-                    b.HasIndex(new[] { "UserId" }, "user_preference_ibfk_1");
-
-                    b.ToTable("user_preference", (string)null);
-                });
-
             modelBuilder.Entity("Follower", b =>
                 {
                     b.HasOne("Orbit.Models.User", null)
@@ -279,40 +231,9 @@ namespace Orbit.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Orbit.Models.PostPreference", b =>
-                {
-                    b.HasOne("Orbit.Models.Post", "Post")
-                        .WithMany("PostPreferences")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("post_preference_ibfk_1");
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Orbit.Models.UserPreference", b =>
-                {
-                    b.HasOne("Orbit.Models.User", "User")
-                        .WithMany("UserPreferences")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("user_preference_ibfk_1");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Orbit.Models.Post", b =>
-                {
-                    b.Navigation("PostPreferences");
-                });
-
             modelBuilder.Entity("Orbit.Models.User", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("UserPreferences");
                 });
 #pragma warning restore 612, 618
         }

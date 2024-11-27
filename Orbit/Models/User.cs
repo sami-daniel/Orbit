@@ -24,6 +24,8 @@ public partial class User
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 
+    public virtual ICollection<UserPreference> UserPreferences { get; set; } = new List<UserPreference>();
+
     public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())

@@ -18,6 +18,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Like> Likes { get; set; }
 
+    public virtual DbSet<UserPreference> UserPreferences { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -68,6 +70,8 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("post_ibfk_1");
+            
+            entity.HasMany(d => d.PostPreferences).WithOne(p => p.Post);
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -153,6 +157,45 @@ public partial class ApplicationDbContext : DbContext
                         j.IndexerProperty<uint>("UserId").HasColumnName("user_id");
                         j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
                     });
+                    
+            entity.HasMany(d => d.UserPreferences).WithOne(p => p.User);
+        });
+
+        modelBuilder.Entity<UserPreference>(entity =>
+        {
+            entity.HasKey(e => e.PreferenceId).HasName("PRIMARY");
+
+            entity.ToTable("user_preference");
+
+            entity.HasIndex(e => e.UserId, "user_preference_ibfk_1");
+
+            entity.Property(e => e.PreferenceId).HasColumnName("preference_id");
+            entity.Property(e => e.PreferenceName)
+                .HasMaxLength(255)
+                .HasColumnName("preference_name");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserPreferences)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("user_preference_ibfk_1");
+        });
+
+        modelBuilder.Entity<PostPreference>(entity =>
+        {
+            entity.HasKey(e => e.PreferenceId).HasName("PRIMARY");
+
+            entity.ToTable("post_preference");
+
+            entity.HasIndex(e => e.PostId, "post_preference_ibfk_1");
+
+            entity.Property(e => e.PreferenceId).HasColumnName("preference_id");
+            entity.Property(e => e.PreferenceName)
+                .HasMaxLength(255)
+                .HasColumnName("preference_name");
+            entity.HasIndex(e => e.PreferenceName, "preference_name_UNIQUE").IsUnique();
+
+            entity.HasOne(d => d.Post).WithMany(p => p.PostPreferences)
+                .HasForeignKey(d => d.PostId)
+                .HasConstraintName("post_preference_ibfk_1");
         });
 
         OnModelCreatingPartial(modelBuilder);

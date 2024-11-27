@@ -4,7 +4,6 @@ public partial class Post
 {
     public uint PostId { get; set; }
 
-    public uint UserId { get; set; }
 
     public string PostContent { get; set; } = null!;
 
@@ -16,8 +15,13 @@ public partial class Post
 
     public uint PostLikes { get; set; }
 
+
     public virtual User User { get; set; } = null!;
 
+    public uint UserId { get; set; }
+
+    public virtual ICollection<PostPreference> PostPreferences { get; set; } = new List<PostPreference>();
+    
     public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())
