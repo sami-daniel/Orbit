@@ -1,413 +1,414 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    text-decoration: none;
-    color: white;
-    font-family: "Josefin Sans", sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  color: white;
+  font-family: "Josefin Sans", sans-serif;
 }
 
-body{
-    background-color:black;
+body {
+  background-color: black;
 }
 
-.content-top{
-    border-bottom:1px solid rgb(128, 128, 128, 0.5);
-    display:flex;
-    align-items:center;
-    padding:20px;
-    position:relative;
+.content-top {
+  border-bottom: 1px solid rgb(128, 128, 128, 0.5);
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  position: relative;
 }
 
-.content-top div:nth-child(2){
-    margin-left:5%;
+.content-top div:nth-child(2) {
+  margin-left: 5%;
 }
 
-.content-top div:last-child{
-    position:absolute;
-    right: 10px;
+.content-top div:last-child {
+  position: absolute;
+  right: 10px;
 }
 
 .content-top .logout-btn .btn-logout {
-    background-color: black;
-    border: 1px solid white;
-    padding: 15px;
-    border-radius: 16px;
-    font-size: 1.2em;
-    transition: .4s;
-    cursor: pointer;
+  background-color: black;
+  border: 1px solid white;
+  padding: 15px;
+  border-radius: 16px;
+  font-size: 1.2em;
+  transition: 0.4s;
+  cursor: pointer;
 }
 
-.content-top .logout-btn .btn-logout:hover{
-    background-color:white;
-    color:black;
+.content-top .logout-btn .btn-logout:hover {
+  background-color: white;
+  color: black;
 }
 
 .content-top .btn-back img {
-    width: 20px;
-    height: 20px;
-    object-fit: cover;
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
 }
 
-.content-top .title-user{
-    font-size:1.5em;
-    font-weight:500;
-    letter-spacing:2.2px;
+.content-top .title-user {
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: 2.2px;
 }
 
-.background-img{
-    width:100%;
-    height:50vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background-color:rgba(255,255,255,.5);
-    transition: .4s;
-    cursor:pointer;
-    overflow: hidden;
-    position:relative;
+.background-img {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: 0.4s;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
 }
-.background-img-guest{
-    width:100%;
-    height:50vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background-color:rgba(255,255,255,.5);
-    overflow: hidden;
+.background-img-guest {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
 }
 
-.background-img-guest img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.background-img-guest img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .background-img .text-img {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        background-color: rgba(0,0,0,.5);
-        cursor: pointer;
-        font-size: 1.5em;
-        transition: .3s all linear;
-    }
-
-.background-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display:block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-size: 1.5em;
+  transition: 0.3s all linear;
 }
 
-.background-img input[type="file"]{
-    display:none;
+.background-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.background-img input[type="file"] {
+  display: none;
 }
 
 .background-img:hover {
-    background-color: white;
+  background-color: white;
 }
 
-.background-img:hover .text-img{
-    color:white;
-    opacity:1;
-    
+.background-img:hover .text-img {
+  color: white;
+  opacity: 1;
 }
 
-.content-main{
-    width:100%;
-    padding:20px;
+.content-main {
+  width: 100%;
+  padding: 20px;
 }
 
-.content-main .profiles-specs{
-    display:flex;
-    align-items:center;
-    width:100%;
-    padding:10px;
-    position:relative;
+.content-main .profiles-specs {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  position: relative;
 }
 
 .content-main .profiles-specs .edit-profile {
-        position: absolute;
-        right: 0;
+  position: absolute;
+  right: 0;
 }
 
-.content-main .profiles-specs .edit-profile .btn-edit{
-    background-color:black;
-    border:1px solid white;
-    padding:15px;
-    border-radius:16px;
-    font-size:1.2em;
-    transition:.4s;
-    cursor:pointer;
-
+.content-main .profiles-specs .edit-profile .btn-edit {
+  background-color: black;
+  border: 1px solid white;
+  padding: 15px;
+  border-radius: 16px;
+  font-size: 1.2em;
+  transition: 0.4s;
+  cursor: pointer;
 }
-.content-main .profiles-specs .edit-profile .msg-btn{
-    background-color:black;
-    border:1px solid white;
-    padding:15px;
-    border-radius:16px;
-    font-size:1.2em;
-    transition:.4s;
-    cursor:pointer;
-
+.content-main .profiles-specs .edit-profile .msg-btn {
+  background-color: black;
+  border: 1px solid white;
+  padding: 15px;
+  border-radius: 16px;
+  font-size: 1.2em;
+  transition: 0.4s;
+  cursor: pointer;
 }
-.content-main .profiles-specs .edit-profile .btn-edit:hover{
-    background-color:white;
-    color:black;
+.content-main .profiles-specs .edit-profile .btn-edit:hover {
+  background-color: white;
+  color: black;
 }
-.content-main .profiles-specs .edit-profile .msg-btn:hover{
-    background-color:white;
-    color:black;
+.content-main .profiles-specs .edit-profile .msg-btn:hover {
+  background-color: white;
+  color: black;
 }
 
 .content-main .profiles-specs .profile-img {
-   align-content:start;
-   position:relative;
-   display:flex;
-   justify-content:center;
-   align-items:center;
-   border-radius: 100%;
-   overflow: hidden;
+  align-content: start;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  overflow: hidden;
 }
 
-.content-main .profiles-specs .profile-img input[type="file"]{
-    display:none;
+.content-main .profiles-specs .profile-img input[type="file"] {
+  display: none;
 }
 
-.profile-text-image{
-    width:100%;
-    height:100%;
-    position:absolute;
-    top:0;
-    left:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    background-color:rgba(0,0,0,.5);
-    cursor:pointer;
-    transition:.3s all linear;
+.profile-text-image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: 0.3s all linear;
 }
-
-
 
 .content-main .profiles-specs .profile-img img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
 }
 
-.content-main .profiles-specs .profile-img:hover label{
-    opacity:1;
+.content-main .profiles-specs .profile-img:hover label {
+  opacity: 1;
 }
 
-.content-main .profiles-specs .profile-description{
-    margin-left:2%;
+.content-main .profiles-specs .profile-description {
+  margin-left: 2%;
 }
 
 .content-main .profiles-specs .profile-description p {
-    margin-top: 2%;
+  margin-top: 2%;
 }
 
-.content-main .profiles-specs .profile-description .profile-followers{
-    margin-top:2%;
-    display: flex;
-    justify-content: space-between;
-    width:200px;
+.content-main .profiles-specs .profile-description .profile-followers {
+  margin-top: 2%;
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
 }
-.content-main .profiles-specs .profile-description .profile-followers p:last-child{
-    margin-left:2%;
+.content-main
+  .profiles-specs
+  .profile-description
+  .profile-followers
+  p:last-child {
+  margin-left: 2%;
 }
 
 .content-main .navigation-bar {
-    margin-top: 10%;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    border-bottom: 1px solid rgba(255,255,255, .5);
+  margin-top: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .content-main .navigation-bar .content-nav {
-    border-right: 1px solid rgba(255,255,255, .5);
-    width:25%;
-    height:100px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:1.5em;
-    font-weight:500;
-    letter-spacing: 1.5px;
-    cursor:pointer;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  width: 25%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  cursor: pointer;
 }
 
-.container-edit{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:50%;
-    height:50%;
-    border:1px solid white;
-    border-radius:10px;
-    background-color:black;
-    display:none;
-    padding:10px;
-
+.container-edit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: black;
+  display: none;
+  padding: 10px;
 }
-.container-edit .form-edit{
-    width:100%;
-    height:100%;
-    padding:20px;
-}
-
-.container-edit .form-edit .edit-title{
-    text-align:center;
-    letter-spacing:2px;
-    color:white;
+.container-edit .form-edit {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
 }
 
-.container-edit .form-edit div{
-    width:100%;
-    margin: 2% 0;
-    padding: 10px;
-    text-align:center;
+.container-edit .form-edit .edit-title {
+  text-align: center;
+  letter-spacing: 2px;
+  color: white;
 }
 
-.container-edit .form-btn{
-    background:transparent;
-    border:none;
-    outline:none;
+.container-edit .form-edit div {
+  width: 100%;
+  margin: 2% 0;
+  padding: 10px;
+  text-align: center;
 }
 
-.icons{
-    width:20px;
-    height:20px;
-    background:transparent;
+.container-edit .form-btn {
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
-
+.icons {
+  width: 20px;
+  height: 20px;
+  background: transparent;
+}
 
 .container-edit .form-edit .description-text textarea {
-    background: transparent;
-    padding: 15px;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 50%;
-    outline: none;
-    font-size:1.2em;
+  background: transparent;
+  padding: 15px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 50%;
+  outline: none;
+  font-size: 1.2em;
 }
 
-
-.container-edit .form-edit .username-container input{
-    background: transparent;
-    padding: 15px;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 50%;
-    outline:none;
-    font-size:1.2em;
+.container-edit .form-edit .username-container input {
+  background: transparent;
+  padding: 15px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 50%;
+  outline: none;
+  font-size: 1.2em;
 }
 
-
-
-.container-edit .form-edit .profileName-container input{
-    background: transparent;
-    padding: 15px;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 50%;
-    outline:none;
-    font-size:1.2em;
+.container-edit .form-edit .profileName-container input {
+  background: transparent;
+  padding: 15px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 50%;
+  outline: none;
+  font-size: 1.2em;
 }
 .container-edit .form-edit .submit-container input {
-    background: transparent;
-    padding: 10px;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-    outline: none;
-    width:25%;
-    font-size: 1.2em;
-    cursor:pointer;
-    transition:.5s;
+  background: transparent;
+  padding: 10px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  outline: none;
+  width: 25%;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: 0.5s;
 }
 .container-edit .form-edit .submit-container input:hover {
-   background-color:white;
-   color:black;
-   box-shadow:0px 4px 12px white;
+  background-color: white;
+  color: black;
+  box-shadow: 0px 4px 12px white;
 }
 
-
-
-
-
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 
 .visible {
-    display: block !important;
+  display: block !important;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+  from {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
+  from {
+    opacity: 1;
+  }
 
-    to {
-        opacity: 0;
-    }
+  to {
+    opacity: 0;
+  }
 }
 
 .fade-in {
-    animation: fadeIn 0.5s forwards;
+  animation: fadeIn 0.5s forwards;
 }
 
 .fade-out {
-    animation: fadeOut 0.5s forwards;
+  animation: fadeOut 0.5s forwards;
 }
 
-.active-btn{
-    background-color:white;
-    color:black;
+.active-btn {
+  background-color: white;
+  color: black;
 }
 
-@media screen and (max-width: 699px){
-    .content-top div:last-child{
-        position: static;
-        display: flex;
-        justify-content: end;
-        width: 100%;
-    }
-    .content-main .profiles-specs .edit-profile {
-        position: static;
-    }
-    .content-main .profiles-specs {
-        flex-flow: column;
-    }
-    .content-main .profiles-specs div{
-        margin-top: 40px;
-    }
+@media screen and (max-width: 699px) {
+  .content-top div:last-child {
+    position: static;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+  }
+  .content-main .profiles-specs .edit-profile {
+    position: static;
+  }
+  .content-main .profiles-specs {
+    flex-flow: column;
+  }
+  .content-main .profiles-specs div {
+    margin-top: 40px;
+  }
+  .container-edit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: black;
+    display: none;
+    padding: 10px;
+  }
 }
