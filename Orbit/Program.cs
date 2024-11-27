@@ -72,6 +72,10 @@ internal class Program
 
         builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 
+        builder.Services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
+
+        builder.Services.AddScoped<IPostPreferenceRepository, PostPreferenceRepository>();
+
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork.Implementations.UnitOfWork>();
 
         builder.Services.AddScoped<IUserService, UserService>();

@@ -1,9 +1,12 @@
+@using Orbit.Data.Contexts
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
 }
 
 @model UserResponse
-    
+@inject IPostService postService
+@inject ApplicationDbContext context
+
 <div class="container">
     <div class="post-modal">
         <div class="post-form">
@@ -54,7 +57,8 @@
                     <li class="container-profile">
                         <div class="profile-info">
                             <div class="img-container">
-                                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
+                                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })"
+                                    alt="Profile Image" />
                             </div>
                             <div class="name-container">
                                 <h4>@Model.UserName</h4>
@@ -66,40 +70,46 @@
 
     </aside>
 
-    
+
 
     <main class="center-div">
         <div class="search-container">
             <img src="~/images/search.png" alt="Icon Search" />
             <input type="text" placeholder="Search" />
         </div>
-        <div class="posts-container">
-            <div class="content">
-                <div class="post-infos">
-                    <div class="profile-infos">
-                        <div class="img-profile">
+        @foreach (var post in await postService.GetPostsRandomizedByUserPreferenceAsync(Model.UserName))
+        {
+            <div class="posts-container">
+                <div class="content">
+                    <div class="post-infos">
+                        <div class="profile-infos">
+                            <div class="img-profile">
+                                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
+                            </div>
+                            <div class="username-profile">
+                                <span>@post.User.UserName</span>
+                            </div>
+                        </div>
+                        <div class="post-text">
+                            @post.PostContent
+                        </div>
+                    </div>
+                    <div class="post-img">
+                        <div class="img-container">
                             <img src="~/images/download.png" alt="">
                         </div>
-                        <div class="username-profile">
-                            <span>Username here</span>
+                        <div class="img-container">
+                            <img src="~/images/download.png" alt="">
                         </div>
                     </div>
-                    <div class="post-text">
-                        Text here
+                    <div class="post-interactions">
+                        <i class="fi fi-br-heart icons"></i>
+                        <i class="fi fi-br-comment-alt-middle icons"></i>
+                        <i class="fi fi-bs-paper-plane icons"></i>
                     </div>
-                </div>
-                <div class="post-img">
-                    <div class="img-container">
-                        <img src="~/images/download.png" alt="">
-                    </div>
-                </div>
-                <div class="post-interactions">
-                    <i class="fi fi-br-heart icons"></i>
-                    <i class="fi fi-br-comment-alt-middle icons"></i>
-                    <i class="fi fi-bs-paper-plane icons"></i>
                 </div>
             </div>
-        </div>
+        }
     </main>
     <aside></aside>
     <footer></footer>
@@ -117,8 +127,9 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 }
 
-@section scripts{
+@section scripts {
     <script src="~/js/panel.js" asp-append-version="true"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
 }

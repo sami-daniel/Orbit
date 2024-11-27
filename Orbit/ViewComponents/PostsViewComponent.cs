@@ -11,7 +11,7 @@ public class PostsViewComponent : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync([FromServices] IPostService postService, [FromServices] ApplicationDbContext context, [FromServices] IMapper mapper, int skip = 0, int take = 50)
     {
-        var posts = await postService.GetPaginatedPostAsync(skip, take, context);
+        var posts = await postService.GetPaginatedPostAsync(skip, take);
         return View(Shuffle(posts).Select(mapper.Map<PostResponse>));
     }
 

@@ -22,12 +22,12 @@ public interface IPostService
     /// <param name="take">A quantidade de postagens a serem retornadas.</param>
     /// <param name="applicationDbContext">O contexto do banco de dados.</param>
     /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém uma lista de postagens.</returns>
-    Task<IEnumerable<Post>> GetPaginatedPostAsync(int skip, int take, ApplicationDbContext applicationDbContext);
+    Task<IEnumerable<Post>> GetPaginatedPostAsync(int skip, int take);
 
     /// <summary>
     /// Obtém uma lista de postagens de um usuário, de acordo com suas preferencias.
     /// </summary>
     /// <param name="userName">O nome do usuário.</param>
     /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém uma lista de postagens.</returns>
-    Task<IEnumerable<Post>> GetPostsRandomizedByUserPreferenceAsync(string username, ApplicationDbContext context);
+    Task<IEnumerable<Post>> GetPostsRandomizedByUserPreferenceAsync(string username);
 }

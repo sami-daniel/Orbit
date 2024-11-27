@@ -40,4 +40,17 @@ public class PostController : Controller
 
         return NoContent();
     }
+
+    [HttpGet("[controller]/get-post-image/{postID}")]
+    public async Task<IActionResult> GetPostImage(int postID)
+    {
+        ;
+
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        return File(post.Image, "image/jpeg");
+    }
 }

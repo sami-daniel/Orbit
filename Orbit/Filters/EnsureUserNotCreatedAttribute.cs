@@ -11,7 +11,7 @@ public class EnsureUserNotCreatedAttribute : Attribute, IAsyncActionFilter
         {
             context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
             {
-                controller = "user",
+                controller = "panel",
                 action = "index"
             }));
             return;

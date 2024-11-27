@@ -25,6 +25,16 @@ public interface IUnitOfWork : IDisposable
     public ILikeRepository LikeRepository { get; }
 
     /// <summary>
+    /// Obtém o repositório para a entidade <see cref="UserPreference"/>
+    /// </summary>
+    public IUserPreferenceRepository UserPreferenceRepository { get; }
+
+    /// <summary>
+    /// Obtém o repositório para a entidade <see cref="PostPreference"/>
+    /// </summary>
+    public IPostPreferenceRepository PostPreferenceRepository { get; }
+    
+    /// <summary>
     /// Salva todas as alterações feitas no contexto atual de banco de dados.
     /// </summary>
     /// <returns>
