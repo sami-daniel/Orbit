@@ -104,6 +104,7 @@ body {
     height:calc(90% - 20px);
     border:1px solid var(--border-color);
     padding: 50px;
+    overflow-y: auto;
 }
 
 footer{
@@ -112,6 +113,9 @@ footer{
 
 .input-container{
     width:100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .input-container form{
@@ -119,7 +123,7 @@ footer{
 }
 
 .input-container input:first-child{
-    width:85%;
+    width:90%;
     color:white;
     font-size:1.3em;
     outline:none;
@@ -129,14 +133,14 @@ footer{
     padding-left: 20px;
 }
 
-.input-container input:last-child{
+.input-container button{
     color:white;
     background:transparent;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     height: 45px;
-    width:200px;
+    width: 150px;
     outline:none;
     border:1px solid var(--border-color);
     background:transparent;
@@ -144,7 +148,7 @@ footer{
     cursor: pointer;
 }
 
-.input-container input:last-child:hover{
+.input-container button:hover{
     background-color: white;
     color: black;
 }
@@ -181,4 +185,25 @@ footer{
 
 .contact-user.active-btn{
     background-color: var(--active-color);
+}
+
+.input-container button i{
+    font-size: 1.2em;
+}
+
+.input-container button:hover i{
+    color: black;
+}
+
+.messages::-webkit-scrollbar{
+    width: 3px;
+}
+
+.messages::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb{
+    background-color: #333;
+    border-radius: 10px;
 }

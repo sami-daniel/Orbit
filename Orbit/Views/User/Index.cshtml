@@ -1,6 +1,6 @@
 ﻿@using Orbit.DTOs;
 @using Orbit.DTOs.Responses
-@using Orbit.Domain.Entities
+@using Orbit.Models
 
 @model UserResponse
 
@@ -44,8 +44,8 @@
         </div>
 
         <div class="edit-profile">
-            <button class="btn-edit" id="openEditDiv">Edit Profile</button>
-            <a href="/chat" class="msg-btn">Messages</a>
+            <button class="btn-edit" id="openEditDiv">Editar Perfil</button>
+            <a href="/chat" class="msg-btn">Mensagens</a>
         </div>
     </div>
 
@@ -55,11 +55,20 @@
         </button>
         <form method="post" action="user/update-profile/@Model.UserName?returnTo=@Url.PageLink()" enctype="multipart/form-data" class="form-edit">
             <h2 class="edit-title">Edit Profile</h2>
+            <div>
+                Nome do usuário
+            </div>
             <div class="username-container">
                 <input type="text" name="UserName" value="@Model.UserName" placeholder="Username" />
             </div>
+            <div>
+                Nome do perfil
+            </div>
             <div class="profileName-container">
                 <input type="text" name="UserProfileName" value="@Model.UserProfileName" placeholder="Profile Name" />
+            </div>
+            <div>
+                Descrição
             </div>
             <div class="description-text">
                 <textarea id="descricao-textarea" name="UserDescription" placeholder="Description">
@@ -95,34 +104,4 @@
     <script src="~/js/interaction.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js" integrity="sha512-FzakzcmrNSXS5+DuuYSO6+5DcUZ417Na0vH1oAIo49mMBA8rHSgkKSjE2ALFOxdQ/kPqF3HZRzb0HQ+AvwXttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/notification")
-            .build();
-
-        connection.on("ReceiveNotification", (user ,message) => {
-            $("<div>")
-                .text("Nova notificação: " + message)
-                .css({
-                    position: 'fixed',
-                    top: '10px',
-                    right: '10px',
-                    backgroundColor: '#f8f9fa',
-                    border: '1px solid #ccc',
-                    padding: '10px',
-                    color: 'black',
-                    borderRadius: '5px',
-                    zIndex: 1000
-                })
-                .appendTo("body")
-                .fadeIn(400)
-                .delay(5000)
-                .fadeOut(400, function () {
-                });
-        });
-
-        connection.start().catch(err => console.error(err.toString()));
-    </script>
-
 }

@@ -1,0 +1,74 @@
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+}
+
+<div class="container">
+    <aside class="aside left">
+        <div class="logo">
+            <h2>OrbIt</h2>
+        </div>
+        <div class="container-menu">
+            <ul class="menu">
+                <a href="#">
+                    <li class="menu-item">
+                        <img src="~/images/home.png" alt="Home" class="icons" />
+                        <span>Home</span>
+                    </li>
+                    <a href="#">
+                        <li class="menu-item">
+                            <img src="~/images/messages.png" alt="Messages" class="icons" />
+                            <span>Mensagens</span>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="menu-item">
+                            <img src="~/images/user.png" alt="Profile" class="icons" />
+                            <span>Perfil</span>
+                        </li>
+                    </a>
+
+                    <a href="">
+                        <li class="menu-item">
+                            <img src="~/images/three-dots.png" alt="More options" class="icons" />
+                            <span>Mais</span>
+                        </li>
+                    </a>
+
+                    <li class="menu-item">
+                        <button class="btn-post">
+                            Publicar
+                        </button>
+                    </li>
+
+                    <li class="container-profile">
+                        <div class="profile-info">
+                            <div class="img-container">
+                                <img src="~/images/download.png" alt="Profile Image" />
+                            </div>
+                            <div class="name-container">
+                                <h4>Username</h4>
+                            </div>
+                        </div>
+                    </li>
+            </ul>
+        </div>
+
+    </aside>
+    <main class="center-div">
+        <div class="search-container">
+            <img src="~/images/search.png" alt="Icon Search" />
+            <input type="text" placeholder="Search" />
+        </div>
+    </main>
+    <aside></aside>
+    <footer></footer>
+</div>
+
+
+@section links {
+    <link rel="stylesheet" href="~/css/Panel.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+}
