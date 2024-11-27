@@ -1,4 +1,4 @@
-using Orbit.Domain.Entities;
+using Orbit.Models;
 
 namespace Orbit.DTOs.Responses;
 

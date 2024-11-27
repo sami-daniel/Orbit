@@ -3,13 +3,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Orbit.Application.Exceptions;
-using Orbit.Application.Interfaces;
-using Orbit.Domain.Entities;
 using Orbit.DTOs.Requests;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 using Orbit.Filters;
+using Orbit.Models;
+using Orbit.Services.Exceptions;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 
@@ -53,7 +53,7 @@ public class AccountController : Controller
         ViewBag.UserPasswordError = userPasswordError;
         ViewBag.PartNumber = formID;
 
-        return View();
+        return View(new UserAddRequest());
     }
 
     [HttpPost("[controller]/create-user")]
@@ -86,20 +86,32 @@ public class AccountController : Controller
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
         {
-            return RedirectToAction("index", new { modalActive = true,
-                                                   userEmailError = ex.Message});
+            ViewBag.UserEmailError = ex.Message;
+            return RedirectToAction("index", new
+            {
+                modalActive = true,
+                userEmailError = ex.Message,
+                formID = 2
+            });
         }
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
         {
-            return RedirectToAction("index", new { modalActive = true,
-                                                   userNameError = ex.Message,
-                                                   formID = 2});
+            ViewBag.UserError = ex.Message;
+            return RedirectToAction("index", new
+            {
+                modalActive = true,
+                userNameError = ex.Message,
+                formID = 2
+            });
         }
         catch (Exception ex)
         {
-            return RedirectToAction("index", new { modalActive = true,
-                                                   generalError = ex.Message});
+            return RedirectToAction("index", new
+            {
+                modalActive = true,
+                generalError = ex.Message
+            });
         }
 
         List<Claim> claims =
@@ -119,8 +131,9 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
         HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
+        HttpContext.Session.SetString("is-first-time", bool.TrueString);
 
-        return RedirectToActionPermanent("", "user");
+        return RedirectToActionPermanent("", "panel");
     }
 
     [HttpPost("[controller]/login")]
@@ -160,9 +173,10 @@ public class AccountController : Controller
         };
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
-        HttpContext.Session.SetObject("User", _mapper.Map<User ,UserResponse>(user));
+        HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
+        HttpContext.Session.SetString("is-first-time", bool.FalseString);
 
-        return RedirectToActionPermanent("", "user");
+        return RedirectToActionPermanent("", "panel");
     }
 
     [HttpGet("[controller]/log-out")]

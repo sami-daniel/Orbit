@@ -2,6 +2,8 @@
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
 }
 
+@model UserResponse
+
 <div class="container">
     <aside class="aside left">
         <div class="logo">
@@ -14,13 +16,13 @@
                         <img src="~/images/home.png" alt="Home" class="icons" />
                         <span>Home</span>
                     </li>
-                    <a href="#">
+                    <a href="chat">
                         <li class="menu-item">
                             <img src="~/images/messages.png" alt="Messages" class="icons" />
                             <span>Mensagens</span>
                         </li>
                     </a>
-                    <a href="">
+                    <a href="user?returnTo=@Url.PageLink()">
                         <li class="menu-item">
                             <img src="~/images/user.png" alt="Profile" class="icons" />
                             <span>Perfil</span>
@@ -43,10 +45,10 @@
                     <li class="container-profile">
                         <div class="profile-info">
                             <div class="img-container">
-                                <img src="~/images/download.png" alt="Profile Image" />
+                                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
                             </div>
                             <div class="name-container">
-                                <h4>Username</h4>
+                                <h4>@@@Model.UserName</h4>
                             </div>
                         </div>
                     </li>

@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     messageConnection.on("ReceiveChatMessage", function(_, message) {
-        const timeStamp = new Date();
+        const timeStamp = new Date(); // FIXME
         let stamp = dayjs(timeStamp).format("HH:mm:ss").toString();
         $('.messages').append('<div class="contact-message"><strong>' + $('#guest').val() + ':</strong>' + '<span>' + message + '</span>' + stamp + '</div>');
         scrollToBottom();
@@ -58,7 +58,7 @@ $(document).ready(function() {
                 .finally(() => {
                     $('#input-message').val('');
                 });
-            notificationConnection.invoke("SendNotification", $("#guest").val(), $("#host").val());
+            notificationConnection.invoke("SendNotification", $("#guest").val(), `<a href='/chat/${$("#guest").val()}'>Nova mensagem de ${$("#host").val()}</a>`);
         }
         scrollToBottom();
     });

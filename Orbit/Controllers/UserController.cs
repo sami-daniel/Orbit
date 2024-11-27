@@ -1,20 +1,16 @@
-﻿using System.Net.Http.Headers;
-using System.Net.NetworkInformation;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Orbit.Application.Interfaces;
-using Orbit.Domain.Entities;
+using Orbit.Data.Contexts;
 using Orbit.DTOs.Responses;
 using Orbit.Extensions;
-using Orbit.Filters;
 using Orbit.Hubs;
-using Orbit.Infrastructure.Data.Contexts;
+using Orbit.Models;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 
@@ -47,20 +43,27 @@ public class UserController : Controller
 
         userResponse = _mapper.Map<User, UserResponse>(user.First());
         HttpContext.Session.SetObject("User", userResponse);
+        ViewBag.StateLogin = HttpContext.Session.GetString("is-first-time");
+        HttpContext.Session.SetString("is-first-time", false.ToString());
 
         return View(userResponse);
     }
 
     [HttpGet]
     [Route("[controller]/{username}")]
-    public async Task<IActionResult> ViewExternal(string username, string? returnTo)
+    public async Task<IActionResult> ViewExternal(string username)
     {
+        if (username == HttpContext.Session.GetObject<UserResponse>("User")!.UserName)
+        {
+            return RedirectToAction("Index", "User");
+        }
+
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers,Users");
         var user = users.FirstOrDefault();
 
         if (user == null)
         {
-            return RedirectToRoute(returnTo);
+            return NotFound("User not found.");
         }
 
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
@@ -76,7 +79,7 @@ public class UserController : Controller
     }
 
     [HttpPost("[controller]/follow")]
-    public async Task<IActionResult> Follow([FromForm] string id, [FromQuery] string returnTo, [FromForm] string followerUserName, [FromServices] ApplicationDbContext applicationDbContext)
+    public async Task<IActionResult> Follow([FromForm] string id, [FromQuery] string returnTo, [FromForm] string followerUserName)
     {
         if (followerUserName == null)
         {
@@ -86,8 +89,19 @@ public class UserController : Controller
         var userToBeFollowed = await _userService.GetUserByIdentifierAsync(id);
         var follower = await _userService.GetUserByIdentifierAsync(followerUserName);
 
-        userToBeFollowed!.Followers.Add(follower!);
-        await applicationDbContext.SaveChangesAsync();
+        if (follower == null)
+        {
+            return BadRequest($"The follower user with the username '{followerUserName} not exists.");
+        }
+
+        if (userToBeFollowed == null)
+        {
+            return BadRequest($"The user to be followed with the username '{userToBeFollowed} not exists.");
+        }
+
+        await _userService.FollowUserAsync(follower.UserName, userToBeFollowed.UserName);
+
+        await _hubContext.Clients.User(userToBeFollowed.UserName).SendAsync("ReceiveNotification", userToBeFollowed.UserName,$"<a style=\"color:black\" href=\"../user/{follower.UserName}\">{follower.UserName} seguiu você!</a>");
 
         return RedirectPermanent(returnTo);
     }
@@ -100,11 +114,13 @@ public class UserController : Controller
             return BadRequest("Follower user name não pode ser vazio!");
         }
 
-        var userToBeFollowed = await _userService.GetAllUserAsync(u => u.UserName == id, includeProperties: "Followers");
-        var follower = await _userService.GetUserByIdentifierAsync(followerUserName);
+        var userBeingUnfollowed = await _userService.GetAllUserAsync(u => u.UserName == id, includeProperties: "Followers");
+        var userFollower = await _userService.GetUserByIdentifierAsync(followerUserName);
 
-        userToBeFollowed.First().Followers.Remove(follower!);
+        userBeingUnfollowed.First().Followers.Remove(userFollower!);
         await applicationDbContext.SaveChangesAsync();
+
+        await _hubContext.Clients.User(userBeingUnfollowed!.First().UserName).SendAsync("ReceiveNotification", userFollower!.UserName, $"<a style=\"color:black\" href=\"user/{userFollower.UserName}\">{userFollower.UserName} deixou de seguir você!</a>");
 
         return RedirectPermanent(returnTo);
     }

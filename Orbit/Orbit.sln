@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orbit", "Orbit.csproj", "{0942F759-B42C-496D-B6EA-3B9ED0B1694A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orbit", "Orbit.csproj", "{8E1B03C0-A453-46A0-9C97-522BD4F70CC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0942F759-B42C-496D-B6EA-3B9ED0B1694A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0942F759-B42C-496D-B6EA-3B9ED0B1694A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0942F759-B42C-496D-B6EA-3B9ED0B1694A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0942F759-B42C-496D-B6EA-3B9ED0B1694A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E1B03C0-A453-46A0-9C97-522BD4F70CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E1B03C0-A453-46A0-9C97-522BD4F70CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1B03C0-A453-46A0-9C97-522BD4F70CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1B03C0-A453-46A0-9C97-522BD4F70CC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BB1245D8-81F0-4681-81EC-1D5697C662ED}
+		SolutionGuid = {3C7C8E1B-A640-4F61-AA90-3260B27CAA74}
 	EndGlobalSection
 EndGlobal

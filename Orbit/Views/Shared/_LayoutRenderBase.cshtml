@@ -12,18 +12,42 @@
     <div>
         @RenderBody()
     </div>
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.js"
+        asp-fallback-src="~/libs/signalR/signalr.js" asp-fallback-test="signalR"></script>
     @await RenderSectionAsync("scripts", required: false)
-    @if (!Url.Action()!.Contains("chat"))
-    {
-        <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/notification")
-            .build();
+    <script>
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/notification")
+                .build();
 
-        connection.on("ReceiveNotification", (user, message) => {
-            $(`<a href='chat/${message}'>`)
-                .text(`${message} mandou-lhe uma mensagem!`)
+            connection.on("ReceiveNotification", (_, notification) => {
+                $(`<div>`)
+                    .append(notification)
+                    .css({
+                        position: 'fixed',
+                        top: '10px',
+                        right: '10px',
+                        backgroundColor: '#f8f9fa',
+                        border: '1px solid #ccc',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        zIndex: 1000
+                    })
+                    .appendTo("body")
+                    .fadeIn(400)
+                    .delay(5000)
+                    .fadeOut(400, function () {
+                    });
+            });
+            connection.start().catch(err => console.error(err.toString()));
+    </script>
+
+    @if (ViewBag.StateLogin == bool.TrueString)
+    {        
+        <script>
+            $(`<div>`)
+                .append('Bem vindo ao Orbit. Tente configurar suas preferencias na sessão editar perfil no perfil do usuário!')
                 .css({
                     position: 'fixed',
                     top: '10px',
@@ -31,19 +55,16 @@
                     backgroundColor: '#f8f9fa',
                     border: '1px solid #ccc',
                     padding: '10px',
-                    color: 'black',
                     borderRadius: '5px',
+                    color: 'black',
                     zIndex: 1000
                 })
                 .appendTo("body")
                 .fadeIn(400)
-                .delay(5000)
+                .delay(10000)
                 .fadeOut(400, function () {
                 });
-        });
-
-        connection.start().catch(err => console.error(err.toString()));
-    </script>
+        </script>
     }
 </body>
 

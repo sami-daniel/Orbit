@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Orbit.Domain.Entities;
 
 namespace Orbit.DTOs.Requests;
 
