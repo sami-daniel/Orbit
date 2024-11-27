@@ -48,6 +48,10 @@
 
     @if (Context.Session.TryGetValue("is-first-time", out isFirstTime) && isFirstTime != null && isFirstTime.Any() && System.Text.Encoding.Default.GetString(isFirstTime) == bool.TrueString)
     {
+        @{
+            Context.Session.Remove("is-first-time");
+        }
+        
         <script>
             $(`<div>`)
                 .append('Bem vindo ao Orbit. Tente configurar suas preferencias na sessão editar perfil no perfil do usuário!')

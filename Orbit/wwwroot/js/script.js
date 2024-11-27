@@ -36,5 +36,3 @@ $(".btnHide").click(function(){
 });
 
 
-
-

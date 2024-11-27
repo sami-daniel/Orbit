@@ -10,7 +10,11 @@
 
 <header class="content-top">
     <div class="btn-back">
-        <a href=""><i class="fa-solid fa-left-long icons"></i></a>
+        @if(Context.Request.Query.ContainsKey("returnTo"))
+        {
+            var returnTo = Context.Request.Query["returnTo"];        
+            <a id="back" href="@returnTo"><i class="fa-solid fa-left-long icons"></i></a>
+        }
     </div>
     <div class="title-user">
         <span>Olá, @(Html.Raw(Model.UserProfileName ?? ""))</span>

@@ -447,6 +447,15 @@ body{
   color: var(--borderColor);
 }
 
+.modal-container .modal-section .signUp-sections .login-div form .text-error{
+  max-width: 400px;
+  text-align: center;
+  margin: 2% auto;
+  border: 1px solid var(--borderColor);
+  padding: 10px;
+  color: var(--borderColor);
+}
+
 .modal-container .modal-section .signUp-sections .signUp-div form .text-error:empty {
   display: none; 
 }
