@@ -11,7 +11,28 @@
                 <i class="fa-solid fa-xmark icon"></i>
             </button>
             <h1>Post</h1>
-            <form action=""></form>
+            <form action="">
+                <div class="post-content">
+                    <textarea name="" id="" placeholder="Content"></textarea>
+                </div>
+                <div class="post-upload-content">
+                    <label for="imageOrVideo">
+                        <h3>
+                            <span>IMAGE</span>
+                            <i class="fa-solid fa-camera"></i>
+                        </h3>
+                        <h3>
+                            <span>VIDEO</span>
+                            <i class="fa-solid fa-video"></i>
+                        </h3>
+                    </label>
+                    <input type="file" name="imageOrVideo" id="imageOrVideo">
+                </div>
+
+                <div class="btn-submit">
+                    <button type="submit">Post</button>
+                </div>
+            </form>
         </div>
     </div>
     <aside class="aside left">
@@ -52,14 +73,17 @@
                     </li>
 
                     <li class="container-profile">
-                        <div class="profile-info">
-                            <div class="img-container">
-                                <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
+                        <a href="user?returnTo=@Url.PageLink()">
+                            <div class="profile-info">
+                                <div class="img-container">
+                                    <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
+                                </div>
+                                <div class="name-container">
+                                    <h4>@Model.UserName</h4>
+                                    <h4>See Profile</h4>
+                                </div>
                             </div>
-                            <div class="name-container">
-                                <h4>@Model.UserName</h4>
-                            </div>
-                        </div>
+                        </a>
                     </li>
             </ul>
         </div>
@@ -118,7 +142,7 @@
 }
 
 @section scripts{
-    <script src="~/js/panel.js" asp-append-version="true"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
+    <script src="~/js/panel.js" asp-append-version="true"></script>
 }
