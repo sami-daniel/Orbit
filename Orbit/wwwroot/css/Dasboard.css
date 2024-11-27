@@ -7,8 +7,21 @@
   font-family: "Josefin Sans", sans-serif;
 }
 
-body {
-  background-color: black;
+::-webkit-scrollbar{
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #333;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: black;
+}
+
+body{
+    background-color:black;
 }
 
 .content-top {
@@ -29,18 +42,25 @@ body {
 }
 
 .content-top .logout-btn .btn-logout {
-  background-color: black;
-  border: 1px solid white;
-  padding: 15px;
-  border-radius: 16px;
-  font-size: 1.2em;
-  transition: 0.4s;
-  cursor: pointer;
+    background-color: black;
+    border: 1px solid white;
+    padding: 15px;
+    border-radius: 16px;
+    font-size: 1.2em;
+    transition: .4s;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .content-top .logout-btn .btn-logout:hover {
   background-color: white;
   color: black;
+}
+
+.content-top .logout-btn .btn-logout:hover .icons{
+    color: black;
 }
 
 .content-top .btn-back img {
@@ -226,39 +246,63 @@ body {
 }
 
 .content-main .navigation-bar {
-  margin-top: 10%;
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    margin-top: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255, .5);
+    overflow-x: auto;
 }
+
+.content-main .navigation-bar::-webkit-scrollbar{
+    height: 6px;
+}
+
+.content-main .navigation-bar::-webkit-scrollbar-thumb{
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.content-main .navigation-bar::-webkit-scrollbar-track{
+    background-color: black;
+}
+
 
 .content-main .navigation-bar .content-nav {
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
-  width: 25%;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5em;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  cursor: pointer;
+    width:fit-content;
+    font-size:1.2em;
+    font-weight:500;
+    letter-spacing: 1.5px;
+    text-align: center;
+    cursor:pointer;
+    padding: 20px;
 }
 
-.container-edit {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 50%;
-  border: 1px solid white;
-  border-radius: 10px;
-  background-color: black;
-  display: none;
-  padding: 10px;
+.modal-container-edit{
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: hidden;
+    position: fixed;
+    top:0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 1000;
+}
+
+.modal-container-edit .container-edit{
+    width:auto;
+    height:50%;
+    border:1px solid white;
+    border-radius:10px;
+    background-color:black;
+    display:none;
+    padding:10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .container-edit .form-edit {
   width: 100%;
@@ -292,48 +336,49 @@ body {
 }
 
 .container-edit .form-edit .description-text textarea {
-  background: transparent;
-  padding: 15px;
-  color: white;
-  border: 1px solid white;
-  border-radius: 10px;
-  width: 50%;
-  outline: none;
-  font-size: 1.2em;
+    background: transparent;
+    padding: 15px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    outline: none;
+    font-size:1.2em;
+    text-align: left;
+    vertical-align: top;
 }
 
-.container-edit .form-edit .username-container input {
-  background: transparent;
-  padding: 15px;
-  color: white;
-  border: 1px solid white;
-  border-radius: 10px;
-  width: 50%;
-  outline: none;
-  font-size: 1.2em;
+
+.container-edit .form-edit .username-container input{
+    background: transparent;
+    padding: 15px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    outline:none;
+    font-size:1.2em;
 }
 
-.container-edit .form-edit .profileName-container input {
-  background: transparent;
-  padding: 15px;
-  color: white;
-  border: 1px solid white;
-  border-radius: 10px;
-  width: 50%;
-  outline: none;
-  font-size: 1.2em;
+
+
+.container-edit .form-edit .profileName-container input{
+    background: transparent;
+    padding: 15px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    outline:none;
+    font-size:1.2em;
 }
 .container-edit .form-edit .submit-container input {
-  background: transparent;
-  padding: 10px;
-  color: white;
-  border: 1px solid white;
-  border-radius: 10px;
-  outline: none;
-  width: 25%;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: 0.5s;
+    background: transparent;
+    padding: 10px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1.2em;
+    cursor:pointer;
+    transition:.5s;
 }
 .container-edit .form-edit .submit-container input:hover {
   background-color: white;
@@ -341,13 +386,6 @@ body {
   box-shadow: 0px 4px 12px white;
 }
 
-.hidden {
-  display: none !important;
-}
-
-.visible {
-  display: block !important;
-}
 
 @keyframes fadeIn {
   from {
@@ -411,4 +449,27 @@ body {
     display: none;
     padding: 10px;
   }
+}
+
+.icons{
+    font-size: 25px;
+    color: white;
+}
+
+@media screen and (max-width: 699px){
+    .content-top div:last-child{
+        position: static;
+        display: flex;
+        justify-content: end;
+        width: 100%;
+    }
+    .content-main .profiles-specs .edit-profile {
+        position: static;
+    }
+    .content-main .profiles-specs {
+        flex-flow: column;
+    }
+    .content-main .profiles-specs div{
+        margin-top: 40px;
+    }
 }

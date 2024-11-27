@@ -86,15 +86,18 @@ public class AccountController : Controller
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
         {
+            ViewBag.UserEmailError = ex.Message;
             return RedirectToAction("index", new
             {
                 modalActive = true,
-                userEmailError = ex.Message
+                userEmailError = ex.Message,
+                formID = 2
             });
         }
         catch (UserAlredyExistsException ex)
         when (ex.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
         {
+            ViewBag.UserError = ex.Message;
             return RedirectToAction("index", new
             {
                 modalActive = true,
@@ -130,7 +133,7 @@ public class AccountController : Controller
         HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
         HttpContext.Session.SetString("is-first-time", bool.TrueString);
 
-        return RedirectToActionPermanent("", "user");
+        return RedirectToActionPermanent("", "panel");
     }
 
     [HttpPost("[controller]/login")]
@@ -173,7 +176,7 @@ public class AccountController : Controller
         HttpContext.Session.SetObject("User", _mapper.Map<User, UserResponse>(user));
         HttpContext.Session.SetString("is-first-time", bool.FalseString);
 
-        return RedirectToActionPermanent("", "user");
+        return RedirectToActionPermanent("", "panel");
     }
 
     [HttpGet("[controller]/log-out")]

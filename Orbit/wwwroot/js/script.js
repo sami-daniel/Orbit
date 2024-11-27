@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $(".modal-container").hide();
     $(".container")
         .fadeIn(1000, function() {
             $(this).css("display", "flex");
@@ -31,9 +32,10 @@ $("#loginDiv").click(function (){
 
 $(".btnHide").click(function(){
     $(".modal-container").hide(function() {
-        $(".login-div").show();
+        $(".login-div").show(function() {
+            $(".signUp-div").hide();
+        });
     });
 });
-
 
 

@@ -89,7 +89,7 @@ body {
 
 .modal-container .modal-section {
   width: 50%;
-  height: 75%;
+  height: auto;
   border: 1px solid var(--borderColor);
   background-color: black;
   display: flex;
@@ -111,6 +111,28 @@ body {
 .modal-container .modal-section .signUp-sections div {
   width: 100%;
   height: 100%;
+}
+
+.modal-container .container-errors {
+  width: fit-content;
+  height: 5vh;
+  border: 1px solid var(--borderColor);
+  margin: 2% auto;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--borderColor);
+}
+
+.modal-container .modal-section .signUp-sections .login-div form .btn-submit,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-submit {
+  margin-bottom: 2%;
 }
 
 .modal-container .modal-section .signUp-sections .login-div .container-btn,
@@ -181,7 +203,7 @@ body {
   position: relative;
   width: auto;
   height: auto;
-  margin-top: 10%;
+  margin-top: 75px;
 }
 
 .modal-container
@@ -495,16 +517,7 @@ body {
   position: relative;
   width: auto;
   height: auto;
-  margin-top: 8%;
-}
-
-.modal-container
-  .modal-section
-  .signUp-sections
-  .signUp-div
-  form
-  div:last-child {
-  margin-top: 5%;
+  margin-top: 40px;
 }
 
 .modal-container
@@ -859,13 +872,27 @@ body {
   color: white;
 }
 
-@media screen and (max-width: 475px) {
-  .container label {
-    display: none;
-    font-size: 2em;
-    color: white;
-    letter-spacing: 3px;
-    text-decoration: none;
-    pointer-events: none;
+@media screen and (max-width: 600px){
+
+  .modal-container .modal-section{
+    width: 100%;
+  }
+
+  .container label{
+    font-size: 1.75em;
+  }
+
+  .modal-container .modal-section .signUp-sections .signUp-div form div{
+    margin: 20px 0;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px){
+  .modal-container .modal-section{
+    width: 75%;
+  }
+
+  .modal-container .modal-section .signUp-sections .signUp-div form div{
+    margin: 20px 0;
   }
 }

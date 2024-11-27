@@ -42,12 +42,9 @@
             });
             connection.start().catch(err => console.error(err.toString()));
     </script>
-    @{
-        byte[]? isFirstTime;
-    }
 
-    @if (Context.Session.TryGetValue("is-first-time", out isFirstTime) && isFirstTime != null && isFirstTime.Any() && System.Text.Encoding.Default.GetString(isFirstTime) == bool.TrueString)
-    {
+    @if (ViewBag.StateLogin == bool.TrueString)
+    {        
         <script>
             $(`<div>`)
                 .append('Bem vindo ao Orbit. Tente configurar suas preferencias na sessão editar perfil no perfil do usuário!')

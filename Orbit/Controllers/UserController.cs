@@ -43,6 +43,8 @@ public class UserController : Controller
 
         userResponse = _mapper.Map<User, UserResponse>(user.First());
         HttpContext.Session.SetObject("User", userResponse);
+        ViewBag.StateLogin = HttpContext.Session.GetString("is-first-time");
+        HttpContext.Session.SetString("is-first-time", false.ToString());
 
         return View(userResponse);
     }

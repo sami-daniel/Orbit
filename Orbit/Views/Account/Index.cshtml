@@ -2,17 +2,16 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+    @Context.Request.Query.TryGetValue("errorMessage", out var errorMessage)
 }
 
 
 <div class="container">
-    <label for="btnShow">
-    Welcome to OrbIt
-    </label>
+    <label for="btnShow">Welcome to OrbIt</label>
     <button type="button" name="btnShow" id="btnShow">Click here to start</button>
 </div>
 
-<div class="modal-container">
+<div class="modal-container">             
     <div class="modal-section">
         <div class="signUp-sections">
             <div class="login-div">
@@ -21,8 +20,9 @@
                 </div>
 
                 <h1>Login</h1>
-
+                
                 <form asp-action="login" asp-controller="account">
+                    <span class="text-error">@errorMessage</span>
                     <div class="container-login-method">
                         <input type="text" name="inputLogin" required>
                         <label for="inputLogin">Username</label>
@@ -50,33 +50,37 @@
                 </div>
 
                 <h1>Sign-Up</h1>
-
-                <form asp-action="create-user" asp-controller="account">
+                
+                <form asp-action="create-user" asp-controller="account" class="form-signUp">
+                    <span class="text-error">@ViewBag.UserEmailError</span>
+                    <span class="text-error">@ViewBag.UserNameError</span>
+                    <span class="text-error">@ViewBag.UserProfileError</span>
+                    <span class="text-error">@ViewBag.UserPasswordError</span>
+                    <span asp-validation-for="@Model.UserName" class="text-error"></span>
+                    <span asp-validation-for="@Model.UserProfileName" class="text-error"></span>
+                    <span asp-validation-for="@Model.UserEmail" class="text-error"></span>
+                    <span asp-validation-for="@Model.UserPassword" class="text-error"></span>
                     <div class="container-username">
-                        <input type="text" asp-for="@Model.UserName">
+                        <input type="text" asp-for="@Model.UserName" required>
                         <label asp-for="@Model.UserName">Username</label>
                         <i class="fa-solid fa-user icons-forms"></i>
-                        <span asp-validation-for="@Model.UserName"></span>
                     </div>
 
                     <div class="container-profileName">
                         <input type="text" required asp-for="@Model.UserProfileName">
                         <label asp-for="@Model.UserProfileName">Profile name</label>
                         <i class="fa-solid fa-circle-user icons-forms"></i>
-                        <span asp-validation-for="@Model.UserProfileName"></span>
                     </div>
 
                     <div class="container-email">
                         <input type="text" required asp-for="@Model.UserEmail">
                         <label asp-for="@Model.UserEmail">Email</label>
                         <i class="fa-solid fa-envelope icons-forms"></i>
-                        <span asp-validation-for="@Model.UserEmail"></span>
                     </div>
 
                     <div class="container-password">
-                        <input type="text" required asp-for="@Model.UserPassword">
+                        <input type="password" required asp-for="@Model.UserPassword">
                         <label asp-for="@Model.UserPassword">Password</label>
-                        <span asp-validation-for="@Model.UserPassword"></span>
                         <i class="fa-solid fa-lock icons-forms"></i>
                         <p>Already have an account? <a id="loginDiv">Login</a></p>
                     </div>
@@ -131,6 +135,30 @@
         <script>
             $(document).ready(() => {
                 $('#openLogin').click();
+            });
+        </script>
+    }
+
+    @Context.Request.Query.TryGetValue("formID", out var formID);
+
+    @if (formID == "2")
+    {
+        <script>
+            $(document).ready(() => {
+                $(".modal-container").fadeIn(1000, function(){
+                    $(".modal-section").fadeIn(1000, function(){
+                        $(".login-div").hide();
+                        $(".signUp-div").fadeIn(1000);
+                    });
+                });
+            });
+        </script>
+    }
+    else if (formID == "1")
+    {
+        <script>
+            $(document).ready(() => {
+                $('#btnShow').click();
             });
         </script>
     }
