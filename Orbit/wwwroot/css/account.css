@@ -464,6 +464,14 @@ body{
   display: block;
 }
 
+.modal-container .modal-section .signUp-sections .login-div form .text-error:empty {
+  display: none; 
+}
+
+.modal-container .modal-section .signUp-sections .login-div form .text-error:not(:empty) {
+  display: block;
+}
+
 @media screen and (max-width: 600px){
   .modal-container .modal-section{
     width: 100%;
