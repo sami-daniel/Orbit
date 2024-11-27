@@ -1,209 +1,295 @@
 ﻿* {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-    color: white;
-    font-family: "Josefin Sans", sans-serif;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  color: white;
+  font-family: "Josefin Sans", sans-serif;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: black;
-    height:99vh;
+  background-color: black;
+  height: 99vh;
 }
 
-:root{
-    --border-color: rgba(255, 255, 255, 0.2);
-    --active-color: rgb(255, 255, 255, .9);
+#contact_container_responsive {
+  display: none;
+  width: 100%;
+  height: calc(99vh + 5px);
+  border: 1px solid var(--border-color);
 }
 
-.container{
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+#btn_contacts {
+  display: none;
+}
+
+#close{
+    display: none;
+}
+
+#contact_container_responsive h2 {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  height: 60px !important;
+}
+
+.Warning_user {
+  position: absolute;
+  transform: translate(-50%, 50%);
+  top: 50%;
+  left: 65%;
+}
+
+:root {
+  --border-color: rgba(255, 255, 255, 0.2);
+  --active-color: rgb(255, 255, 255, 0.9);
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .contacts-container {
-    width: 30%;
-    height: calc(99vh + 5px);
-    border: 1px solid var(--border-color);
+  width: 30%;
+  height: calc(99vh + 5px);
+  border: 1px solid var(--border-color);
 }
-
 
 .messages-container {
-    width: 70%;
-    height: calc(99vh + 5px);
-    border: 1px solid var(--border-color);
-    overflow: hidden;
+  width: 70%;
+  height: calc(99vh + 5px);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
 }
 
-.contacts-container h2{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin-top:2%;
-    border-bottom: 1px solid var(--border-color);
-    width: 100%;
-    height: 60px !important;
+.contacts-container h2 {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  height: 60px !important;
 }
 
-.contacts-container .contact-user.active-btn .profile-name{
-    color: black;
+.contacts-container .contact-user.active-btn .profile-name {
+  color: black;
 }
 
 .contact-message {
-    text-align: left;
-    width: 100%;
-    display: block;
-    margin-top: 2%;
+  text-align: left;
+  width: 100%;
+  display: block;
+  margin-top: 2%;
 }
 
-.contact-user{
-    width: 100%;
-    height:70px !important;
-    border:1px solid var(--border-color);
-    display:flex;
-    align-items:center;
-    padding: 10px;
+.contact-user {
+  width: 100%;
+  height: 70px !important;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
-.profile-name{
-    text-align:left;
-}
-
-.profile-img{
-    padding:10px;
-    overflow:hidden;
-    border-radius: 50%;
+.profile-name {
+  text-align: left;
 }
 
-.profile-img img{
-    width: 50px;
-    height: 50px;
-    object-fit:cover;
-    border-radius: 50%;
+.profile-img {
+  padding: 10px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile-img img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .info-container {
-    width: 100%;
-    height: 70px !important;
-    border: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    padding: 20px;
+  width: 100%;
+  height: 70px !important;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 20px;
 }
 
-.info-container span{
-    padding-left: 10px;
+.info-container span {
+  padding-left: 10px;
 }
 
-.messages{
-    width:100%;
-    height:calc(90% - 20px);
-    border:1px solid var(--border-color);
-    padding: 50px;
-    overflow-y: auto;
+.messages {
+  width: 100%;
+  height: calc(90% - 20px);
+  border: 1px solid var(--border-color);
+  padding: 50px;
+  overflow-y: auto;
 }
 
-footer{
-    width:100%;
+footer {
+  width: 100%;
 }
 
-.input-container{
-    width:100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+.input-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.input-container form{
-    display: flex;
+.input-container form {
+  display: flex;
 }
 
-.input-container input:first-child{
-    width:90%;
-    color:white;
-    font-size:1.3em;
-    outline:none;
-    border:1px solid var(--border-color);
-    background:transparent;
-    height:45px;
-    padding-left: 20px;
+.input-container input:first-child {
+  width: 90%;
+  color: white;
+  font-size: 1.3em;
+  outline: none;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  height: 45px;
+  padding-left: 20px;
 }
 
-.input-container button{
-    color:white;
-    background:transparent;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 45px;
-    width: 150px;
-    outline:none;
-    border:1px solid var(--border-color);
-    background:transparent;
-    transition: ease-in .3s;
-    cursor: pointer;
+.input-container button {
+  color: white;
+  background: transparent;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  width: 150px;
+  outline: none;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  transition: ease-in 0.3s;
+  cursor: pointer;
 }
 
-.input-container button:hover{
-    background-color: white;
-    color: black;
+.input-container button:hover {
+  background-color: white;
+  color: black;
 }
 
-.user-message{
-    width: auto;
-    display: block;
-    text-align: right;
-    position: relative;
+.user-message {
+  width: auto;
+  display: block;
+  text-align: right;
+  position: relative;
 }
 
-.contact-message{
-    width: auto;
-    display: block;
-    position: relative;
+.contact-message {
+  width: auto;
+  display: block;
+  position: relative;
 }
-
 
 .user-message span,
-.user-message strong{
-   display: block;
+.user-message strong {
+  display: block;
+  word-break: break-all;
 }
 
 .contact-message span,
-.contact-message strong{
-   display: block;
+.contact-message strong {
+  display: block;
 }
 
-.active-btn{
-    background-color: var(--active-color);
-    color: black;
-    transition: background-color .5s;
+.active-btn {
+  background-color: var(--active-color);
+  color: black;
+  transition: background-color 0.5s;
 }
 
-.contact-user.active-btn{
-    background-color: var(--active-color);
+.contact-user.active-btn {
+  background-color: var(--active-color);
 }
 
-.input-container button i{
-    font-size: 1.2em;
+.input-container button i {
+  font-size: 1.2em;
 }
 
-.input-container button:hover i{
-    color: black;
+.input-container button:hover i {
+  color: black;
 }
 
-.messages::-webkit-scrollbar{
-    width: 3px;
+.messages::-webkit-scrollbar {
+  width: 3px;
 }
 
-.messages::-webkit-scrollbar-track{
-    background-color: transparent;
+.messages::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
-.messages::-webkit-scrollbar-thumb{
-    background-color: #333;
-    border-radius: 10px;
+.messages::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 650px) {
+  .contacts-container {
+    display: none;
+  }
+
+  .messages-container {
+    width: 100%;
+  }
+
+  .Warning_user {
+    position: absolute;
+    transform: translate(-50%, 50%);
+    top: 50%;
+    left: 50%;
+  }
+
+  .messages {
+    padding: 25px;
+  }
+
+  #btn_contacts {
+    display: block;
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-right: 10px;
+  }
+
+  #close{
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 20px;
+  }
+
+  #contact_container_responsive.active {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 9999999999999999999999999999999999999;
+    background-color: black;
+  }
+
+  #contact_container_responsive.active #close{
+    display: block;
+  }
+
+  .user-message span{
+    word-break: break-all;
+  }
 }

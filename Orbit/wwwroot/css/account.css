@@ -1,4 +1,4 @@
-﻿*{
+﻿* {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -7,11 +7,11 @@
   box-sizing: border-box;
 }
 
-:root{
-  --borderColor: rgba(255,255,255, 0.5);
+:root {
+  --borderColor: rgba(255, 255, 255, 0.5);
 }
 
-body{
+body {
   background-color: black;
   width: 100%;
   height: 100vh;
@@ -31,7 +31,7 @@ body{
   height: auto;
 }
 
-.container label{
+.container label {
   display: none;
   font-size: 3em;
   color: white;
@@ -40,7 +40,7 @@ body{
   pointer-events: none;
 }
 
-.container button{
+.container button {
   display: none;
   opacity: 0;
   margin-top: 2%;
@@ -51,34 +51,34 @@ body{
   color: white;
   background-color: transparent;
   cursor: pointer;
-  transition: all .5s ease-in;
+  transition: all 0.5s ease-in;
 }
 
-.container button:hover{
+.container button:hover {
   background-color: white;
   color: black;
   box-shadow: 0px 4px 12px white;
 }
 
-.icons{
+.icons {
   font-size: 16px;
   color: var(--borderColor);
 }
 
-.icons-forms{
+.icons-forms {
   font-size: 16px;
   color: var(--borderColor);
   position: absolute;
   right: 0;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
-.icons-buttons{
+.icons-buttons {
   color: var(--borderColor);
-  transition: all .5s ease-in;
+  transition: all 0.5s ease-in;
 }
 
-.modal-container{
+.modal-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -89,7 +89,7 @@ body{
   display: none;
 }
 
-.modal-container .modal-section{
+.modal-container .modal-section {
   width: 50%;
   height: auto;
   border: 1px solid var(--borderColor);
@@ -100,24 +100,22 @@ body{
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-.modal-container .modal-section .signUp-sections{
+.modal-container .modal-section .signUp-sections {
   width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
 }
 
-
-
-.modal-container .modal-section .signUp-sections div{
+.modal-container .modal-section .signUp-sections div {
   width: 100%;
   height: 100%;
 }
 
-.modal-container .container-errors{
+.modal-container .container-errors {
   width: fit-content;
   height: 5vh;
   border: 1px solid var(--borderColor);
@@ -130,47 +128,72 @@ body{
 }
 
 .modal-container .modal-section .signUp-sections .login-div form .btn-submit,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-submit{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-submit {
   margin-bottom: 2%;
 }
 
 .modal-container .modal-section .signUp-sections .login-div .container-btn,
-.modal-container .modal-section .signUp-sections .signUp-div .container-btn{
+.modal-container .modal-section .signUp-sections .signUp-div .container-btn {
   width: 100%;
   height: 4vh;
   text-align: right;
 }
 
-
-
-.modal-container .modal-section .signUp-sections .login-div .container-btn button{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  .container-btn
+  button {
   background-color: transparent;
   border: 1px solid var(--borderColor);
   border-radius: 0 0 0 10px;
   outline: none;
   cursor: pointer;
   padding: 5px;
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
-.modal-container .modal-section .signUp-sections .login-div .container-btn button:hover{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  .container-btn
+  button:hover {
   border-color: white;
 }
 
-.modal-container .modal-section .signUp-sections .login-div .container-btn button .icons{
-  transition: all .2s ease;
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  .container-btn
+  button
+  .icons {
+  transition: all 0.2s ease;
 }
 
-.modal-container .modal-section .signUp-sections .login-div .container-btn button:hover .icons{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  .container-btn
+  button:hover
+  .icons {
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .login-div h1{
+.modal-container .modal-section .signUp-sections .login-div h1 {
   color: white;
   text-align: center;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form{
+.modal-container .modal-section .signUp-sections .login-div form {
   width: 100%;
   height: calc(100% - 68.44px);
   display: flex;
@@ -178,31 +201,59 @@ body{
   flex-direction: column;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form div{
+.modal-container .modal-section .signUp-sections .login-div form div {
   position: relative;
   width: auto;
   height: auto;
   margin-top: 75px;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form div:last-child{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  div:last-child {
   margin-top: 5%;
 }
 
-
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method label,
-.modal-container .modal-section .signUp-sections .login-div form .container-password label{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  label {
   font-size: 1em;
   color: var(--borderColor);
   position: absolute;
   left: 0;
   top: 0;
   pointer-events: none;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input {
   background-color: transparent;
   color: white;
   border: none;
@@ -211,33 +262,119 @@ body{
   outline: none;
   height: 30px;
   padding-right: 20px;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input:focus,
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input:valid,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input:focus,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input:valid{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input:focus,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input:valid,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input:focus,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input:valid {
   border-color: white;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input:focus ~ label,
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input:valid ~ label,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input:focus ~ label,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input:valid ~ label{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input:focus
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input:valid
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input:focus
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input:valid
+  ~ label {
   margin-top: -15px;
   font-size: 0.875em;
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input:focus ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .login-div form .container-login-method input:valid ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input:focus ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .login-div form .container-password input:valid ~ .icons-forms{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input:focus
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-login-method
+  input:valid
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input:focus
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  input:valid
+  ~ .icons-forms {
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-password p{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  p {
   margin-top: 10px;
   font-size: 0.875em;
   color: var(--borderColor);
@@ -247,19 +384,37 @@ body{
   text-wrap: wrap;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-password p a{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  p
+  a {
   color: white;
   cursor: pointer;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .container-password p a:hover{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .container-password
+  p
+  a:hover {
   color: white;
   text-decoration: underline;
 }
 
-
-
-.modal-container .modal-section .signUp-sections .login-div form .btn-submit button{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .btn-submit
+  button {
   height: 50px;
   width: 100px;
   color: var(--borderColor);
@@ -271,19 +426,37 @@ body{
   border: 1px solid var(--borderColor);
   outline: none;
   cursor: pointer;
-  transition: all .4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .btn-submit button:hover{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .btn-submit
+  button:hover {
   color: white;
   border-color: white;
 }
 
-.modal-container .modal-section .signUp-sections .login-div form .btn-submit button:hover .icons-buttons{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .login-div
+  form
+  .btn-submit
+  button:hover
+  .icons-buttons {
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div .container-btn button{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  .container-btn
+  button {
   position: absolute;
   top: 0;
   right: 0;
@@ -293,62 +466,127 @@ body{
   outline: none;
   cursor: pointer;
   padding: 5px;
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div{
+.modal-container .modal-section .signUp-sections .signUp-div {
   display: none;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div h1{
+.modal-container .modal-section .signUp-sections .signUp-div h1 {
   color: white;
   text-align: center;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div .container-btn button:hover{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  .container-btn
+  button:hover {
   border-color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div .container-btn button .icons{
-  transition: all .2s ease;
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  .container-btn
+  button
+  .icons {
+  transition: all 0.2s ease;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div .container-btn button:hover .icons{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  .container-btn
+  button:hover
+  .icons {
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form{
-    width: 100%;
-    height: calc(100% - 68.44px);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.modal-container .modal-section .signUp-sections .signUp-div form {
+  width: 100%;
+  height: calc(100% - 68.44px);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form div{
+.modal-container .modal-section .signUp-sections .signUp-div form div {
   position: relative;
   width: auto;
   height: auto;
   margin-top: 40px;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password label{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  label {
   font-size: 1em;
   color: var(--borderColor);
   position: absolute;
   left: 0;
   top: 0;
   pointer-events: none;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input {
   background-color: transparent;
   color: white;
   border: none;
@@ -357,45 +595,211 @@ body{
   outline: none;
   height: 30px;
   padding-right: 20px;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input:focus,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input:valid,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:focus,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:valid,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:focus,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:valid,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input:focus,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input:valid{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input:focus,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input:valid,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input:focus,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input:valid,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input:focus,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input:valid,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input:focus,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input:valid {
   border-color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input:focus ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input:valid ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:focus ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:valid ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:focus ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:valid ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input:focus ~ label,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input:valid ~ label{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input:focus
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input:valid
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input:focus
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input:valid
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input:focus
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input:valid
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input:focus
+  ~ label,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input:valid
+  ~ label {
   margin-top: -15px;
   font-size: 0.875em;
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input:focus ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-username input:valid ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:focus ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-profileName input:valid ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:focus ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-email input:valid ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input:focus ~ .icons-forms,
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password input:valid ~ .icons-forms{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input:focus
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-username
+  input:valid
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input:focus
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-profileName
+  input:valid
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input:focus
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-email
+  input:valid
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input:focus
+  ~ .icons-forms,
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  input:valid
+  ~ .icons-forms {
   color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password p{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  p {
   margin-top: 10px;
   font-size: 0.875em;
   color: var(--borderColor);
@@ -403,19 +807,37 @@ body{
   width: fit-content;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password p a{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  p
+  a {
   color: white;
   cursor: pointer;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-password p a:hover{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-password
+  p
+  a:hover {
   color: white;
   text-decoration: underline;
 }
 
-
-
-.modal-container .modal-section .signUp-sections .signUp-div form .container-submit button{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-submit
+  button {
   height: 50px;
   width: 100px;
   color: var(--borderColor);
@@ -427,51 +849,29 @@ body{
   border: 1px solid var(--borderColor);
   outline: none;
   cursor: pointer;
-  transition: all .4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-submit button:hover{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-submit
+  button:hover {
   color: white;
   border-color: white;
 }
 
-.modal-container .modal-section .signUp-sections .signUp-div form .container-submit button:hover .icons-buttons{
+.modal-container
+  .modal-section
+  .signUp-sections
+  .signUp-div
+  form
+  .container-submit
+  button:hover
+  .icons-buttons {
   color: white;
-}
-
-
-.modal-container .modal-section .signUp-sections .signUp-div form .text-error{
-  max-width: 400px;
-  text-align: center;
-  margin: 2% auto;
-  border: 1px solid var(--borderColor);
-  padding: 10px;
-  color: var(--borderColor);
-}
-
-.modal-container .modal-section .signUp-sections .login-div form .text-error{
-  max-width: 400px;
-  text-align: center;
-  margin: 2% auto;
-  border: 1px solid var(--borderColor);
-  padding: 10px;
-  color: var(--borderColor);
-}
-
-.modal-container .modal-section .signUp-sections .signUp-div form .text-error:empty {
-  display: none; 
-}
-
-.modal-container .modal-section .signUp-sections .signUp-div form .text-error:not(:empty) {
-  display: block;
-}
-
-.modal-container .modal-section .signUp-sections .login-div form .text-error:empty {
-  display: none; 
-}
-
-.modal-container .modal-section .signUp-sections .login-div form .text-error:not(:empty) {
-  display: block;
 }
 
 @media screen and (max-width: 600px){
