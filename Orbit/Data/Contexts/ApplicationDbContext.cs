@@ -63,7 +63,8 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.PostContent).HasColumnName("post_content");
             entity.Property(e => e.PostDate)
                 .HasColumnType("datetime")
-                .HasColumnName("post_date");
+                .HasColumnName("post_date")
+                .HasDefaultValueSql("(NOW())");
             entity.Property(e => e.PostImageByteType).HasColumnName("post_image_byte_type");
             entity.Property(e => e.PostLikes).HasColumnName("post_likes");
             entity.Property(e => e.PostVideoByteType).HasColumnName("post_video_byte_type");

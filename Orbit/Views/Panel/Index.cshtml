@@ -1,11 +1,13 @@
 @using Orbit.Data.Contexts
-@{
-    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
-}
-
 @model UserResponse
 @inject IPostService postService
 @inject ApplicationDbContext context
+
+@{
+    Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
+    var postAddRequest = new PostAddRequest();
+    var posts = await postService.GetPostsRandomizedByUserPreferenceAsync(Model.UserName);
+}
 
 <div class="container">
     <div class="post-modal">
@@ -14,9 +16,10 @@
                 <i class="fa-solid fa-xmark icon"></i>
             </button>
             <h1>Post</h1>
-            <form action="">
+            <form id="post-form" enctype="multipart/form-data" asp-action="create-post" asp-controller="post">
+                <input type="hidden" name="returnTo" value="@Url.PageLink()">
                 <div class="post-content">
-                    <textarea name="" id="" placeholder="Content"></textarea>
+                    <textarea asp-for="@postAddRequest.PostContent" placeholder="Content"></textarea>
                 </div>
                 <div class="post-upload-content">
                     <label for="imageOrVideo">
@@ -29,12 +32,14 @@
                             <i class="fa-solid fa-video"></i>
                         </h3>
                     </label>
-                    <input type="file" name="imageOrVideo" id="imageOrVideo">
+                    <input type="file" name="imageOrVideo" id="imageOrVideo" accept=".jpeg,.png,.jpg,.gif,.mkv,.avi,.webm,.mp4">
+                </div>
+                <input type="hidden" asp-for="@postAddRequest.PostOwnerName" value="@Model.UserName">
+                <div class="btn-submit">
+                    <button id="send-post" type="submit">Post</button>
                 </div>
 
-                <div class="btn-submit">
-                    <button type="submit">Post</button>
-                </div>
+                <span asp-validation-for="@postAddRequest.PostContent"></span>
             </form>
         </div>
     </div>
@@ -100,7 +105,7 @@
             <img src="~/images/search.png" alt="Icon Search" />
             <input type="text" placeholder="Search" />
         </div>
-        @foreach (var post in await postService.GetPostsRandomizedByUserPreferenceAsync(Model.UserName))
+        @foreach (var post in posts)
         {
             <div class="posts-container">
                 <div class="content">
@@ -118,13 +123,13 @@
                         </div>
                     </div>
                     <div class="post-img">
-                        @if(post.PostImageByteType != null)
+                        @if(post.PostImageByteType != null && post.PostImageByteType.Length == 0)
                         {
                             <div class="img-container">
                                 <img src="post/get-post-image/@post.PostId" alt="">
                             </div>
                         }
-                        @if(post.PostVideoByteType != null)
+                        @if(post.PostVideoByteType != null && post.PostVideoByteType.Length == 0)
                         {
                             <div class="img-container">
                                 <video src="post/get-post-video/@post.PostId"></video>

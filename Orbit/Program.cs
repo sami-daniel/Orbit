@@ -38,6 +38,7 @@ internal class Program
         builder.Services.AddAutoMapper(opt =>
         {
             opt.AddProfile<UserProfile>();
+            opt.AddProfile<PostProfile>();
         });
 
         builder.Services

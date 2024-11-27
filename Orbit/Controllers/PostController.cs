@@ -20,7 +20,7 @@ public class PostController : Controller
     }
 
     [HttpPost("[controller]/create-post")]
-    public async Task<IActionResult> CreatePost([FromBody] PostAddRequest post)
+    public async Task<IActionResult> CreatePost([FromForm] PostAddRequest postAddRequest, [FromForm] IFormFile? imageOrVideo, [FromForm] string returnTo)
     {
         if (!ModelState.IsValid)
         {
@@ -29,16 +29,45 @@ public class PostController : Controller
             return BadRequest(errors);
         }
 
+        if (imageOrVideo != null)
+        {    
+            if (imageOrVideo.ContentType == "image/png" || imageOrVideo.ContentType == "image/jpg" || imageOrVideo.ContentType == "image/jpeg" || imageOrVideo.ContentType == "image/gif")
+            {
+                postAddRequest.PostImageByteType = imageOrVideo;
+            }
+            else if (imageOrVideo.ContentType == "video/mp4" || imageOrVideo.ContentType == "video/mkv" || imageOrVideo.ContentType == "video/avi" || imageOrVideo.ContentType == "video/webm")
+            {
+                postAddRequest.PostVideoByteType = imageOrVideo;
+            }
+            else
+            {
+                return BadRequest("Invalid file type");
+            }
+        }
+
+        var post = _mapper.Map<Post>(postAddRequest);
+
+        // For some reason, the mapper is setting the byte array to an empty array instead of null.
+        if (post.PostImageByteType != null && post.PostImageByteType!.Length == 0)
+        {
+            post.PostImageByteType = null;
+        }
+
+        if (post.PostVideoByteType != null && post.PostVideoByteType!.Length == 0)
+        {
+            post.PostVideoByteType = null;
+        }
+        
         try
         {
-            await _postService.AddPostAsync(_mapper.Map<Post>(post), post.PostOwnerName);
+            await _postService.AddPostAsync(post, postAddRequest.PostOwnerName);
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
 
-        return NoContent();
+        return RedirectPermanent(returnTo);
     }
 
     [HttpGet("[controller]/get-post-image/{postID}")]

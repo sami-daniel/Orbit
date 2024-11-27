@@ -61,9 +61,10 @@ public class PostService : IPostService
                 PostId = post.PostId,
                 PreferenceName = hashtag,
             };
-
             await _unitOfWork.PostPreferenceRepository.InsertAsync(postPreference);
         }
+        
+        await _unitOfWork.CompleteAsync();
     }
 
     public async Task<IEnumerable<Post>> GetPaginatedPostAsync(int skip, int take)
@@ -99,10 +100,11 @@ public class PostService : IPostService
         if (userPreferences.Count == 0)
         {
             // In case that user has no preferences, return the last 50 posts, randomized.
-            return await _context.Posts
+            var unshufledPostsUnpreferenced = await _context.Posts
                    .Take(50)
                    .OrderBy(p => Guid.NewGuid())
                    .ToListAsync();
+            return Shuffle(unshufledPostsUnpreferenced);
         }
         
         var posts = _context.Database.SqlQuery<Post>($"""
@@ -130,6 +132,25 @@ public class PostService : IPostService
             """);
         }
 
-        return await posts.ToListAsync();
+        var unshufledPosts = await posts.ToListAsync();
+
+        return Shuffle(unshufledPosts);
+    }
+
+    private IEnumerable<Post> Shuffle(IEnumerable<Post> posts)
+    {
+        // Fisher-Yates shuffle algorithm
+        // See https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle for more information
+
+        var list = posts.ToList();
+        var n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            var k = new Random().Next(n + 1);
+            (list[n], list[k]) = (list[k], list[n]);
+        }
+
+        return list;
     }
 }

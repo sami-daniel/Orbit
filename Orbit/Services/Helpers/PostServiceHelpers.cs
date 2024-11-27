@@ -19,27 +19,5 @@ internal static class PostServiceHelpers
         {
             throw new ArgumentException("O post pode ter no máximo 65535 caracteres.");
         }
-
-        if (post.PostDate < DateTime.Now)
-        {
-            throw new ArgumentException("A data do Post é inválida");
-        }
-
-        if (post.PostImageByteType != null)
-        {
-            try
-            {
-                using (var ms = new MemoryStream(post.PostImageByteType))
-                {
-#pragma warning disable CA1416 // Validate platform compatibility
-                    Image.FromStream(ms);
-#pragma warning restore CA1416 // Validate platform compatibility
-                }
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException("A imagem do post é invalida");
-            }
-        }
     }
 }

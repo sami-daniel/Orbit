@@ -27,12 +27,10 @@ public class PostProfile : Profile
             return null;
         }
 
-        if (!file.ContentType.Contains("image") || !file.ContentType.Contains("video"))
+        if (!file.ContentType.Contains("image") && !file.ContentType.Contains("video"))
         {
             throw new InvalidOperationException("The file is not a video or a image");
         }
-
-        if (file == null) return null;
 
         if (file.Length > 0)
         {
@@ -42,6 +40,10 @@ public class PostProfile : Profile
 
                 return ms.ToArray();
             }
+        }
+        else
+        {
+            return null;
         }
 
         throw new InvalidOperationException();
