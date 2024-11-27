@@ -35,7 +35,7 @@ body {
     align-items:center;
     padding:20px;
     flex-flow:column wrap;
-    min-height:40vh !important auto;
+    min-height:40vh !important;
 }
 
 .container img{

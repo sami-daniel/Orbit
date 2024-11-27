@@ -74,3 +74,15 @@ function scrollToBottom(){
     const messageDiv = document.getElementById("message");
     messageDiv.scrollTop = messageDiv.scrollHeight;
 }
+
+const btnmenu = document.getElementById("btn_contacts");
+const div = document.getElementById("contact_container_responsive");
+const btnclose = document.getElementById("close");
+
+btnmenu.addEventListener("click", function(){
+    div.classList.add("active");
+});
+
+btnclose.addEventListener("click", function(){
+    div.classList.remove("active");
+})

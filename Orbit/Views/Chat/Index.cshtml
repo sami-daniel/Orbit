@@ -6,7 +6,22 @@
     contacts.UnionWith(Model.Host.Followers);
     contacts.UnionWith(Model.Host.Users);
 }
-
+<div id="contact_container_responsive">
+    <button id="close"><i class="fa-solid fa-xmark"></i></button>
+    <h2>Contacts</h2>
+    @foreach (var user in contacts)
+    {
+        <a href="@Url.Action($"{user.UserName}")">
+            <div class="contact-user">
+                <div class="profile-img">
+                    <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
+                        alt="Profile Image" />
+                </div>
+                <div class="profile-name">@user.UserProfileName</div>
+            </div>
+        </a>
+    }
+</div>
 <main class="container">
     <div class="contacts-container">
         <h2>Contacts</h2>
@@ -27,19 +42,21 @@
         @if (Model.Guest == null)
         {
             <header class="info-container">
+                <button id="btn_contacts"><i class="fa-solid fa-bars"></i></button>
                 <div class="profile-img">
                     <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Host.UserName })"
                         alt="Profile Image" />
                 </div>
                 <div class="profile-name"><span>@Model.Host.UserName</span></div>
             </header>
-            <strong style="position: absolute; transform: translate(-50%, 50%); top: 50%; left: 50%;">
-                Selecione um usário para começar a conversar!
+            <strong class="Warning_user">
+                Select a user to start a chat!
             </strong>
         }
         else
         {
             <header class="info-container">
+                <button id="btn_contacts"><i class="fa-solid fa-bars"></i></button>
                 <div class="profile-img">
                     <img src="@Url.Action("get-profile-image", "user", new { userName = Model.Guest.UserName })"
                         alt="Profile Image" />
@@ -80,5 +97,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/dayjs.min.js"></script>
     <script src="~/js/chat.js" asp-append-version="true"></script>
     <script src="~/js/load-messages.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
     }
 }
