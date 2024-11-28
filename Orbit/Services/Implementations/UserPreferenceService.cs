@@ -15,6 +15,16 @@ public class UserPreferenceService : IUserPreferenceService
         _context = context;
     }
 
+<<<<<<< HEAD
+    /// <summary>
+    /// Updates a user's preferences based on the likes they have given to posts.
+    /// </summary>
+    /// <param name="userName">The username of the user whose preferences are to be updated.</param>
+    /// <param name="postID">The ID of the post that is being interacted with.</param>
+    /// <exception cref="UserNotFoundException">Thrown when the user is not found in the database.</exception>
+    /// <exception cref="PostNotFoundException">Thrown when the post is not found in the database.</exception>
+=======
+>>>>>>> 35189761d3d1ce18be8ee88be049a8f9dcaf53a6
     public async Task UpdateUserPreferenceAsync(string userName, uint postID)
     {
         var user = await _context.Users
@@ -88,5 +98,9 @@ public class UserPreferenceService : IUserPreferenceService
 
         await _context.SaveChangesAsync();
     }
+<<<<<<< HEAD
+}
+=======
 
 }
+>>>>>>> 35189761d3d1ce18be8ee88be049a8f9dcaf53a6

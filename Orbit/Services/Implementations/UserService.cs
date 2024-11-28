@@ -10,26 +10,26 @@ using Orbit.UnitOfWork.Interfaces;
 namespace Orbit.Services.Implementations;
 
 /// <summary>
-/// Serviço para gerenciar operações relacionadas ao usuário.
+/// Service to manage operations related to users.
 /// </summary>
 public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UserService"/>.
+    /// Initializes a new instance of the <see cref="UserService"/> class.
     /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para acesso ao repositório.</param>
+    /// <param name="unitOfWork">The unit of work for repository access.</param>
     public UserService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
     /// <summary>
-    /// Adiciona um novo usuário de forma assíncrona.
+    /// Adds a new user asynchronously.
     /// </summary>
-    /// <param name="user">O objeto User a ser adicionado.</param>
-    /// <exception cref="UserAlredyExistsException">Lançada quando um usuário com o mesmo identificador já existe.</exception>
+    /// <param name="user">The User object to be added.</param>
+    /// <exception cref="UserAlredyExistsException">Thrown when a user with the same identifier already exists.</exception>
     public async Task AddUserAsync(User user)
     {
 
@@ -52,33 +52,33 @@ public class UserService : IUserService
         catch (DbUpdateException ex)
         when (ex.InnerException!.Message.Contains(user.UserEmail, StringComparison.CurrentCultureIgnoreCase))
         {
-            throw new UserAlredyExistsException($"O usuário com o email {user.UserEmail} já existe!");
+            throw new UserAlredyExistsException($"The user with email {user.UserEmail} already exists!");
         }
         catch (DbUpdateException ex)
         when (ex.InnerException!.Message.Contains(user.UserName, StringComparison.CurrentCultureIgnoreCase))
         {
-            throw new UserAlredyExistsException($"O usuário com o identificador {user.UserName} já existe!");
+            throw new UserAlredyExistsException($"The user with identifier {user.UserName} already exists!");
         }
 
     }
 
     /// <summary>
-    /// Obtém todos os usuários de forma assíncrona.
+    /// Gets all users asynchronously.
     /// </summary>
-    /// <param name="filter">Expressão para filtrar os usuários.</param>
-    /// <param name="orderBy">Função para ordenar os usuários.</param>
-    /// <param name="includeProperties">Propriedades a serem incluídas na consulta.</param>
-    /// <returns>Uma coleção de objetos User.</returns>
+    /// <param name="filter">Expression to filter the users.</param>
+    /// <param name="orderBy">Function to order the users.</param>
+    /// <param name="includeProperties">Properties to be included in the query.</param>
+    /// <returns>A collection of User objects.</returns>
     public async Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "")
     {
         return await _unitOfWork.UserRepository.GetAsync(filter, orderBy, includeProperties);
     }
 
     /// <summary>
-    /// Obtém um usuário pelo identificador de forma assíncrona.
+    /// Gets a user by their identifier asynchronously.
     /// </summary>
-    /// <param name="userIdentifier">O identificador do usuário (nome de usuário ou email).</param>
-    /// <returns>O objeto User correspondente ou null se não encontrado.</returns>
+    /// <param name="userIdentifier">The identifier of the user (username or email).</param>
+    /// <returns>The corresponding User object or null if not found.</returns>
     public async Task<User?> GetUserByIdentifierAsync(string userIdentifier)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(userIdentifier, nameof(userIdentifier));
@@ -97,12 +97,12 @@ public class UserService : IUserService
     }
 
     /// <summary>
-    /// Atualiza um usuário existente de forma assíncrona.
+    /// Updates an existing user asynchronously.
     /// </summary>
-    /// <param name="userIdentifier">O identificador do usuário (nome de usuário ou email).</param>
-    /// <param name="updatedUser">O objeto User com as informações atualizadas.</param>
-    /// <exception cref="UserAlredyExistsException">Lançada quando um usuário com o mesmo identificador já existe.</exception>
-    /// <exception cref="UserNotFoundException">Lançada quando o usuário com o identificador fornecido não é encontrado.</exception>
+    /// <param name="userIdentifier">The identifier of the user (username or email).</param>
+    /// <param name="updatedUser">The User object with updated information.</param>
+    /// <exception cref="UserAlredyExistsException">Thrown when a user with the same identifier already exists.</exception>
+    /// <exception cref="UserNotFoundException">Thrown when the user with the provided identifier is not found.</exception>
     public async Task UpdateUserAsync(string userIdentifier, User updatedUser)
     {
         IEnumerable<User>? users = null;
@@ -145,13 +145,17 @@ public class UserService : IUserService
                 {
                     await transaction.RollbackAsync();
 
+<<<<<<< HEAD
+                    throw new UserAlredyExistsException("The user with this identifier already exists!");
+=======
                     throw new UserAlredyExistsException("O usuário com esse identificador já está em uso!");
+>>>>>>> 35189761d3d1ce18be8ee88be049a8f9dcaf53a6
                 }
             }
         }
         else
         {
-            throw new UserNotFoundException("O usuário com esse identificador não foi encontrado!");
+            throw new UserNotFoundException("The user with this identifier was not found!");
         }
     }
 

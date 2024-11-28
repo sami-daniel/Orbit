@@ -8,21 +8,24 @@ namespace Orbit.Services.Helpers;
 internal static class UserServiceHelpers
 {
     /// <summary>
-    /// Valida as propriedades do objeto User.
+    /// Validates the properties of the User object.
     /// </summary>
-    /// <param name="user">O objeto User a ser validado.</param>
-    /// <exception cref="ArgumentNullException">Lançada quando o objeto User ou suas propriedades obrigatórias são nulas ou vazias.</exception>
-    /// <exception cref="ArgumentException">Lançada quando as propriedades do objeto User não atendem aos critérios de validação.</exception>
-    /// <exception cref="InvalidImageException">Lançada quando as imagens de perfil ou banner do usuário são inválidas.</exception>
+    /// <param name="user">The User object to be validated.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the User object or its required properties are null or empty.</exception>
+    /// <exception cref="ArgumentException">Thrown when the User object's properties do not meet validation criteria.</exception>
+    /// <exception cref="InvalidImageException">Thrown when the user's profile or banner images are invalid.</exception>
     public static void ValidateUser(User user)
     {
+        // Check if the user object is null
         ArgumentNullException.ThrowIfNull(user);
 
+        // Validate that required properties are not null or whitespace
         ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserName);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserProfileName);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserPassword);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(user.UserEmail);
 
+        // Validate maximum length constraints for User properties
         if (user.UserName.Length > 255)
         {
             throw new ArgumentException("O nome de usuário não pode ter mais de 255 caracteres.");
@@ -48,7 +51,7 @@ internal static class UserServiceHelpers
             throw new ArgumentException("A descrição do usuário não pode ter mais de 65535 caracteres.");
         }
 
-        // Value validations, like valid email, valid username ...
+        // Value validations: Check if the email and username match the expected formats
         if (!Regex.Match(user.UserEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$").Success)
         {
             throw new ArgumentException("O email do usuário é invalido.");
@@ -59,7 +62,7 @@ internal static class UserServiceHelpers
             throw new ArgumentException("O nome do usuário é invalido. Deve conter somente letras, números e underscore");
         }
 
-        // Verifing valid images
+        // Check if the profile image is valid
         if (user.UserProfileImageByteType != null)
         {
             try
@@ -77,6 +80,7 @@ internal static class UserServiceHelpers
             }
         }
 
+        // Check if the banner image is valid
         if (user.UserProfileBannerImageByteType != null)
         {
             try

@@ -4,7 +4,7 @@ using Orbit.Repository.Core.Interfaces;
 namespace Orbit.Repository.Interfaces;
 
 /// <summary>
-/// Interface para o repositório de Usuários.
+/// Interface for user repository.
 /// </summary>
 public interface IUserRepository : IRepository<User>
 {

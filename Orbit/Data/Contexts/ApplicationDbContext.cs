@@ -7,27 +7,28 @@ namespace Orbit.Data.Contexts;
 public partial class ApplicationDbContext : DbContext
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    // Constructor for the ApplicationDbContext, passing DbContextOptions to the base class
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
 
+    // DbSets for various models
     public virtual DbSet<User> Users { get; set; }
-
     public virtual DbSet<Post> Posts { get; set; }
-
     public virtual DbSet<Like> Likes { get; set; }
-
     public virtual DbSet<UserPreference> UserPreferences { get; set; }
-
     public virtual DbSet<PostPreference> PostPreferences { get; set; }
 
+    // Method to configure the model using Fluent API
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Set the collation for the database
         modelBuilder
             .UseCollation("utf8mb4_0900_ai_ci")
             .HasCharSet("utf8mb4");
 
+        // Configure the Like entity
         modelBuilder.Entity<Like>(entity =>
         {
             entity.HasKey(e => e.LikeId).HasName("PRIMARY");
@@ -35,12 +36,12 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("like");
 
             entity.HasIndex(e => e.UserId, "like_ibfk_1");
-
             entity.HasIndex(e => e.PostId, "like_ibfk_2");
 
             entity.Property(e => e.PostId).HasColumnName("post_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
+            // Define relationships between entities
             entity.HasOne(d => d.Post).WithMany()
                 .HasForeignKey(d => d.PostId)
                 .HasConstraintName("like_ibfk_2");
@@ -53,6 +54,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Post).WithMany(p => p.Likes);
         });
 
+        // Configure the Post entity
         modelBuilder.Entity<Post>(entity =>
         {
             entity.HasKey(e => e.PostId).HasName("PRIMARY");
@@ -80,6 +82,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasMany(d => d.Likes).WithOne(p => p.Post);
         });
 
+        // Configure the User entity
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
@@ -90,7 +93,6 @@ public partial class ApplicationDbContext : DbContext
                 .UseCollation("utf8mb3_general_ci");
 
             entity.HasIndex(e => e.UserEmail, "user_email_UNIQUE").IsUnique();
-
             entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -121,6 +123,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnType("LONGBLOB")
                 .HasColumnName("user_pdf_curriculum_byte_type");
 
+            // Configure many-to-many relationship for Followers
             entity.HasMany(d => d.Followers).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "Follower",
@@ -167,9 +170,11 @@ public partial class ApplicationDbContext : DbContext
                         j.IndexerProperty<uint>("FollowerId").HasColumnName("follower_id");
                     });
                     
+            // Configure one-to-many relationship for UserPreferences
             entity.HasMany(d => d.UserPreferences).WithOne(p => p.User);
         });
 
+        // Configure the UserPreference entity
         modelBuilder.Entity<UserPreference>(entity =>
         {
             entity.HasKey(e => e.PreferenceId).HasName("PRIMARY");
@@ -188,6 +193,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("user_preference_ibfk_1");
         });
 
+        // Configure the PostPreference entity
         modelBuilder.Entity<PostPreference>(entity =>
         {
             entity.HasKey(e => e.PreferenceId).HasName("PRIMARY");
@@ -206,8 +212,10 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("post_preference_ibfk_1");
         });
 
+        // Call additional configuration in partial method
         OnModelCreatingPartial(modelBuilder);
     }
 
+    // Partial method for further configuration (optional to override)
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

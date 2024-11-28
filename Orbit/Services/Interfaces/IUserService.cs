@@ -4,50 +4,50 @@ using Orbit.Models;
 namespace Orbit.Services.Interfaces;
 
 /// <summary>
-/// Interface que define contratos para os serviços de usuário.
+/// Interface that defines contracts for user services.
 /// </summary>
 public interface IUserService
 {
     /// <summary>
-    /// Obtém um usuário pelo identificador.
-    /// O identificador pode ser um email ou o nome do usuário.
+    /// Retrieves a user by identifier.
+    /// The identifier can be an email or the user's username.
     /// </summary>
-    /// <param name="userIdentifier">O identificador do usuário, que pode ser um email ou o nome do usuário.</param>
-    /// <returns>Uma tarefa que representa a operação assíncrona. A tarefa contém o usuário correspondente ao identificador.</returns>
+    /// <param name="userIdentifier">The user's identifier, which can be an email or the username.</param>
+    /// <returns>A task representing the asynchronous operation. The task contains the user corresponding to the identifier.</returns>
     Task<User?> GetUserByIdentifierAsync(string userIdentifier);
 
     /// <summary>
-    /// Obtém todos os usuários.
+    /// Retrieves all users.
     /// </summary>
-    /// <returns>Uma tarefa que representa a operação assíncrona. A tarefa contém uma lista de todos os usuários.</returns>
+    /// <returns>A task representing the asynchronous operation. The task contains a list of all users.</returns>
     Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "");
 
     /// <summary>
-    /// Adiciona um novo usuário ao sistema.
+    /// Adds a new user to the system.
     /// </summary>
-    /// <param name="user">O usuário a ser adicionado.</param>
-    /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
+    /// <param name="user">The user to be added.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task AddUserAsync(User user);
 
     /// <summary>
-    /// Atualiza um usuário no sistema.
+    /// Updates a user in the system.
     /// </summary>
-    /// <param name="userIdentifier">O identificador do usuário, que pode ser um email ou o nome do usuário.</param>
-    /// <param name="user">O <see cref="User"/> contendo os dados atualizados do perfil.</param>
+    /// <param name="userIdentifier">The user's identifier, which can be an email or the username.</param>
+    /// <param name="user">The <see cref="User"/> containing the updated profile data.</param>
     Task UpdateUserAsync(string userIdentifier, User user);
 
     /// <summary>
-    /// Segue um usuário no sistema.
+    /// Follows a user in the system.
     /// </summary>
-    /// <param name="followerUsername">O identificador do usuário que irá seguir.</param>
-    /// <param name="userToBeFollowedUserName">O identificador do usuário que irá ser seguido.</param>
+    /// <param name="followerUsername">The identifier of the user who will follow.</param>
+    /// <param name="userToBeFollowedUserName">The identifier of the user to be followed.</param>
     /// <returns></returns>
     Task FollowUserAsync(string followerUsername, string userToBeFollowedUserName);
 
     /// <summary>
-    /// Deixa de seguir um usuário no sistema.
+    /// Unfollows a user in the system.
     /// </summary>
-    /// <param name="followerUsername">O identificador do usuário que irá deixar de seguir.</param>
-    /// <param name="userToBeUnfollowedUserName">O identificador do usuário que irá deixar de ser seguido.</param>
+    /// <param name="followerUsername">The identifier of the user who will unfollow.</param>
+    /// <param name="userToBeUnfollowedUserName">The identifier of the user to be unfollowed.</param>
     Task UnfollowUserAsync(string followerUsername, string userToBeUnfollowedUserName);
 }

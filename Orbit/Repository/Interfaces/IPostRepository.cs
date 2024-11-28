@@ -4,7 +4,7 @@ using Orbit.Repository.Core.Interfaces;
 namespace Orbit.Repository.Interfaces;
 
 /// <summary>
-/// Interface para o repositório de Posts.
+/// Interface for the Posts repository.
 /// </summary>
 public interface IPostRepository : IRepository<Post>
 {

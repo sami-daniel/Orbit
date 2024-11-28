@@ -1,30 +1,30 @@
 ﻿namespace Orbit.Services.Exceptions;
 
 /// <summary>
-/// Exceção lançada quando um usuário não é encontrado.
+/// Exception thrown when a user is not found.
 /// </summary>
 public class UserNotFoundException : Exception
 {
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UserNotFoundException"/>.
+    /// Initializes a new instance of the <see cref="UserNotFoundException"/> class.
     /// </summary>
     public UserNotFoundException()
     {
     }
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UserNotFoundException"/> com uma mensagem de erro especificada.
+    /// Initializes a new instance of the <see cref="UserNotFoundException"/> class with a specified error message.
     /// </summary>
-    /// <param name="message">A mensagem que descreve o erro.</param>
+    /// <param name="message">The message that describes the error.</param>
     public UserNotFoundException(string? message) : base(message)
     {
     }
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UserNotFoundException"/> com uma mensagem de erro especificada e uma referência à exceção interna que é a causa da exceção.
+    /// Initializes a new instance of the <see cref="UserNotFoundException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
     /// </summary>
-    /// <param name="message">A mensagem que descreve o erro.</param>
-    /// <param name="innerException">A exceção que é a causa da exceção atual.</param>
+    /// <param name="message">The message that describes the error.</param>
+    /// <param name="innerException">The exception that is the cause of the current exception.</param>
     public UserNotFoundException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
