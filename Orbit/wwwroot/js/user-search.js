@@ -12,7 +12,12 @@ $(document).ready(function () {
           var html = '';
           $.each(data.$values, (_, user) => {
             html += `<li class="li-user">
-                              <a href="user/${user.userName}?returnTo=${window.location.href}">${user.userName}</a>
+                              <a href="user/${user.userName}?returnTo=${window.location.href}" style="display: flex; width:100%; align-items:center;">
+                              <div style='border-radius: 100%; width:40px; height:40px; overflow:hidden; margin-right: 15px;'>
+                                <img src='user/get-profile-image?userName=${user.userName}' style="width:100%; height:100%; object-fit:cover;" />
+                              </div>
+                              ${user.userName}
+                              </a>
                           </li>`
           })
           document.getElementById('ul-users').innerHTML = html;
