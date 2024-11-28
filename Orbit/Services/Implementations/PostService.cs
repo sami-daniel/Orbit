@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 using Orbit.Data.Contexts;
 using Orbit.Models;
 using Orbit.Services.Exceptions;
@@ -53,18 +54,20 @@ public class PostService : IPostService
     
 
         await _unitOfWork.PostRepository.InsertAsync(post);
-        
+        await _unitOfWork.CompleteAsync();
+
         foreach (var hashtag in hashtags)
         {
+            string result = Regex.Replace(hashtag, @"\\[a-zA-Z0-9]", "");
             var postPreference = new PostPreference
             {
                 PostId = post.PostId,
-                PreferenceName = hashtag,
+                PreferenceName = result,
             };
             await _unitOfWork.PostPreferenceRepository.InsertAsync(postPreference);
+            await _unitOfWork.CompleteAsync();
         }
         
-        await _unitOfWork.CompleteAsync();
     }
 
     public async Task<IEnumerable<Post>> GetPaginatedPostAsync(int skip, int take)
@@ -78,7 +81,7 @@ public class PostService : IPostService
 
     public async Task<Post?> GetPostByIdAsync(uint postId)
     {
-        var post = await _unitOfWork.PostRepository.GetAsync(p => p.PostId == postId);
+        var post = await _unitOfWork.PostRepository.GetAsync(p => p.PostId == postId, includeProperties: "User,Likes");
 
         if (post == null)
         {
@@ -108,32 +111,35 @@ public class PostService : IPostService
             return Shuffle(unshufledPostsUnpreferenced);
         }
         
-        var posts = _context.Database.SqlQuery<Post>($"""
-            SELECT p.* FROM post p
-            JOIN post_preference USING(post_id)
-            WHERE post_preference.preference_name = IN({string.Join(',', userPreferences.Select(up => up.PreferenceName))})
-            ORDER BY RAND()
-            LIMIT 50
-        """);
+        var postPreferences = userPreferences.Select(up => up.PreferenceName).ToList();
+
+        var posts = await _context.Posts
+            .Join(_context.PostPreferences,
+                p => p.PostId,
+                pp => pp.PostId,
+                (p, pp) => new { p, pp })
+            .Where(x => postPreferences.Contains(x.pp.PreferenceName))
+            .OrderBy(x => Guid.NewGuid()) 
+            .Select(x => x.p)
+            .Take(50)
+            .ToListAsync();
 
         if (posts.Count() < 50)
         {
-            posts = _context.Database.SqlQuery<Post>($"""
-                SELECT * FROM 
-                (SELECT p.* FROM post p
-                JOIN post_preference USING(post_id)
-                WHERE post_preference.preference_name IN({string.Join(',', userPreferences.Select(up => up.PreferenceName))})
-                UNION
-                SELECT p.* FROM post p
-                JOIN post_preference USING(post_id)
-                WHERE post_preference.preference_name IN({string.Join(',', userPreferences.Select(up => up.PreferenceName))}))
-                AS Result 
-                ORDER BY RAND()
-                LIMIT 50
-            """);
+            var postsQuery2 = _context.Posts
+                .Join(_context.PostPreferences,
+                    p => p.PostId,
+                    pp => pp.PostId,
+                    (p, pp) => new { p, pp })
+                .Where(x => postPreferences.Contains(x.pp.PreferenceName))
+                .Select(x => x.p);
+            posts = posts.Concat(postsQuery2)
+                .OrderBy(x => Guid.NewGuid())
+                .Take(50)
+                .ToList();
         }
 
-        var unshufledPosts = await posts.ToListAsync();
+        var unshufledPosts = posts.Distinct().ToList();
 
         return Shuffle(unshufledPosts);
     }

@@ -2,13 +2,15 @@
 
 public partial class Like
 {
-    public uint? UserId { get; set; }
+    public uint LikeId { get; set; }
+
+    public uint UserId { get; set; }
 
     public uint PostId { get; set; }
 
     public virtual Post Post { get; set; } = null!;
 
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; } = null!;
 
     public override bool Equals(object? obj)
     {

@@ -6,14 +6,14 @@ using Orbit.Repository.Interfaces;
 namespace Orbit.Repository.Implementations;
 
 /// <summary>
-/// Implementação do repositório de Usuários.
+/// Implementation of the User repository.
 /// </summary>
 public class UserRepository : Repository<User>, IUserRepository
 {
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UserRepository"/> com o contexto de banco de dados fornecido.
+    /// Initializes a new instance of the <see cref="UserRepository"/> class with the provided database context.
     /// </summary>
-    /// <param name="context">O <see cref="ApplicationDbContext"/> a ser fornecido.</param>
+    /// <param name="context">The <see cref="ApplicationDbContext"/> to be provided.</param>
     public UserRepository(ApplicationDbContext context) : base(context)
     {
     }

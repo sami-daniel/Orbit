@@ -6,14 +6,14 @@ using Orbit.Repository.Interfaces;
 namespace Orbit.Repository.Implementations;
 
 /// <summary>
-/// Implementação do repositório de Likes.
+/// Implementation of the Like repository.
 /// </summary>
 public class LikeRepository : Repository<Like>, ILikeRepository
 {
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="LikeRepository"/> com o contexto de banco de dados fornecido.
+    /// Initializes a new instance of the <see cref="LikeRepository"/> class with the provided database context.
     /// </summary>
-    /// <param name="context">O <see cref="ApplicationDbContext"/> a ser fornecido.</param>
+    /// <param name="context">The <see cref="ApplicationDbContext"/> to be provided.</param>
     public LikeRepository(ApplicationDbContext context) : base(context)
     {
     }

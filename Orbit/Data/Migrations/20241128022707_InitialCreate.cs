@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Orbit.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,17 +31,15 @@ namespace Orbit.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb3"),
                     user_description = table.Column<string>(type: "mediumtext", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    user_profile_image_byte_type = table.Column<byte[]>(type: "longblob", nullable: true),
-                    user_profile_banner_image_byte_type = table.Column<byte[]>(type: "longblob", nullable: true),
-                    is_private_profile = table.Column<ulong>(type: "bit(1)", nullable: false)
+                    user_profile_image_byte_type = table.Column<byte[]>(type: "LONGBLOB", nullable: true),
+                    user_profile_banner_image_byte_type = table.Column<byte[]>(type: "LONGBLOB", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PRIMARY", x => x.user_id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb3")
-                .Annotation("Relational:Collation", "utf8mb3_general_ci")
-                .Annotation("Engine", "InnoDB");
+                .Annotation("Relational:Collation", "utf8mb3_general_ci");
 
             migrationBuilder.CreateTable(
                 name: "follower",
@@ -68,8 +66,7 @@ namespace Orbit.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb3")
-                .Annotation("Relational:Collation", "utf8mb3_general_ci")
-                .Annotation("Engine", "InnoDB");
+                .Annotation("Relational:Collation", "utf8mb3_general_ci");
 
             migrationBuilder.CreateTable(
                 name: "post",
@@ -77,13 +74,13 @@ namespace Orbit.Data.Migrations
                 {
                     post_id = table.Column<uint>(type: "int unsigned", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    user_id = table.Column<uint>(type: "int unsigned", nullable: false),
                     post_content = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    post_date = table.Column<DateTime>(type: "datetime", nullable: false),
-                    post_image_byte_type = table.Column<byte[]>(type: "longblob", nullable: true),
-                    post_video_byte_type = table.Column<byte[]>(type: "longblob", nullable: true),
-                    post_likes = table.Column<uint>(type: "int unsigned", nullable: false)
+                    post_date = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(NOW())"),
+                    post_image_byte_type = table.Column<byte[]>(type: "LONGBLOB", nullable: true),
+                    post_video_byte_type = table.Column<byte[]>(type: "LONGBLOB", nullable: true),
+                    post_likes = table.Column<uint>(type: "int unsigned", nullable: false),
+                    user_id = table.Column<uint>(type: "int unsigned", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,18 +93,43 @@ namespace Orbit.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci")
-                .Annotation("Engine", "InnoDB");
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
 
             migrationBuilder.CreateTable(
-                name: "likes",
+                name: "user_preference",
                 columns: table => new
                 {
+                    preference_id = table.Column<uint>(type: "int unsigned", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    preference_name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<uint>(type: "int unsigned", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.preference_id);
+                    table.ForeignKey(
+                        name: "user_preference_ibfk_1",
+                        column: x => x.UserId,
+                        principalTable: "user",
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+
+            migrationBuilder.CreateTable(
+                name: "like",
+                columns: table => new
+                {
+                    like_id = table.Column<uint>(type: "int unsigned", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     user_id = table.Column<uint>(type: "int unsigned", nullable: true),
                     post_id = table.Column<uint>(type: "int unsigned", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PRIMARY", x => x.like_id);
                     table.ForeignKey(
                         name: "like_ibfk_1",
                         column: x => x.user_id,
@@ -122,8 +144,30 @@ namespace Orbit.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci")
-                .Annotation("Mysql:Engine", "InnoDB");
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+
+            migrationBuilder.CreateTable(
+                name: "post_preference",
+                columns: table => new
+                {
+                    preference_id = table.Column<uint>(type: "int unsigned", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    preference_name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PostId = table.Column<uint>(type: "int unsigned", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.preference_id);
+                    table.ForeignKey(
+                        name: "post_preference_ibfk_1",
+                        column: x => x.PostId,
+                        principalTable: "post",
+                        principalColumn: "post_id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
 
             migrationBuilder.CreateIndex(
                 name: "follower_id",
@@ -132,18 +176,23 @@ namespace Orbit.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "like_ibfk_1",
-                table: "likes",
+                table: "like",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "like_ibfk_2",
-                table: "likes",
+                table: "like",
                 column: "post_id");
 
             migrationBuilder.CreateIndex(
                 name: "post_ibfk_1",
                 table: "post",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "post_preference_ibfk_1",
+                table: "post_preference",
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "user_email_UNIQUE",
@@ -156,6 +205,11 @@ namespace Orbit.Data.Migrations
                 table: "user",
                 column: "user_name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "user_preference_ibfk_1",
+                table: "user_preference",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -165,7 +219,13 @@ namespace Orbit.Data.Migrations
                 name: "follower");
 
             migrationBuilder.DropTable(
-                name: "likes");
+                name: "like");
+
+            migrationBuilder.DropTable(
+                name: "post_preference");
+
+            migrationBuilder.DropTable(
+                name: "user_preference");
 
             migrationBuilder.DropTable(
                 name: "post");

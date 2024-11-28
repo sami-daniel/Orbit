@@ -19,6 +19,8 @@ public partial class Post
     public uint UserId { get; set; }
 
     public virtual ICollection<PostPreference> PostPreferences { get; set; } = new List<PostPreference>();
+
+    public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
     
     public override bool Equals(object? obj)
     {

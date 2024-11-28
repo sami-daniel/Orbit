@@ -6,22 +6,22 @@ namespace Orbit.DTOs.Requests;
 
 public class PostAddRequest
 {
-    // Validação para garantir que o nome do proprietário do post não esteja vazio
-    [Required(ErrorMessage = "O nome do post não pode ser vazio.")]
+    // Validation to ensure that the post owner's name is not empty
+    [Required(ErrorMessage = "The post owner name cannot be empty.")]
     public string PostOwnerName { get; set; } = null!;
 
-    // Validação para garantir que o conteúdo do post não seja vazio e tenha comprimento máximo de 65535 caracteres
-    [Required(ErrorMessage = "O post não pode ser vazio.")]
-    [MaxLength(65535, ErrorMessage = "O Post pode conter no máximo {0} caracteres.")]
+    // Validation to ensure that the post content is not empty and has a maximum length of 65535 characters
+    [Required(ErrorMessage = "The post cannot be empty.")]
+    [MaxLength(65535, ErrorMessage = "The post can contain a maximum of {0} characters.")]
     public string PostContent { get; set; } = null!;
 
-    // Validação para arquivos de imagem, se enviados
-    [FileExtensions(Extensions = "jpg,jpeg,png,gif", ErrorMessage = "O arquivo da imagem deve ser no formato JPG, JPEG, PNG ou GIF.")]
-    [MaxFileSize(10 * 1024 * 1024, ErrorMessage = "O arquivo da imagem não pode ultrapassar 10 MB.")]
+    // Validation for image files if uploaded
+    [FileExtensions(Extensions = "jpg,jpeg,png,gif", ErrorMessage = "The image file must be in JPG, JPEG, PNG, or GIF format.")]
+    [MaxFileSize(10 * 1024 * 1024, ErrorMessage = "The image file cannot exceed 10 MB.")]
     public IFormFile? PostImageByteType { get; set; }
 
-    // Validação para arquivos de vídeo, se enviados
-    [FileExtensions(Extensions = "mp4,mkv,avi,webm", ErrorMessage = "O arquivo de vídeo deve ser no formato MP4, MKV, AVI ou WebM.")]
-    [MaxFileSize(50 * 1024 * 1024, ErrorMessage = "O arquivo de vídeo não pode ultrapassar 50 MB.")]
+    // Validation for video files if uploaded
+    [FileExtensions(Extensions = "mp4,mkv,avi,webm", ErrorMessage = "The video file must be in MP4, MKV, AVI, or WebM format.")]
+    [MaxFileSize(50 * 1024 * 1024, ErrorMessage = "The video file cannot exceed 50 MB.")]
     public IFormFile? PostVideoByteType { get; set; }
 }

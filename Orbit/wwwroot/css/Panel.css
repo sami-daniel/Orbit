@@ -381,11 +381,12 @@ body {
 .posts-container{
     width: 100%;
     overflow-y: auto;
+    word-break: break-all;
 }
 
 .posts-container .content{
     width: 100%;
-    padding: 10px;
+    padding: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -396,6 +397,7 @@ body {
 .posts-container .content .post-infos{
     width: 100%;
     color: white;
+    margin-bottom: 15px;
 }
 
 .posts-container .content .post-infos .profile-infos{
@@ -429,13 +431,13 @@ body {
 .posts-container .content .post-infos .post-text{
     color: white;
     font-size: 1.2em;
-    padding: 20px;
 }
 
 .posts-container .content .post-img{
     width: 100%;
     display: grid;
     place-items: center;
+    margin-bottom: 15px;
 }
 
 .posts-container .content .post-img .img-container{
@@ -484,6 +486,9 @@ body {
     color: darkgray;
 }
 
+.red-icon-heart {
+    color: red;
+}
 #closeAsideLeft{
     background-color: transparent;
     display: none;

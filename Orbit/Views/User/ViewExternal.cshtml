@@ -6,7 +6,11 @@
 
 <header class="content-top">
     <div class="btn-back">
-        <a id="back" href="../panel"><i class="fa-solid fa-left-long icons"></i></a>
+        @if(Context.Request.Query.ContainsKey("returnTo"))
+        {
+            var returnTo = Context.Request.Query["returnTo"];        
+            <a id="back" href="@returnTo"><i class="fa-solid fa-left-long icons"></i></a>
+        }
     </div>
     <div class="title-user">
         <span>@Model.UserName</span>

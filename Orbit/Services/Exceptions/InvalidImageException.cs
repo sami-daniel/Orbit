@@ -1,30 +1,30 @@
 ﻿namespace Orbit.Services.Exceptions;
 
 /// <summary>
-/// Exceção lançada quando uma imagem inválida é encontrada.
+/// Exception thrown when an invalid image is encountered.
 /// </summary>
 public class InvalidImageException : Exception
 {
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="InvalidImageException"/>.
+    /// Initializes a new instance of the <see cref="InvalidImageException"/> class.
     /// </summary>
     public InvalidImageException()
     {
     }
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="InvalidImageException"/> com uma mensagem de erro especificada.
+    /// Initializes a new instance of the <see cref="InvalidImageException"/> class with a specified error message.
     /// </summary>
-    /// <param name="message">A mensagem que descreve o erro.</param>
+    /// <param name="message">The message that describes the error.</param>
     public InvalidImageException(string? message) : base(message)
     {
     }
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="InvalidImageException"/> com uma mensagem de erro especificada e uma referência à exceção interna que é a causa da exceção.
+    /// Initializes a new instance of the <see cref="InvalidImageException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
     /// </summary>
-    /// <param name="message">A mensagem que descreve o erro.</param>
-    /// <param name="innerException">A exceção que é a causa da exceção atual.</param>
+    /// <param name="message">The message that describes the error.</param>
+    /// <param name="innerException">The exception that is the cause of the current exception.</param>
     public InvalidImageException(string? message, Exception? innerException) : base(message, innerException)
     {
     }

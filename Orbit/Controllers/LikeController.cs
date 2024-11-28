@@ -2,39 +2,57 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orbit.Data.Contexts;
+using Orbit.DTOs.Responses;
 using Orbit.Extensions;
 using Orbit.Models;
+using Orbit.Services.Implementations;
+using Orbit.Services.Interfaces;
 
 namespace Orbit.Controllers;
 
+// The controller is authorized, meaning only authenticated users can access it.
 [Authorize]
 public class LikeController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    // Declare dependencies for services related to liking posts, user preferences, and posts themselves.
+    private readonly ILikeService _likeService;
+    private readonly IPostService _postService;
+    private readonly IUserPreferenceService _userPreferenceService;
 
-    public LikeController(ApplicationDbContext context)
+    // Constructor to inject the services into the controller.
+    public LikeController(ILikeService likeService, IUserPreferenceService userPreferenceService, IPostService postService)
     {
-        _context = context;
+        _likeService = likeService;  // Initialize the like service.
+        _postService = postService;  // Initialize the post service.
+        _userPreferenceService = userPreferenceService;  // Initialize the user preference service.
     }
 
-    [HttpPost("[controller]/like-post/{postID}")]
+    // HTTP GET action that handles liking and unliking a post by the user.
+    [HttpGet("[controller]/like-post/{postID}")]
     public async Task<IActionResult> LikePost(uint postID)
     {
-        var username = HttpContext.Session.GetObject<User>("User")!.UserName;
-        var users = await _context.Users.Where(f => f.UserName == username).ToListAsync();
-        var posts = await _context.Posts.Where(p => p.UserId == postID).ToListAsync();
-
-        if (!posts.Any())
+        // Get the username of the currently authenticated user from session.
+        var username = HttpContext.Session.GetObject<UserResponse>("User")!.UserName;
+        
+        // Retrieve the post by its ID.
+        var post = await _postService.GetPostByIdAsync(postID);
+        
+        // Get the list of posts the user has liked.
+        var likes = await _likeService.GetLikesFromUser(username);
+        
+        // Check if the user has already liked the post.
+        if (likes.Where(l => l.PostId == postID).Any())
         {
-            return NotFound();
+            // If the user has already liked the post, "unlike" it and return a success message.
+            await _likeService.UnlikePost(postID, username);
+            return Ok("Post unliked");
         }
 
-        await _context.Likes.AddAsync(new Like 
-        {
-            PostId = postID,
-            UserId = users.First().UserId
-        });
+        // If the user has not liked the post, "like" it and update user preferences.
+        await _likeService.LikePost(postID, username);
+        await _userPreferenceService.UpdateUserPreferenceAsync(username, postID);   
 
+        // Return HTTP 204 No Content, indicating the action was successful but no content is returned.
         return NoContent();
     }
 }

@@ -6,7 +6,7 @@ using Orbit.UnitOfWork.Interfaces;
 namespace Orbit.UnitOfWork.Implementations;
 
 /// <summary>
-/// Implementação da unidade de trabalho.
+/// Implementation of the unit of work.
 /// </summary>
 public class UnitOfWork : IUnitOfWork
 {
@@ -14,7 +14,7 @@ public class UnitOfWork : IUnitOfWork
     private bool _disposedValue;
 
     /// <summary>
-    /// Repositório de usuários.
+    /// User repository.
     /// </summary>
     public IUserRepository UserRepository { get; }
 
@@ -27,10 +27,10 @@ public class UnitOfWork : IUnitOfWork
     public IPostPreferenceRepository PostPreferenceRepository { get; }
 
     /// <summary>
-    /// Inicializa uma nova instância da classe <see cref="UnitOfWork"/>.
+    /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
     /// </summary>
-    /// <param name="userRepository">O repositório de usuários.</param>
-    /// <param name="applicationDbContext">O contexto do banco de dados da aplicação.</param>
+    /// <param name="userRepository">The user repository.</param>
+    /// <param name="applicationDbContext">The application's database context.</param>
     public UnitOfWork(IUserRepository userRepository, ILikeRepository likeRepository, IPostRepository postRepository, IPostPreferenceRepository postPreferenceRepository, IUserPreferenceRepository userPreferenceRepository, ApplicationDbContext applicationDbContext)
     {
         UserRepository = userRepository;
@@ -42,18 +42,18 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    /// Salva todas as alterações feitas no contexto.
+    /// Saves all changes made in the context.
     /// </summary>
-    /// <returns>O número de estados de entidades gravados no banco de dados.</returns>
+    /// <returns>The number of entity states written to the database.</returns>
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();
     }
 
     /// <summary>
-    /// Libera os recursos não gerenciados e, opcionalmente, os recursos gerenciados.
+    /// Releases unmanaged resources and, optionally, managed resources.
     /// </summary>
-    /// <param name="disposing">Se verdadeiro, libera os recursos gerenciados.</param>
+    /// <param name="disposing">If true, releases managed resources.</param>
     protected virtual void Dispose(bool disposing)
     {
         if (!_disposedValue)
@@ -68,7 +68,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    /// Libera todos os recursos usados pela instância atual da classe <see cref="UnitOfWork"/>.
+    /// Releases all resources used by the current instance of the <see cref="UnitOfWork"/> class.
     /// </summary>
     public void Dispose()
     {
@@ -77,9 +77,9 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    /// Inicia uma nova transação no contexto do banco de dados.
+    /// Starts a new transaction in the database context.
     /// </summary>
-    /// <returns>Uma instância de <see cref="IDbContextTransaction"/> que representa a transação.</returns>
+    /// <returns>An instance of <see cref="IDbContextTransaction"/> representing the transaction.</returns>
     public async Task<IDbContextTransaction> StartTransactionAsync()
     {
         return await _context.Database.BeginTransactionAsync();

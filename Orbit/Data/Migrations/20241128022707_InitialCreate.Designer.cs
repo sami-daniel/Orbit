@@ -12,8 +12,8 @@ using Orbit.Data.Contexts;
 namespace Orbit.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241118104612_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241128022707_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,13 @@ namespace Orbit.Data.Migrations
 
             modelBuilder.Entity("Orbit.Models.Like", b =>
                 {
+                    b.Property<uint>("LikeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned")
+                        .HasColumnName("like_id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("LikeId"));
+
                     b.Property<uint>("PostId")
                         .HasColumnType("int unsigned")
                         .HasColumnName("post_id");
@@ -59,11 +66,14 @@ namespace Orbit.Data.Migrations
                         .HasColumnType("int unsigned")
                         .HasColumnName("user_id");
 
+                    b.HasKey("LikeId")
+                        .HasName("PRIMARY");
+
                     b.HasIndex(new[] { "UserId" }, "like_ibfk_1");
 
                     b.HasIndex(new[] { "PostId" }, "like_ibfk_2");
 
-                    b.ToTable("likes", (string)null);
+                    b.ToTable("like", (string)null);
                 });
 
             modelBuilder.Entity("Orbit.Models.Post", b =>
@@ -81,11 +91,13 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("post_content");
 
                     b.Property<DateTime>("PostDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("post_date");
+                        .HasColumnName("post_date")
+                        .HasDefaultValueSql("(NOW())");
 
                     b.Property<byte[]>("PostImageByteType")
-                        .HasColumnType("longblob")
+                        .HasColumnType("LONGBLOB")
                         .HasColumnName("post_image_byte_type");
 
                     b.Property<uint>("PostLikes")
@@ -93,7 +105,7 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("post_likes");
 
                     b.Property<byte[]>("PostVideoByteType")
-                        .HasColumnType("longblob")
+                        .HasColumnType("LONGBLOB")
                         .HasColumnName("post_video_byte_type");
 
                     b.Property<uint>("UserId")
@@ -108,6 +120,32 @@ namespace Orbit.Data.Migrations
                     b.ToTable("post", (string)null);
                 });
 
+            modelBuilder.Entity("Orbit.Models.PostPreference", b =>
+                {
+                    b.Property<uint>("PreferenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned")
+                        .HasColumnName("preference_id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("PreferenceId"));
+
+                    b.Property<uint>("PostId")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<string>("PreferenceName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("preference_name");
+
+                    b.HasKey("PreferenceId")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "PostId" }, "post_preference_ibfk_1");
+
+                    b.ToTable("post_preference", (string)null);
+                });
+
             modelBuilder.Entity("Orbit.Models.User", b =>
                 {
                     b.Property<uint>("UserId")
@@ -116,10 +154,6 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("user_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("UserId"));
-
-                    b.Property<ulong>("IsPrivateProfile")
-                        .HasColumnType("bit(1)")
-                        .HasColumnName("is_private_profile");
 
                     b.Property<string>("UserDescription")
                         .HasColumnType("mediumtext")
@@ -154,11 +188,11 @@ namespace Orbit.Data.Migrations
                     MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("UserPassword"), "utf8mb4");
 
                     b.Property<byte[]>("UserProfileBannerImageByteType")
-                        .HasColumnType("longblob")
+                        .HasColumnType("LONGBLOB")
                         .HasColumnName("user_profile_banner_image_byte_type");
 
                     b.Property<byte[]>("UserProfileImageByteType")
-                        .HasColumnType("longblob")
+                        .HasColumnType("LONGBLOB")
                         .HasColumnName("user_profile_image_byte_type");
 
                     b.Property<string>("UserProfileName")
@@ -182,6 +216,32 @@ namespace Orbit.Data.Migrations
                     MySqlEntityTypeBuilderExtensions.UseCollation(b, "utf8mb3_general_ci");
                 });
 
+            modelBuilder.Entity("Orbit.Models.UserPreference", b =>
+                {
+                    b.Property<uint>("PreferenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned")
+                        .HasColumnName("preference_id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("PreferenceId"));
+
+                    b.Property<string>("PreferenceName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("preference_name");
+
+                    b.Property<uint>("UserId")
+                        .HasColumnType("int unsigned");
+
+                    b.HasKey("PreferenceId")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "UserId" }, "user_preference_ibfk_1");
+
+                    b.ToTable("user_preference", (string)null);
+                });
+
             modelBuilder.Entity("Follower", b =>
                 {
                     b.HasOne("Orbit.Models.User", null)
@@ -202,7 +262,7 @@ namespace Orbit.Data.Migrations
             modelBuilder.Entity("Orbit.Models.Like", b =>
                 {
                     b.HasOne("Orbit.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -231,9 +291,42 @@ namespace Orbit.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Orbit.Models.PostPreference", b =>
+                {
+                    b.HasOne("Orbit.Models.Post", "Post")
+                        .WithMany("PostPreferences")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("post_preference_ibfk_1");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("Orbit.Models.UserPreference", b =>
+                {
+                    b.HasOne("Orbit.Models.User", "User")
+                        .WithMany("UserPreferences")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("user_preference_ibfk_1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Orbit.Models.Post", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("PostPreferences");
+                });
+
             modelBuilder.Entity("Orbit.Models.User", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("UserPreferences");
                 });
 #pragma warning restore 612, 618
         }
