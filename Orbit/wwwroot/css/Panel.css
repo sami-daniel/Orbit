@@ -24,10 +24,62 @@ body {
 
 .aside {
     padding: 20px;
-    width: 15%;
+    width: 20%;
     height: calc(99vh - 25px);
     border-right: var(--bordercolor);
     overflow:hidden;
+}
+
+.aside .container-premium{
+    border: 1px solid rgb(179, 179, 179);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.aside .container-premium button{
+    width: 150px;
+    padding: 15px;
+    border-radius: 16px;
+    background-color: #25B0A0;
+    color: white;
+    cursor: pointer;
+    border: 1px solid white;
+}
+
+.aside .follower-profiles{
+    margin-top: 30px;
+    border: 1px solid white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.aside .follower-profiles a{
+    width: fit-content;
+    height: 50px;
+}
+
+.aside .follower-profiles a .user-followed{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.aside .follower-profiles a .user-followed .img-user{
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 100%;
+}
+
+.aside .follower-profiles a .user-followed .img-user img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.aside .follower-profiles a .user-followed .user-name h3{
+    margin-left: 15px;
 }
 
 .post-modal{
@@ -38,6 +90,7 @@ body {
     top: 0;
     left: 0;
     background-color: rgba(0,0,0,0.5);
+    z-index: 9999999999;
 }
 
 .post-modal .post-form{
@@ -192,7 +245,13 @@ body {
     height:20px;
 }
 
-.aside .container-menu .menu a {
+.aside .container-menu .menu a:not(:last-child) {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.aside .container-menu .menu a:last-child{
     display: flex;
     align-items: center;
 }
@@ -282,45 +341,41 @@ body {
 
 
 .container .center-div{
-    width: 70%;
+    width: 60%;
     height: calc(99vh - 20px);
     border-right:var(--bordercolor);
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
-.container .center-div .search-container{
+.container .center-div::-webkit-scrollbar{
+    width: 5px;
+}
+
+.container .center-div::-webkit-scrollbar-thumb{
+    background-color: black;
+}
+
+.container .center-div::-webkit-scrollbar-track{
+    background-color: black;
+}
+
+.container .center-div .buttons-container{
     border-bottom:var(--bordercolor);
     width:100%;
-    height:10vh;
-    padding:20px;
-    display:grid;
-    place-items:center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
 }
 
-.container .center-div .search-container input{
-    width:75%;
-    height:4vh;
-    border-radius: 100px;
-    border:var(--bordercolor);
-    outline:none;
-    font-size:1.1em;
-    color:white;
-    background:transparent;
-    padding:0 50px;
-}
-
-.container .center-div .search-container input::placeholder{
-    color:white;
-}
-
-.container .center-div .search-container img{
-    width:25px;
-    height:25px;
-    position:absolute;
-    left:195px;
-    z-index:1;
+.container .center-div .buttons-container button{
+    background-color: transparent;
+    color: white;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    display: none;
 }
 
 .posts-container{
@@ -331,7 +386,7 @@ body {
 
 .posts-container .content{
     width: 100%;
-    padding: 10px;
+    padding: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -342,6 +397,7 @@ body {
 .posts-container .content .post-infos{
     width: 100%;
     color: white;
+    margin-bottom: 15px;
 }
 
 .posts-container .content .post-infos .profile-infos{
@@ -375,18 +431,18 @@ body {
 .posts-container .content .post-infos .post-text{
     color: white;
     font-size: 1.2em;
-    padding: 20px;
 }
 
 .posts-container .content .post-img{
     width: 100%;
     display: grid;
     place-items: center;
+    margin-bottom: 15px;
 }
 
 .posts-container .content .post-img .img-container{
-    width: 200px;
-    height: 200px;
+    width: auto;
+    height: auto;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -395,6 +451,12 @@ body {
 }
 
 .posts-container .content .post-img .img-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.posts-container .content .post-img .img-container video{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -426,4 +488,94 @@ body {
 
 .red-icon-heart {
     color: red;
+}
+#closeAsideLeft{
+    background-color: transparent;
+    display: none;
+    color: white;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+
+#closeAsideRight{
+    background-color: transparent;
+    display: none;
+    color: white;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+@media screen and (max-width: 600px) {
+    .aside{
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+        background-color: black;
+    }
+
+    .container .center-div{
+        width: 100%;
+    }
+
+    .container .center-div .buttons-container button{
+        display: block;
+    }
+
+    #closeAsideLeft{
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    #closeAsideRight{
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .post-modal .post-form{
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1200px){
+    #closeAsideRight{
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .container .center-div .buttons-container button:last-child{
+        display: block;
+    }
+
+    .left{
+        width: 30%;
+    }
+
+    .right{
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+        background-color: black;
+    }
+
+    .container .center-div{
+        width: 70%;
+    }
+
 }
