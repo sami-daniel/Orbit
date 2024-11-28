@@ -71,6 +71,9 @@
                     @Model.UserDescription
                 </textarea>
             </div>
+            <div class="description-text">
+                <input type="file" name="curriculum" placeholder="curriculum" accept=".pdf">
+            </div>
             <div class="submit-container">
                 <input type="submit" id="submit-edit" placeholder="Submit" />
             </div>
@@ -82,7 +85,9 @@
     <div class="navigation-bar">
         <div class="content-nav">Publications</div>
         <div class="content-nav">Projects</div>
-        <div class="content-nav">Curriculum</div>
+        <div class="content-nav">
+            <a href="user/get-curriculum-pdf/@Model.UserName">Curriculum</a>
+        </div>
         <div class="content-nav">Media</div>
     </div>
 </main>
