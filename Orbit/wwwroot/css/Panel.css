@@ -54,7 +54,16 @@ body {
     border-radius: 10px;
 }
 
-.aside .follower-profiles a{
+.none {
+    display: none
+}
+
+#search-input:empty #ul-users
+{
+    display: none;
+}
+
+.aside .follower-profiles a {
     width: fit-content;
     height: 50px;
 }
@@ -631,4 +640,8 @@ body {
         width: 70%;
     }
 
+}
+
+.li-user {
+    padding: 10px;
 }

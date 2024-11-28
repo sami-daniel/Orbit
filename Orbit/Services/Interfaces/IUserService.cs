@@ -20,7 +20,7 @@ public interface IUserService
     /// Retrieves all users.
     /// </summary>
     /// <returns>A task representing the asynchronous operation. The task contains a list of all users.</returns>
-    Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "");
+    Task<IEnumerable<User>> GetAllUsersAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "");
 
     /// <summary>
     /// Adds a new user to the system.
