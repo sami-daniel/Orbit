@@ -8,9 +8,13 @@
 }
 <div id="contact_container_responsive">
     <button id="close"><i class="fa-solid fa-xmark"></i></button>
-    <a href="" class="btn-back">
-        <img src="~/images/arrow-left-solid.svg" alt="">
-    </a>
+    @if(Context.Request.Query.ContainsKey("returnTo"))
+    {
+        var returnTo = Context.Request.Query["returnTo"];    
+        <a href="" class="btn-back">
+            <img src="~/images/arrow-left-solid.svg" alt="">
+        </a>
+    }
     <h2>Contacts</h2>
     @foreach (var user in contacts)
     {
@@ -27,9 +31,13 @@
 </div>
 <main class="container">
     <div class="contacts-container">
-        <a href="" class="btn-back">
-            <img src="~/images/arrow-left-solid.svg" alt="">
-        </a>
+        @if(Context.Request.Query.ContainsKey("returnTo"))
+        {
+            var returnTo = Context.Request.Query["returnTo"];     
+            <a href="@returnTo" class="btn-back">
+                <img src="~/images/arrow-left-solid.svg" alt="">
+            </a>
+        }
         <h2>Contacts</h2>
         @foreach (var user in contacts)
         {
@@ -58,7 +66,13 @@
                 <div class="profile-name"><span>@Model.Host.UserName</span></div>
             </header>
             <div class="contacts-container-responsive">
-                <a href="" class="btn-back"><img src="~/images/arrow-left-solid.svg" alt=""></a>
+                @if(Context.Request.Query.ContainsKey("returnTo"))
+                    {
+                        var returnTo = Context.Request.Query["returnTo"];    
+                        <a href="@returnTo" class="btn-back">
+                            <img src="~/images/arrow-left-solid.svg" alt="">
+                        </a>
+                    }
                 <h2>Contacts</h2>
                     @foreach (var user in contacts)
                     {
