@@ -85,6 +85,8 @@ internal class Program
 
         builder.Services.AddScoped<ILikeService, LikeService>();
 
+        builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
+
         builder.Services.AddSignalR();
 
         var app = builder.Build();

@@ -204,16 +204,16 @@
             e.preventDefault();
             let element = $(this);
             let url = $(this).attr("href");
-            $.get(url, function (data) {
-                if (data === "Post unliked")
-                {
-                    let heart = element.find(".fi-br-heart");
-                    heart.removeClass("red-icon-heart");
-                    return;
-                }
-                let heart = element.find(".fi-br-heart");
+            let heart = element.find(".fi-br-heart");
+            if (heart.hasClass('red-icon-heart'))
+            {
+                heart.removeClass("red-icon-heart");
+            }
+            else
+            {
                 heart.addClass("red-icon-heart");
-            });
+            }
+            $.get(url, function () { });
         });
     </script>
 }

@@ -15,11 +15,13 @@ public class LikeController : Controller
 {
     private readonly ILikeService _likeService;
     private readonly IPostService _postService;
+    private readonly IUserPreferenceService _userPreferenceService;
 
-    public LikeController(ILikeService likeService, IPostService postService)
+    public LikeController(ILikeService likeService, IUserPreferenceService userPreferenceService, IPostService postService)
     {
         _likeService = likeService;
         _postService = postService;
+        _userPreferenceService = userPreferenceService;
     }
 
     [HttpGet("[controller]/like-post/{postID}")]
@@ -37,6 +39,7 @@ public class LikeController : Controller
         }
 
         await _likeService.LikePost(postID, username);
+        await _userPreferenceService.UpdateUserPreferenceAsync(username, postID);   
 
         return NoContent();
     }
