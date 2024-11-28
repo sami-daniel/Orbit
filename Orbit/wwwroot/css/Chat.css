@@ -1,33 +1,39 @@
-﻿* {
+﻿/* Reset default margins, padding, list styles, and text decoration for all elements. */
+* {
   margin: 0;
   padding: 0;
   list-style: none;
   text-decoration: none;
-  color: white;
-  font-family: "Josefin Sans", sans-serif;
-  box-sizing: border-box;
+  color: white; /* Set text color to white */
+  font-family: "Josefin Sans", sans-serif; /* Set the font */
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
 }
 
+/* Set background color of the body and height to cover nearly the full viewport */
 body {
   background-color: black;
   height: 99vh;
 }
 
+/* Style for the responsive contact container, initially hidden */
 #contact_container_responsive {
   display: none;
   width: 100%;
   height: calc(99vh + 5px);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color); /* Use a custom border color */
 }
 
+/* Hide the contacts button by default */
 #btn_contacts {
   display: none;
 }
 
-#close{
-    display: none;
+/* Hide the close button by default */
+#close {
+  display: none;
 }
 
+/* Style the heading inside the contact container */
 #contact_container_responsive h2 {
   display: inline-flex;
   justify-content: center;
@@ -38,6 +44,7 @@ body {
   height: 60px !important;
 }
 
+/* Styling for a warning message */
 .Warning_user {
   position: absolute;
   transform: translate(-50%, 50%);
@@ -45,11 +52,13 @@ body {
   left: 65%;
 }
 
+/* Custom CSS variables for border and active colors */
 :root {
-  --border-color: rgba(255, 255, 255, 0.2);
-  --active-color: rgb(255, 255, 255, 0.9);
+  --border-color: rgba(255, 255, 255, 0.2); /* Light border color */
+  --active-color: rgb(255, 255, 255, 0.9); /* Light active color */
 }
 
+/* Container styles for the entire layout */
 .container {
   width: 100%;
   height: 100%;
@@ -58,12 +67,14 @@ body {
   align-items: center;
 }
 
+/* Style for the contacts container */
 .contacts-container {
   width: 30%;
   height: calc(99vh + 5px);
   border: 1px solid var(--border-color);
 }
 
+/* Style for the messages container */
 .messages-container {
   width: 70%;
   height: calc(99vh + 5px);
@@ -71,6 +82,7 @@ body {
   overflow: hidden;
 }
 
+/* Heading style for contact container */
 .contacts-container h2 {
   display: inline-flex;
   justify-content: center;
@@ -81,10 +93,12 @@ body {
   height: 60px !important;
 }
 
+/* Active button color change for contact user */
 .contacts-container .contact-user.active-btn .profile-name {
   color: black;
 }
 
+/* Style for contact messages */
 .contact-message {
   text-align: left;
   width: 100%;
@@ -92,6 +106,7 @@ body {
   margin-top: 2%;
 }
 
+/* Style for individual contact users in the list */
 .contact-user {
   width: 100%;
   height: 70px !important;
@@ -100,23 +115,27 @@ body {
   align-items: center;
   padding: 10px;
 }
+
+/* Style for profile names inside contact user */
 .profile-name {
   text-align: left;
 }
 
+/* Style for profile images in contact user */
 .profile-img {
   padding: 10px;
   overflow: hidden;
-  border-radius: 50%;
+  border-radius: 50%; /* Circular images */
 }
 
 .profile-img img {
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 50%; /* Circular image */
 }
 
+/* Style for info container */
 .info-container {
   width: 100%;
   height: 70px !important;
@@ -126,22 +145,26 @@ body {
   padding: 20px;
 }
 
+/* Space out the spans inside the info container */
 .info-container span {
   padding-left: 10px;
 }
 
+/* Styling for the messages area */
 .messages {
   width: 100%;
   height: calc(90% - 20px);
   border: 1px solid var(--border-color);
   padding: 50px;
-  overflow-y: auto;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
+/* Style for footer */
 footer {
   width: 100%;
 }
 
+/* Input container styling */
 .input-container {
   width: 100%;
   display: flex;
@@ -149,6 +172,7 @@ footer {
   align-items: center;
 }
 
+/* Input field and button styling */
 .input-container form {
   display: flex;
 }
@@ -164,6 +188,7 @@ footer {
   padding-left: 20px;
 }
 
+/* Button inside input container */
 .input-container button {
   color: white;
   background: transparent;
@@ -179,11 +204,13 @@ footer {
   cursor: pointer;
 }
 
+/* Button hover effect */
 .input-container button:hover {
   background-color: white;
   color: black;
 }
 
+/* Styling for user messages */
 .user-message {
   width: auto;
   display: block;
@@ -191,41 +218,49 @@ footer {
   position: relative;
 }
 
+/* Styling for contact messages */
 .contact-message {
   width: auto;
   display: block;
   position: relative;
 }
 
+/* Style for text inside user messages */
 .user-message span,
 .user-message strong {
   display: block;
   word-break: break-all;
 }
 
+/* Style for text inside contact messages */
 .contact-message span,
 .contact-message strong {
   display: block;
 }
 
+/* Active button styling */
 .active-btn {
   background-color: var(--active-color);
   color: black;
   transition: background-color 0.5s;
 }
 
+/* Active button style for contact user */
 .contact-user.active-btn {
   background-color: var(--active-color);
 }
 
+/* Icon style inside input button */
 .input-container button i {
   font-size: 1.2em;
 }
 
+/* Hover effect for icon in button */
 .input-container button:hover i {
   color: black;
 }
 
+/* Custom scrollbar for messages */
 .messages::-webkit-scrollbar {
   width: 3px;
 }
@@ -239,15 +274,20 @@ footer {
   border-radius: 10px;
 }
 
+/* Responsive styles for smaller screens */
 @media screen and (max-width: 650px) {
+  /* Hide contacts container on small screens */
   .contacts-container {
     display: none;
   }
 
+  /* Make messages container full width */
   .messages-container {
     width: 100%;
+    display: block;
   }
 
+  /* Style for warning message on small screens */
   .Warning_user {
     position: absolute;
     transform: translate(-50%, 50%);
@@ -255,10 +295,12 @@ footer {
     left: 50%;
   }
 
+  /* Adjust padding for messages area */
   .messages {
     padding: 25px;
   }
 
+  /* Show contacts button */
   #btn_contacts {
     display: block;
     background: transparent;
@@ -267,13 +309,15 @@ footer {
     margin-right: 10px;
   }
 
-  #close{
+  /* Styling for close button */
+  #close {
     background: transparent;
     border: none;
     outline: none;
     font-size: 20px;
   }
 
+  /* Styling for the active contact container */
   #contact_container_responsive.active {
     display: block;
     width: 100%;
@@ -285,11 +329,20 @@ footer {
     background-color: black;
   }
 
-  #contact_container_responsive.active #close{
+  /* Show close button when contact container is active */
+  #contact_container_responsive.active #close {
     display: block;
   }
 
-  .user-message span{
+  /* Prevent word breaking for user messages */
+  .user-message span {
+    word-break: break-all;
+  }
+  
+  /* Prevent word breaking for contact messages */
+  .contact-message span,
+  .contact-message strong {
+    display: block;
     word-break: break-all;
   }
 }

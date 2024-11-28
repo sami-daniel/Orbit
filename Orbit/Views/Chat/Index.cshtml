@@ -38,9 +38,7 @@
             </a>
         }
     </div>
-
     <div class="messages-container">
-        
         @if (Model.Guest == null)
         {
             <header class="info-container">
@@ -52,11 +50,26 @@
                 <div class="profile-name"><span>@Model.Host.UserName</span></div>
             </header>
             <strong class="Warning_user">
-                Select a user to start a chat!
+                <div>
+                    <h2>Contacts</h2>
+                    @foreach (var user in contacts)
+                    {
+                        <a href="@Url.Action($"{user.UserName}")">
+                            <div class="contact-user">
+                                <div class="profile-img">
+                                    <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
+                                        alt="Profile Image" />
+                                </div>
+                                <div class="profile-name">@user.UserProfileName</div>
+                            </div>
+                        </a>
+                    }
+                </div>
             </strong>
         }
         else
         {
+
             <header class="info-container">
                 <button id="btn_contacts"><i class="fa-solid fa-bars"></i></button>
                 <div class="profile-img">
