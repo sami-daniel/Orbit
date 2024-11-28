@@ -191,16 +191,6 @@ public class UserController : Controller
         usr.UserProfileName = user.UserProfileName;
         usr.UserName = user.UserName;
         usr.UserDescription = user.UserDescription;
-        
-        if (curriculum.Length > 0)
-        {
-            using (var stream = new MemoryStream())
-            {
-                await curriculum.CopyToAsync(stream);
-                usr.UserCurriculumPDFByteType = stream.ToArray();
-            }
-        }
-
         await context.SaveChangesAsync();
 
         // Update the user's claims for authentication
@@ -272,18 +262,5 @@ public class UserController : Controller
         }
 
         return BadRequest(profileImage);
-    }
-
-    [HttpGet("[controller]/get-curriculum-pdf/{username}")]
-    public async Task<IActionResult> GetCurriculumPDF([FromRoute] string username)
-    {
-        var user = await _userService.GetUserByIdentifierAsync(username);
-
-        if (user == null || user.UserCurriculumPDFByteType == null || user.UserCurriculumPDFByteType.Length == 0)
-        {
-            return NotFound();
-        }
-
-        return File(user.UserCurriculumPDFByteType, "application/pdf");
     }
 }

@@ -18,8 +18,6 @@ public partial class User
 
     public byte[]? UserProfileBannerImageByteType { get; set; }
 
-    public byte[]? UserCurriculumPDFByteType { get;set; }
-
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual ICollection<User> Followers { get; set; } = new List<User>();

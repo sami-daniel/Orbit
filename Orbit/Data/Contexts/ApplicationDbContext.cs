@@ -119,9 +119,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.UserProfileName)
                 .HasMaxLength(255)
                 .HasColumnName("user_profile_name");
-            entity.Property(e => e.UserCurriculumPDFByteType)
-                .HasColumnType("LONGBLOB")
-                .HasColumnName("user_pdf_curriculum_byte_type");
 
             // Configure many-to-many relationship for Followers
             entity.HasMany(d => d.Followers).WithMany(p => p.Users)
