@@ -36,7 +36,6 @@
                         </h3>
                     </label>
                     <input type="file" name="imageOrVideo" id="imageOrVideo" accept=".jpeg,.png,.jpg,.gif,.mkv,.avi,.webm,.mp4">
-    using AutoMapper;
                 </div>
                 <input type="hidden" asp-for="@postAddRequest.PostOwnerName" value="@Model.UserName">
                 <div class="btn-submit">
@@ -167,7 +166,7 @@
         <div class="follower-profiles">
             <h3>Followed Users</h1>
             @foreach(var follower in followers.First().Followers){
-                <a href="user/@follower.UserName">
+                <a href="user/@follower.UserName?returnTo=@Url.PageLink()">
                 <div class="user-followed">
                     <div class="img-user">
                         <img src="@Url.Action("get-profile-image", "user", new { userName = follower.UserName })" alt="">

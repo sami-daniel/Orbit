@@ -145,7 +145,7 @@ public class UserService : IUserService
                 {
                     await transaction.RollbackAsync();
 
-                    throw new UserAlredyExistsException("O usuário com esse identificador já existe!");
+                    throw new UserAlredyExistsException("O usuário com esse identificador já está em uso!");
                 }
             }
         }
