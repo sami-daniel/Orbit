@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orbit.Data.Contexts;
 
@@ -11,9 +12,11 @@ using Orbit.Data.Contexts;
 namespace Orbit.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127160712_ChangeCurriculumDataTypeToLongblob")]
+    partial class ChangeCurriculumDataTypeToLongblob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,13 +51,6 @@ namespace Orbit.Data.Migrations
 
             modelBuilder.Entity("Orbit.Models.Like", b =>
                 {
-                    b.Property<uint>("LikeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned")
-                        .HasColumnName("like_id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("LikeId"));
-
                     b.Property<uint>("PostId")
                         .HasColumnType("int unsigned")
                         .HasColumnName("post_id");
@@ -63,14 +59,11 @@ namespace Orbit.Data.Migrations
                         .HasColumnType("int unsigned")
                         .HasColumnName("user_id");
 
-                    b.HasKey("LikeId")
-                        .HasName("PRIMARY");
-
                     b.HasIndex(new[] { "UserId" }, "like_ibfk_1");
 
                     b.HasIndex(new[] { "PostId" }, "like_ibfk_2");
 
-                    b.ToTable("like", (string)null);
+                    b.ToTable("likes", (string)null);
                 });
 
             modelBuilder.Entity("Orbit.Models.Post", b =>
@@ -88,13 +81,11 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("post_content");
 
                     b.Property<DateTime>("PostDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("post_date")
-                        .HasDefaultValueSql("(NOW())");
+                        .HasColumnName("post_date");
 
                     b.Property<byte[]>("PostImageByteType")
-                        .HasColumnType("LONGBLOB")
+                        .HasColumnType("longblob")
                         .HasColumnName("post_image_byte_type");
 
                     b.Property<uint>("PostLikes")
@@ -102,7 +93,7 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("post_likes");
 
                     b.Property<byte[]>("PostVideoByteType")
-                        .HasColumnType("LONGBLOB")
+                        .HasColumnType("longblob")
                         .HasColumnName("post_video_byte_type");
 
                     b.Property<uint>("UserId")
@@ -189,11 +180,11 @@ namespace Orbit.Data.Migrations
                     MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("UserPassword"), "utf8mb4");
 
                     b.Property<byte[]>("UserProfileBannerImageByteType")
-                        .HasColumnType("LONGBLOB")
+                        .HasColumnType("longblob")
                         .HasColumnName("user_profile_banner_image_byte_type");
 
                     b.Property<byte[]>("UserProfileImageByteType")
-                        .HasColumnType("LONGBLOB")
+                        .HasColumnType("longblob")
                         .HasColumnName("user_profile_image_byte_type");
 
                     b.Property<string>("UserProfileName")
@@ -263,7 +254,7 @@ namespace Orbit.Data.Migrations
             modelBuilder.Entity("Orbit.Models.Like", b =>
                 {
                     b.HasOne("Orbit.Models.Post", "Post")
-                        .WithMany("Likes")
+                        .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -318,8 +309,6 @@ namespace Orbit.Data.Migrations
 
             modelBuilder.Entity("Orbit.Models.Post", b =>
                 {
-                    b.Navigation("Likes");
-
                     b.Navigation("PostPreferences");
                 });
 
