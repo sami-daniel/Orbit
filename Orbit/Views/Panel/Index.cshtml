@@ -1,5 +1,6 @@
 @using Orbit.Data.Contexts
 @model UserResponse
+@inject IUserService userService
 @inject IPostService postService
 @inject ApplicationDbContext context
 
@@ -7,6 +8,7 @@
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
     var postAddRequest = new PostAddRequest();
     var posts = await postService.GetPostsRandomizedByUserPreferenceAsync(Model.UserName);
+    var followers = await userService.GetAllUserAsync(u => u.UserName == Model.UserName, includeProperties: "Followers");
 }
 
 <div class="container">
@@ -43,7 +45,8 @@
             </form>
         </div>
     </div>
-    <aside class="aside left">
+    <aside class="aside left" id="asideLeft">
+        <button id="closeAsideLeft"><i class="fa-solid fa-xmark"></i></button>
         <div class="logo">
             <h2>OrbIt</h2>
         </div>
@@ -99,8 +102,9 @@
     
     <main class="center-div">
         <div class="search-container">
-            <img src="~/images/search.png" alt="Icon Search" />
+            <button id="showAsideLeft"><i class="fa-solid fa-angle-right"></i></button>
             <input type="text" placeholder="Search" />
+            <button id="showAsideRight"><i class="fa-solid fa-angle-left"></i></button>
         </div>
         @foreach (var post in posts)
         {
@@ -129,7 +133,7 @@
                         @if(post.PostVideoByteType != null)
                         {
                             <div class="img-container">
-                                <video src="post/get-post-video/@post.PostId"></video>
+                                <video src="post/get-post-video/@post.PostId" class="video-content"></video>
                             </div>
                         }
                     </div>
@@ -142,7 +146,31 @@
             </div>
         }
     </main>
-    <aside></aside>
+    <aside class="aside right" id="asideRight">
+        <button id="closeAsideRight"><i class="fa-solid fa-xmark"></i></button>
+        <div class="container-premium">
+            <h3>OrbIt Premium</h3>
+            <p>Com a orbit premium, você pode fazer amizades com mais segurança.</p>
+            <button type="button">
+                Seja Premium
+            </button>
+        </div>
+        <div class="follower-profiles">
+            <h3>Followed Users</h1>
+            @foreach(var follower in followers.First().Followers){
+                <a href="user/@follower.UserName">
+                <div class="user-followed">
+                    <div class="img-user">
+                        <img src="@Url.Action("get-profile-image", "user", new { userName = follower.UserName })" alt="">
+                    </div>
+                    <div class="user-name">
+                        <h3>@follower.UserName</h3>
+                    </div>
+                </div>
+            </a>
+            }
+        </div>
+    </aside>
     <footer></footer>
 </div>
 
