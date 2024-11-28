@@ -48,6 +48,13 @@ namespace Orbit.Data.Migrations
 
             modelBuilder.Entity("Orbit.Models.Like", b =>
                 {
+                    b.Property<uint>("LikeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned")
+                        .HasColumnName("like_id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("LikeId"));
+
                     b.Property<uint>("PostId")
                         .HasColumnType("int unsigned")
                         .HasColumnName("post_id");
@@ -56,11 +63,14 @@ namespace Orbit.Data.Migrations
                         .HasColumnType("int unsigned")
                         .HasColumnName("user_id");
 
+                    b.HasKey("LikeId")
+                        .HasName("PRIMARY");
+
                     b.HasIndex(new[] { "UserId" }, "like_ibfk_1");
 
                     b.HasIndex(new[] { "PostId" }, "like_ibfk_2");
 
-                    b.ToTable("likes", (string)null);
+                    b.ToTable("like", (string)null);
                 });
 
             modelBuilder.Entity("Orbit.Models.Post", b =>
@@ -249,7 +259,7 @@ namespace Orbit.Data.Migrations
             modelBuilder.Entity("Orbit.Models.Like", b =>
                 {
                     b.HasOne("Orbit.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -304,6 +314,8 @@ namespace Orbit.Data.Migrations
 
             modelBuilder.Entity("Orbit.Models.Post", b =>
                 {
+                    b.Navigation("Likes");
+
                     b.Navigation("PostPreferences");
                 });
 

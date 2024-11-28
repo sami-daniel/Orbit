@@ -1,12 +1,13 @@
 @using Orbit.Data.Contexts
 @model UserResponse
 @inject IPostService postService
-@inject ApplicationDbContext context
+@inject ILikeService likeService
 
 @{
     Layout = "~/Views/Shared/_LayoutRenderBase.cshtml";
     var postAddRequest = new PostAddRequest();
     var posts = await postService.GetPostsRandomizedByUserPreferenceAsync(Model.UserName);
+    var likes = await likeService.GetLikesFromUser(Model.UserName);
 }
 
 <div class="container">
@@ -33,6 +34,7 @@
                         </h3>
                     </label>
                     <input type="file" name="imageOrVideo" id="imageOrVideo" accept=".jpeg,.png,.jpg,.gif,.mkv,.avi,.webm,.mp4">
+    using AutoMapper;
                 </div>
                 <input type="hidden" asp-for="@postAddRequest.PostOwnerName" value="@Model.UserName">
                 <div class="btn-submit">
@@ -112,7 +114,7 @@
                                 <img src="@Url.Action("get-profile-image", "user", new { userName = Model.UserName })" alt="Profile Image" />
                             </div>
                             <div class="username-profile">
-                                <span>@post.User.UserName</span>
+                                <a href="user/@post.User.UserName?returnTo=@Url.PageLink()"><span>@post.User.UserName</span></a>
                             </div>
                         </div>
                         <div class="post-text">
@@ -134,7 +136,16 @@
                         }
                     </div>
                     <div class="post-interactions">
-                        <i class="fi fi-br-heart icons"></i>
+                        <a class="like_post" href="like/like-post/@post.PostId">
+                            @if(likes.Any(x => x.PostId == post.PostId))
+                            {
+                                <i class="fi fi-br-heart red-icon-heart icons"></i>
+                            }
+                            else
+                            {
+                                <i class="fi fi-br-heart icons"></i>
+                            }
+                        </a>
                         <i class="fi fi-br-comment-alt-middle icons"></i>
                         <i class="fi fi-bs-paper-plane icons"></i>
                     </div>
@@ -162,4 +173,21 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
     <script src="~/js/panel.js" asp-append-version="true"></script>
+    <script>
+        $(".like_post").click(function (e) {
+            e.preventDefault();
+            let element = $(this);
+            let url = $(this).attr("href");
+            $.get(url, function (data) {
+                if (data === "Post unliked")
+                {
+                    let heart = element.find(".fi-br-heart");
+                    heart.removeClass("red-icon-heart");
+                    return;
+                }
+                let heart = element.find(".fi-br-heart");
+                heart.addClass("red-icon-heart");
+            });
+        });
+    </script>
 }

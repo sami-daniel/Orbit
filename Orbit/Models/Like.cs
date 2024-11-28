@@ -2,6 +2,8 @@
 
 public partial class Like
 {
+    public uint LikeId { get; set; }
+
     public uint? UserId { get; set; }
 
     public uint PostId { get; set; }

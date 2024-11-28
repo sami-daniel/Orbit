@@ -30,9 +30,9 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Like>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("likes");
+            entity.HasKey(e => e.LikeId).HasName("PRIMARY");
+            entity.Property(e => e.LikeId).HasColumnName("like_id");
+            entity.ToTable("like");
 
             entity.HasIndex(e => e.UserId, "like_ibfk_1");
 
@@ -49,6 +49,8 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("like_ibfk_1");
+            
+            entity.HasOne(d => d.Post).WithMany(p => p.Likes);
         });
 
         modelBuilder.Entity<Post>(entity =>
@@ -75,6 +77,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("post_ibfk_1");
             
             entity.HasMany(d => d.PostPreferences).WithOne(p => p.Post);
+            entity.HasMany(d => d.Likes).WithOne(p => p.Post);
         });
 
         modelBuilder.Entity<User>(entity =>

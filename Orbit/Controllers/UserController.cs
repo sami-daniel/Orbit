@@ -51,11 +51,11 @@ public class UserController : Controller
 
     [HttpGet]
     [Route("[controller]/{username}")]
-    public async Task<IActionResult> ViewExternal(string username)
+    public async Task<IActionResult> ViewExternal(string username, string returnTo)
     {
         if (username == HttpContext.Session.GetObject<UserResponse>("User")!.UserName)
         {
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("Index", "User", new { returnTo});
         }
 
         var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers,Users");

@@ -53,7 +53,8 @@ public class PostService : IPostService
     
 
         await _unitOfWork.PostRepository.InsertAsync(post);
-        
+        await _unitOfWork.CompleteAsync();
+
         foreach (var hashtag in hashtags)
         {
             var postPreference = new PostPreference
@@ -62,9 +63,9 @@ public class PostService : IPostService
                 PreferenceName = hashtag,
             };
             await _unitOfWork.PostPreferenceRepository.InsertAsync(postPreference);
+            await _unitOfWork.CompleteAsync();
         }
         
-        await _unitOfWork.CompleteAsync();
     }
 
     public async Task<IEnumerable<Post>> GetPaginatedPostAsync(int skip, int take)
@@ -78,7 +79,7 @@ public class PostService : IPostService
 
     public async Task<Post?> GetPostByIdAsync(uint postId)
     {
-        var post = await _unitOfWork.PostRepository.GetAsync(p => p.PostId == postId);
+        var post = await _unitOfWork.PostRepository.GetAsync(p => p.PostId == postId, includeProperties: "User,Likes");
 
         if (post == null)
         {
