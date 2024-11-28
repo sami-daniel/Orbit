@@ -27,7 +27,7 @@ public class ChatController : Controller
         var hostname = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value!;
 
         // Retrieve the host user details including their followers and followed users.
-        var hosts = await _userService.GetAllUserAsync(u => u.UserName == hostname, includeProperties: "Followers,Users");
+        var hosts = await _userService.GetAllUsersAsync(u => u.UserName == hostname, includeProperties: "Followers,Users");
         var host = hosts.First();
 
         // If no guestname is provided, return a chat view with just the host.
@@ -40,7 +40,7 @@ public class ChatController : Controller
         }
 
         // Retrieve the guest user, making sure they are either a follower or followed by the host.
-        var participants = await _userService.GetAllUserAsync(u => u.UserName == guestname && (u.Followers.Contains(host) || u.Users.Contains(host)));
+        var participants = await _userService.GetAllUsersAsync(u => u.UserName == guestname && (u.Followers.Contains(host) || u.Users.Contains(host)));
 
         // If no valid participants (i.e., no guests meeting the conditions), return a NotFound result.
         if (!participants.Any())

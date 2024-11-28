@@ -31,7 +31,7 @@ public class InteractionController : Controller
         }
 
         // Fetch user data (including followers) from the database.
-        var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers");
+        var users = await _userService.GetAllUsersAsync(u => u.UserName == username, includeProperties: "Followers");
 
         // Get the first user (in case of only one match).
         var user = users.First();
@@ -57,7 +57,7 @@ public class InteractionController : Controller
         }
 
         // Fetch user data (including followed accounts) from the database.
-        var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Users");
+        var users = await _userService.GetAllUsersAsync(u => u.UserName == username, includeProperties: "Users");
 
         // Get the first user (in case of only one match).
         var user = users.First();

@@ -30,6 +30,23 @@ public class UserController : Controller
         _hubContext = hubContext;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Search([FromQuery] string username)
+    {
+        if (string.IsNullOrEmpty(username))
+        {
+            return BadRequest("Query não pode ser vazia!");
+        }
+
+        string normalizeQuery = username.ToLower().Trim();
+
+        IEnumerable<User> profiles = await _userService.GetAllUsersAsync();
+        profiles = profiles.Where(u => u.UserName.Contains(username));
+        var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserProfileImageByteType });
+
+        return Ok(matchProfiles);
+    }
+
     // GET: [controller] - Displays the user profile page
     [HttpGet("[controller]")]
     public async Task<IActionResult> Index()
@@ -41,7 +58,7 @@ public class UserController : Controller
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
         
         // Get the user from the database by email
-        var user = await _userService.GetAllUserAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
+        var user = await _userService.GetAllUsersAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
         
         // If user is not found, sign out and redirect to login page
         if (user.FirstOrDefault() == null)
@@ -74,7 +91,7 @@ public class UserController : Controller
         }
 
         // Retrieve the requested user from the database
-        var users = await _userService.GetAllUserAsync(u => u.UserName == username, includeProperties: "Followers,Users");
+        var users = await _userService.GetAllUsersAsync(u => u.UserName == username, includeProperties: "Followers,Users");
         var user = users.FirstOrDefault();
 
         // If the user is not found, return a 404 error
@@ -85,7 +102,7 @@ public class UserController : Controller
 
         // Get the current logged-in user's information
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
-        var usersAL = await _userService.GetAllUserAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
+        var usersAL = await _userService.GetAllUsersAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
         var userAl = usersAL.First();
 
         ViewBag.ViewExternalUsernameFollower = userAl!.UserName;
@@ -137,7 +154,7 @@ public class UserController : Controller
         }
 
         // Retrieve the user being unfollowed and the follower user
-        var userBeingUnfollowed = await _userService.GetAllUserAsync(u => u.UserName == id, includeProperties: "Followers");
+        var userBeingUnfollowed = await _userService.GetAllUsersAsync(u => u.UserName == id, includeProperties: "Followers");
         var userFollower = await _userService.GetUserByIdentifierAsync(followerUserName);
 
         // Remove the follower from the user
