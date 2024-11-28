@@ -65,9 +65,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("post_date")
                 .HasDefaultValueSql("(NOW())");
-            entity.Property(e => e.PostImageByteType).HasColumnName("post_image_byte_type");
+            entity.Property(e => e.PostImageByteType).HasColumnName("post_image_byte_type").HasColumnType("LONGBLOB");
             entity.Property(e => e.PostLikes).HasColumnName("post_likes");
-            entity.Property(e => e.PostVideoByteType).HasColumnName("post_video_byte_type");
+            entity.Property(e => e.PostVideoByteType).HasColumnName("post_video_byte_type").HasColumnType("LONGBLOB");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.Posts)
@@ -91,7 +91,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.UserName, "user_name_UNIQUE").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.UserProfileBannerImageByteType).HasColumnName("user_profile_banner_image_byte_type");
+            entity.Property(e => e.UserProfileBannerImageByteType).HasColumnName("user_profile_banner_image_byte_type").HasColumnType("LONGBLOB");
             entity.Property(e => e.UserDescription)
                 .HasColumnType("mediumtext")
                 .HasColumnName("user_description")
@@ -101,7 +101,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("user_email")
                 .UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-            entity.Property(e => e.UserProfileImageByteType).HasColumnName("user_profile_image_byte_type");
+            entity.Property(e => e.UserProfileImageByteType).HasColumnName("user_profile_image_byte_type").HasColumnType("LONGBLOB");
             entity.Property(e => e.UserName)
                 .HasColumnName("user_name")
                 .UseCollation("utf8mb4_0900_ai_ci")

@@ -95,11 +95,8 @@
                     </li>
             </ul>
         </div>
-
     </aside>
-
-
-
+    
     <main class="center-div">
         <div class="search-container">
             <img src="~/images/search.png" alt="Icon Search" />
@@ -123,13 +120,13 @@
                         </div>
                     </div>
                     <div class="post-img">
-                        @if(post.PostImageByteType != null && post.PostImageByteType.Length == 0)
+                        @if(post.PostImageByteType != null)
                         {
                             <div class="img-container">
                                 <img src="post/get-post-image/@post.PostId" alt="">
                             </div>
                         }
-                        @if(post.PostVideoByteType != null && post.PostVideoByteType.Length == 0)
+                        @if(post.PostVideoByteType != null)
                         {
                             <div class="img-container">
                                 <video src="post/get-post-video/@post.PostId"></video>

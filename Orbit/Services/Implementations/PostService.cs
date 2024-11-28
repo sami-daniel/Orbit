@@ -103,6 +103,7 @@ public class PostService : IPostService
             var unshufledPostsUnpreferenced = await _context.Posts
                    .Take(50)
                    .OrderBy(p => Guid.NewGuid())
+                   .Include(p => p.User)
                    .ToListAsync();
             return Shuffle(unshufledPostsUnpreferenced);
         }
