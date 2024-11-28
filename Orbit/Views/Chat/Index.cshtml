@@ -39,7 +39,7 @@
         <h2>Contacts</h2>
         @foreach (var user in contacts)
         {
-            <a href="@Url.Action($"{user.UserName}")">
+            <a href="@Url.Action($"{user.UserName}?returnTo={Url.PageLink()}")">
                 <div class="contact-user">
                     <div class="profile-img">
                         <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
@@ -68,7 +68,7 @@
                 <h2>Contacts</h2>
                     @foreach (var user in contacts)
                     {
-                        <a href="@Url.Action($"{user.UserName}")">
+                        <a href="@Url.Action($"{user.UserName}?returnTo={Url.PageLink()}")">
                             <div class="contact-user">
                                 <div class="profile-img">
                                     <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
