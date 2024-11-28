@@ -104,7 +104,16 @@
     <main class="center-div">
         <div class="buttons-container">
             <button id="showAsideLeft"><i class="fa-solid fa-angle-right"></i></button>
+            <div class="search-container">
+                <input type="text" placeholder="Search" class="search-input">
+                <ul class="ul-users">
+                    <li class="li-user">
+                        <a href="">Username</a>
+                    </li>
+                </ul>
+            </div>
             <button id="showAsideRight"><i class="fa-solid fa-angle-left"></i></button>
+            
         </div>
         @foreach (var post in posts)
         {
@@ -167,7 +176,7 @@
         <div class="follower-profiles">
             <h3>Followed Users</h1>
             @foreach(var follower in followers.First().Followers){
-                <a href="user/@follower.UserName">
+                <a href="user/@follower.UserName?returnTo=@Url.PageLink()">
                 <div class="user-followed">
                     <div class="img-user">
                         <img src="@Url.Action("get-profile-image", "user", new { userName = follower.UserName })" alt="">

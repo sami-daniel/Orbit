@@ -178,7 +178,7 @@ public class UserController : Controller
 
     // POST: [controller]/update-profile/{name} - Updates the user's profile information
     [HttpPost("[controller]/update-profile/{name}")]
-    public async Task<IActionResult> UpdateProfile([FromForm] User user, [FromRoute] string name, [FromQuery] string returnTo, [FromServices] ApplicationDbContext context)
+    public async Task<IActionResult> UpdateProfile([FromForm] IFormFile curriculum, [FromForm] User user, [FromRoute] string name, [FromQuery] string returnTo, [FromServices] ApplicationDbContext context)
     {
         var usr = await _userService.GetUserByIdentifierAsync(name);
 
@@ -191,6 +191,16 @@ public class UserController : Controller
         usr.UserProfileName = user.UserProfileName;
         usr.UserName = user.UserName;
         usr.UserDescription = user.UserDescription;
+        
+        if (curriculum.Length > 0)
+        {
+            using (var stream = new MemoryStream())
+            {
+                await curriculum.CopyToAsync(stream);
+                usr.UserCurriculumPDFByteType = stream.ToArray();
+            }
+        }
+
         await context.SaveChangesAsync();
 
         // Update the user's claims for authentication
@@ -262,5 +272,18 @@ public class UserController : Controller
         }
 
         return BadRequest(profileImage);
+    }
+
+    [HttpGet("[controller]/get-curriculum-pdf/{username}")]
+    public async Task<IActionResult> GetCurriculumPDF([FromRoute] string username)
+    {
+        var user = await _userService.GetUserByIdentifierAsync(username);
+
+        if (user == null || user.UserCurriculumPDFByteType == null || user.UserCurriculumPDFByteType.Length == 0)
+        {
+            return NotFound();
+        }
+
+        return File(user.UserCurriculumPDFByteType, "application/pdf");
     }
 }

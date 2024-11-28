@@ -363,10 +363,51 @@ body {
 .container .center-div .buttons-container{
     border-bottom:var(--bordercolor);
     width:100%;
+    height: 7vh;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: relative;
+    padding: 10px;
+}
+
+.container .center-div .buttons-container .search-container{
+    width: 50%;
+    position: relative;
+}
+
+.container .center-div .buttons-container .search-container .ul-users{
+    position: absolute;
+    left: 0;
+    top: 20px;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgb(179, 179, 179);
+    background-color: black;
+    z-index: 99;
+}
+
+.container .center-div .buttons-container .search-container .ul-users .li-users{
+    width: 100%;
+    height: 40px;
+    color: white;
+    border-bottom: 1px solid rgb(179, 179, 179);
+}
+
+.container .center-div .buttons-container .search-container .search-input{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    outline: none;
+    border: 1px solid rgb(179, 179, 179);
+    border-radius: 10px;
+    color: white;
+    transition: all .2s ease-in;
+}
+
+.container .center-div .buttons-container .search-container .search-input:focus{
+    border-color: white;
 }
 
 .container .center-div .buttons-container button{
@@ -524,6 +565,10 @@ body {
         width: 100%;
     }
 
+    .container .center-div .buttons-container{
+        justify-content: space-between;
+    }
+
     .container .center-div .buttons-container button{
         display: block;
     }
@@ -561,6 +606,14 @@ body {
 
     .left{
         width: 30%;
+    }
+
+    .container .center-div .buttons-container{
+        justify-content: space-between;
+    }
+
+    .container .center-div .buttons-container .search-container{
+        width: 75%;
     }
 
     .right{

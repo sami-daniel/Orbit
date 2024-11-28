@@ -12,8 +12,8 @@
         @foreach (var follower in Model)
         {
             <div class="users-containers">
-                <a href="../user/@follower.UserName"><h3>@follower.UserName</h3></a>
-                <a href="../user/@follower.UserName">@follower.UserEmail</a>
+                <a href="../user/@follower.UserName?returnTo=@Url.PageLink()"><h3>@follower.UserName</h3></a>
+                <a href="../user/@follower.UserName?returnTo=@Url.PageLink()">@follower.UserEmail</a>
             </div>
         }
     </div>

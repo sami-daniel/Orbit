@@ -94,6 +94,10 @@ internal class Program
         builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 
         // Add SignalR services for real-time communication hubs
+        builder.Services.AddScoped<ILikeService, LikeService>();
+
+        builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
+
         builder.Services.AddSignalR();
 
         // Build the application

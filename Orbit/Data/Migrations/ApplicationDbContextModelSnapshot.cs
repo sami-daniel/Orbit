@@ -151,7 +151,7 @@ namespace Orbit.Data.Migrations
                         .HasColumnName("user_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("UserId"));
-
+                                        
                     b.Property<string>("UserDescription")
                         .HasColumnType("mediumtext")
                         .HasColumnName("user_description")

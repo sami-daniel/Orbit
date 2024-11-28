@@ -72,6 +72,13 @@ body {
   width: 30%;
   height: calc(99vh + 5px);
   border: 1px solid var(--border-color);
+  position: relative;
+}
+
+.contacts-container-responsive{
+  display: none;
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* Style for the messages container */
@@ -325,13 +332,17 @@ footer {
     top: 0;
     left: 0;
     height: 100%;
-    z-index: 9999999999999999999999999999999999999;
+    z-index: 9999999999999999;
     background-color: black;
   }
 
   /* Show close button when contact container is active */
   #contact_container_responsive.active #close {
     display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
   }
 
   /* Prevent word breaking for user messages */
