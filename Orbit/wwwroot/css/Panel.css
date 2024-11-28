@@ -379,7 +379,7 @@ body {
 .container .center-div .buttons-container .search-container .ul-users{
     position: absolute;
     left: 0;
-    top: 50px;
+    top: 20px;
     width: 100%;
     height: auto;
     border: 1px solid rgb(179, 179, 179);
