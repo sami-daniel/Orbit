@@ -69,7 +69,7 @@ public class UserService : IUserService
     /// <param name="orderBy">Function to order the users.</param>
     /// <param name="includeProperties">Properties to be included in the query.</param>
     /// <returns>A collection of User objects.</returns>
-    public async Task<IEnumerable<User>> GetAllUserAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "")
+    public async Task<IEnumerable<User>> GetAllUsersAsync(Expression<Func<User, bool>>? filter = null, Func<IQueryable<User>, IOrderedQueryable<User>>? orderBy = null, string includeProperties = "")
     {
         return await _unitOfWork.UserRepository.GetAsync(filter, orderBy, includeProperties);
     }

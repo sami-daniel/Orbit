@@ -34,7 +34,7 @@ public class PanelController : Controller
         Claim usr = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
 
         // Fetch the user from the database based on their email
-        var user = await _userService.GetAllUserAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
+        var user = await _userService.GetAllUsersAsync(u => u.UserEmail == usr.Value!, includeProperties: "Followers,Users");
 
         // If the user doesn't exist, clear the session, sign out, and redirect to the login page
         if (user.FirstOrDefault() == null)

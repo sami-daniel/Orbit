@@ -9,7 +9,7 @@
     var postAddRequest = new PostAddRequest();
     var posts = await postService.GetPostsRandomizedByUserPreferenceAsync(Model.UserName);
     var likes = await likeService.GetLikesFromUser(Model.UserName);
-    var followers = await userService.GetAllUserAsync(u => u.UserName == Model.UserName, includeProperties: "Followers");
+    var followers = await userService.GetAllUsersAsync(u => u.UserName == Model.UserName, includeProperties: "Followers");
 }
 
 <div class="container">
