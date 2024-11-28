@@ -9,16 +9,16 @@
 <div id="contact_container_responsive">
     <button id="close"><i class="fa-solid fa-xmark"></i></button>
     @if(Context.Request.Query.ContainsKey("returnTo"))
-    {
-        var returnTo = Context.Request.Query["returnTo"];    
-        <a href="" class="btn-back">
-            <img src="~/images/arrow-left-solid.svg" alt="">
-        </a>
-    }
+        {
+            var returnTo = Context.Request.Query["returnTo"];     
+            <a href="@returnTo" class="btn-back">
+                <img src="~/images/arrow-left-solid.svg" alt="">
+            </a>
+        }
     <h2>Contacts</h2>
     @foreach (var user in contacts)
     {
-        <a href="@Url.Action($"{user.UserName}")">
+        <a href="@Url.Action($"{user.UserName}")?returnTo=@Url.PageLink()">
             <div class="contact-user">
                 <div class="profile-img">
                     <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
@@ -41,7 +41,7 @@
         <h2>Contacts</h2>
         @foreach (var user in contacts)
         {
-            <a href="@Url.Action($"{user.UserName}")">
+            <a href="@Url.Action($"{user.UserName}")?returnTo=@Url.PageLink()">
                 <div class="contact-user">
                     <div class="profile-img">
                         <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
@@ -74,7 +74,7 @@
                 <h2>Contacts</h2>
                     @foreach (var user in contacts)
                     {
-                        <a href="@Url.Action($"{user.UserName}")">
+                        <a href="@Url.Action($"{user.UserName}")?returnTo=@Url.PageLink()">
                             <div class="contact-user">
                                 <div class="profile-img">
                                     <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"

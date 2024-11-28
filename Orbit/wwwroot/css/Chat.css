@@ -160,7 +160,7 @@ body {
 /* Styling for the messages area */
 .messages {
   width: 100%;
-  height: calc(90% - 20px);
+  height: 84%;
   border: 1px solid var(--border-color);
   padding: 50px;
   overflow-y: auto; /* Enable vertical scrolling */
@@ -281,11 +281,31 @@ footer {
   border-radius: 10px;
 }
 
+.btn-back img{
+  width: 20px;
+}
+
+.contacts-container-responsive h2{
+  text-align: center;
+}
+
+#contact_container_responsive .btn-back{
+  display: block;
+}
+
+#contact_container_responsive .btn-back img{
+  width: 20px;
+}
+
 /* Responsive styles for smaller screens */
 @media screen and (max-width: 650px) {
   /* Hide contacts container on small screens */
   .contacts-container {
     display: none;
+  }
+
+  .contacts-container-responsive{
+    display: block;
   }
 
   /* Make messages container full width */
@@ -343,6 +363,13 @@ footer {
     right: 0;
     top: 0;
     padding: 10px;
+  }
+
+  #contact_container_responsive.active .btn-back{
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
   /* Prevent word breaking for user messages */
