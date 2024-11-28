@@ -62,6 +62,13 @@ body {
   width: 30%;
   height: calc(99vh + 5px);
   border: 1px solid var(--border-color);
+  position: relative;
+}
+
+.contacts-container-responsive{
+  display: none;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .messages-container {
@@ -81,7 +88,22 @@ body {
   height: 60px !important;
 }
 
+.contacts-container-responsive h2 {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  height: 60px !important;
+}
+
+
 .contacts-container .contact-user.active-btn .profile-name {
+  color: black;
+}
+
+.contacts-container-responsive .contact-user.active-btn .profile-name {
   color: black;
 }
 
@@ -239,9 +261,27 @@ footer {
   border-radius: 10px;
 }
 
+.btn-back{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+
+.btn-back img{
+  width: 20px;
+}
+
+
+
 @media screen and (max-width: 650px) {
   .contacts-container {
     display: none;
+  }
+
+  .contacts-container-responsive{
+    display: block;
+    position: relative;
   }
 
   .messages-container {
@@ -281,12 +321,16 @@ footer {
     top: 0;
     left: 0;
     height: 100%;
-    z-index: 9999999999999999999999999999999999999;
+    z-index: 9999999999999999;
     background-color: black;
   }
 
   #contact_container_responsive.active #close{
     display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
   }
 
   .user-message span{

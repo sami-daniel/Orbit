@@ -8,6 +8,9 @@
 }
 <div id="contact_container_responsive">
     <button id="close"><i class="fa-solid fa-xmark"></i></button>
+    <a href="" class="btn-back">
+        <img src="~/images/arrow-left-solid.svg" alt="">
+    </a>
     <h2>Contacts</h2>
     @foreach (var user in contacts)
     {
@@ -24,6 +27,9 @@
 </div>
 <main class="container">
     <div class="contacts-container">
+        <a href="" class="btn-back">
+            <img src="~/images/arrow-left-solid.svg" alt="">
+        </a>
         <h2>Contacts</h2>
         @foreach (var user in contacts)
         {
@@ -51,9 +57,22 @@
                 </div>
                 <div class="profile-name"><span>@Model.Host.UserName</span></div>
             </header>
-            <strong class="Warning_user">
-                Select a user to start a chat!
-            </strong>
+            <div class="contacts-container-responsive">
+                <a href="" class="btn-back"><img src="~/images/arrow-left-solid.svg" alt=""></a>
+                <h2>Contacts</h2>
+                    @foreach (var user in contacts)
+                    {
+                        <a href="@Url.Action($"{user.UserName}")">
+                            <div class="contact-user">
+                                <div class="profile-img">
+                                    <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
+                                    alt="Profile Image" />
+                                </div>
+                                <div class="profile-name">@user.UserProfileName</div>
+                            </div>
+                        </a>
+                    }
+            </div>
         }
         else
         {
