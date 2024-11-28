@@ -360,48 +360,22 @@ body {
     background-color: black;
 }
 
-.container .center-div .search-container{
+.container .center-div .buttons-container{
     border-bottom:var(--bordercolor);
     width:100%;
-    height:10vh;
-    padding:20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     position: relative;
 }
 
-.container .center-div .search-container button{
+.container .center-div .buttons-container button{
     background-color: transparent;
     color: white;
     border: none;
     outline: none;
     font-size: 20px;
     display: none;
-}
-
-.container .center-div .search-container input{
-    width:75%;
-    height:4vh;
-    border-radius: 100px;
-    border:var(--bordercolor);
-    outline:none;
-    font-size:1.1em;
-    color:white;
-    background:transparent;
-    padding:0 50px;
-}
-
-.container .center-div .search-container input::placeholder{
-    color:white;
-}
-
-.container .center-div .search-container img{
-    width:25px;
-    height:25px;
-    position:absolute;
-    left:195px;
-    z-index:1;
 }
 
 .posts-container{
@@ -545,7 +519,7 @@ body {
         width: 100%;
     }
 
-    .container .center-div .search-container button{
+    .container .center-div .buttons-container button{
         display: block;
     }
 
@@ -576,7 +550,7 @@ body {
         top: 0;
     }
 
-    .container .center-div .search-container button:last-child{
+    .container .center-div .buttons-container button:last-child{
         display: block;
     }
 
