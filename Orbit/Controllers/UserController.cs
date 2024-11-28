@@ -31,6 +31,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [Route("[controller]/search")]
     public async Task<IActionResult> Search([FromQuery] string username)
     {
         if (string.IsNullOrEmpty(username))
@@ -41,7 +42,7 @@ public class UserController : Controller
         string normalizeQuery = username.ToLower().Trim();
 
         IEnumerable<User> profiles = await _userService.GetAllUsersAsync();
-        profiles = profiles.Where(u => u.UserName.Contains(username));
+        profiles = profiles.Where(u => u.UserName.Contains(username, StringComparison.InvariantCultureIgnoreCase));
         var matchProfiles = profiles.Select(p => new { p.UserName, ProfileName = p.UserProfileName, p.UserProfileImageByteType });
 
         return Ok(matchProfiles);
@@ -82,7 +83,7 @@ public class UserController : Controller
     // GET: [controller]/{username} - Displays another user's profile
     [HttpGet]
     [Route("[controller]/{username}")]
-    public async Task<IActionResult> ViewExternal(string username, string returnTo)
+    public async Task<IActionResult> ViewExternal([FromRoute] string username, [FromQuery] string returnTo)
     {
         // If the requested username is the current user's, redirect to their own profile
         if (username == HttpContext.Session.GetObject<UserResponse>("User")!.UserName)

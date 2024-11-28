@@ -36,7 +36,6 @@
                         </h3>
                     </label>
                     <input type="file" name="imageOrVideo" id="imageOrVideo" accept=".jpeg,.png,.jpg,.gif,.mkv,.avi,.webm,.mp4">
-    using AutoMapper;
                 </div>
                 <input type="hidden" asp-for="@postAddRequest.PostOwnerName" value="@Model.UserName">
                 <div class="btn-submit">
@@ -105,8 +104,8 @@
         <div class="buttons-container">
             <button id="showAsideLeft"><i class="fa-solid fa-angle-right"></i></button>
             <div class="search-container">
-                <input type="text" placeholder="Search" class="search-input">
-                <ul class="ul-users">
+                <input type="text" placeholder="Search" id="search-input" class="search-input">
+                <ul id="ul-users" class="ul-users none">
                     <li class="li-user">
                         <a href="">Username</a>
                     </li>
@@ -208,6 +207,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/e9c5d2a439.js" crossorigin="anonymous"></script>
     <script src="~/js/panel.js" asp-append-version="true"></script>
+    <script src="~/js/user-search.js" asp-append-version="true"></script>
     <script>
         $(".like_post").click(function (e) {
             e.preventDefault();
