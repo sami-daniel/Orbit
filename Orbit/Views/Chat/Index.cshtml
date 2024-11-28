@@ -8,17 +8,15 @@
 }
 <div id="contact_container_responsive">
     <button id="close"><i class="fa-solid fa-xmark"></i></button>
-    @if(Context.Request.Query.ContainsKey("returnTo"))
-        {
-            var returnTo = Context.Request.Query["returnTo"];     
-            <a href="@returnTo" class="btn-back">
+   
+            <a href="../panel" class="btn-back">
                 <img src="~/images/arrow-left-solid.svg" alt="">
             </a>
-        }
+        
     <h2>Contacts</h2>
     @foreach (var user in contacts)
     {
-        <a href="@Url.Action($"{user.UserName}")?returnTo=@Url.PageLink()">
+        <a href="@Url.Action($"{user.UserName}")">
             <div class="contact-user">
                 <div class="profile-img">
                     <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
@@ -41,7 +39,7 @@
         <h2>Contacts</h2>
         @foreach (var user in contacts)
         {
-            <a href="@Url.Action($"{user.UserName}")?returnTo=@Url.PageLink()">
+            <a href="@Url.Action($"{user.UserName}")">
                 <div class="contact-user">
                     <div class="profile-img">
                         <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
@@ -64,17 +62,13 @@
                 <div class="profile-name"><span>@Model.Host.UserName</span></div>
             </header>
             <div class="contacts-container-responsive">
-                @if(Context.Request.Query.ContainsKey("returnTo"))
-                    {
-                        var returnTo = Context.Request.Query["returnTo"];    
-                        <a href="@returnTo" class="btn-back">
-                            <img src="~/images/arrow-left-solid.svg" alt="">
-                        </a>
-                    }
+                <a href="../panel" class="btn-back">
+                    <img src="~/images/arrow-left-solid.svg" alt="">
+                </a>
                 <h2>Contacts</h2>
                     @foreach (var user in contacts)
                     {
-                        <a href="@Url.Action($"{user.UserName}")?returnTo=@Url.PageLink()">
+                        <a href="@Url.Action($"{user.UserName}")">
                             <div class="contact-user">
                                 <div class="profile-img">
                                     <img src="@Url.Action("get-profile-image", "user", new { userName = user.UserName })"
