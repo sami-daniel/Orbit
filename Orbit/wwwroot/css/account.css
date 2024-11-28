@@ -874,6 +874,35 @@ body {
   color: white;
 }
 
+.modal-container .modal-section .signUp-sections .signUp-div .text-error:empty{
+  display: none;
+}
+
+.modal-container .modal-section .signUp-sections .signUp-div .text-error:not(:empty){
+  color:var(--borderColor);
+  width: auto;
+  height: auto;
+  margin: 2% auto;
+  border: 1px solid var(--borderColor);
+  text-align: center;
+  padding: 20px;
+}
+
+
+.modal-container .modal-section .signUp-sections .login-div .text-error:empty{
+  display: none;
+}
+
+.modal-container .modal-section .signUp-sections .login-div .text-error:not(:empty){
+  color:var(--borderColor);
+  width: auto;
+  height: auto;
+  margin: 2% auto;
+  border: 1px solid var(--borderColor);
+  text-align: center;
+  padding: 20px;
+}
+
 @media screen and (max-width: 600px){
 
   .modal-container .modal-section{
