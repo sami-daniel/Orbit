@@ -1,115 +1,91 @@
--- MySQL Workbench Forward Engineering
+CREATE DATABASE orbitdatabase;
+use orbitdatabase;
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
+) CHARACTER SET=utf8mb4 ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
-SHOW WARNINGS;
--- -----------------------------------------------------
--- Schema orbitdatabase
--- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `orbitdatabase` ;
+START TRANSACTION;
 
--- -----------------------------------------------------
--- Schema orbitdatabase
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `orbitdatabase` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-SHOW WARNINGS;
-USE `orbitdatabase` ;
+ALTER DATABASE orbitdatabase CHARACTER SET utf8mb4;
 
--- -----------------------------------------------------
--- Table `orbitdatabase`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `orbitdatabase`.`user` ;
+CREATE TABLE `user` (
+    `user_id` int unsigned NOT NULL AUTO_INCREMENT,
+    `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `user_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `user_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `user_profile_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+    `user_description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+    `user_profile_image_byte_type` LONGBLOB NULL,
+    `user_profile_banner_image_byte_type` LONGBLOB NULL,
+    CONSTRAINT `PRIMARY` PRIMARY KEY (`user_id`)
+) CHARACTER SET=utf8mb3 COLLATE=utf8mb3_general_ci ENGINE = InnoDB;
 
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS `orbitdatabase`.`user` (
-  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_name` VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `user_email` VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `user_password` VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `user_profile_name` VARCHAR(255) NOT NULL,
-  `user_description` TEXT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
-  `user_profile_image_byte_type` LONGBLOB NULL DEFAULT NULL,
-  `user_profile_banner_image_byte_type` LONGBLOB NULL DEFAULT NULL,
-  `is_private_profile` BIT(1) NOT NULL,
-  PRIMARY KEY (`user_id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 0
-DEFAULT CHARACTER SET = utf8mb3;
+CREATE TABLE `follower` (
+    `user_id` int unsigned NOT NULL,
+    `follower_id` int unsigned NOT NULL,
+    CONSTRAINT `PRIMARY` PRIMARY KEY (`user_id`, `follower_id`),
+    CONSTRAINT `follower_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+    CONSTRAINT `follower_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb3 COLLATE=utf8mb3_general_ci ENGINE = InnoDB;
 
-SHOW WARNINGS;
-CREATE UNIQUE INDEX `user_name_UNIQUE` ON `orbitdatabase`.`user` (`user_name` ASC) VISIBLE;
+CREATE TABLE `post` (
+    `post_id` int unsigned NOT NULL AUTO_INCREMENT,
+    `post_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `post_date` datetime NOT NULL DEFAULT (NOW()),
+    `post_image_byte_type` LONGBLOB NULL,
+    `post_video_byte_type` LONGBLOB NULL,
+    `post_likes` int unsigned NOT NULL,
+    `user_id` int unsigned NOT NULL,
+    CONSTRAINT `PRIMARY` PRIMARY KEY (`post_id`),
+    CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ENGINE = InnoDB;
 
-SHOW WARNINGS;
-CREATE UNIQUE INDEX `user_email_UNIQUE` ON `orbitdatabase`.`user` (`user_email` ASC) VISIBLE;
+CREATE TABLE `user_preference` (
+    `preference_id` int unsigned NOT NULL AUTO_INCREMENT,
+    `preference_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `UserId` int unsigned NOT NULL,
+    CONSTRAINT `PRIMARY` PRIMARY KEY (`preference_id`),
+    CONSTRAINT `user_preference_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ENGINE = InnoDB;
 
-SHOW WARNINGS;
+CREATE TABLE `like` (
+    `like_id` int unsigned NOT NULL AUTO_INCREMENT,
+    `user_id` int unsigned NULL,
+    `post_id` int unsigned NOT NULL,
+    CONSTRAINT `PRIMARY` PRIMARY KEY (`like_id`),
+    CONSTRAINT `like_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE SET NULL,
+    CONSTRAINT `like_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `orbitdatabase`.`follower`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `orbitdatabase`.`follower` ;
+CREATE TABLE `post_preference` (
+    `preference_id` int unsigned NOT NULL AUTO_INCREMENT,
+    `preference_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `PostId` int unsigned NOT NULL,
+    CONSTRAINT `PRIMARY` PRIMARY KEY (`preference_id`),
+    CONSTRAINT `post_preference_ibfk_1` FOREIGN KEY (`PostId`) REFERENCES `post` (`post_id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ENGINE = InnoDB;
 
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS `orbitdatabase`.`follower` (
-  `user_id` INT UNSIGNED NOT NULL,
-  `follower_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`user_id`, `follower_id`),
-  CONSTRAINT `follower_ibfk_1`
-    FOREIGN KEY (`follower_id`)
-    REFERENCES `orbitdatabase`.`user` (`user_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `follower_ibfk_2`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `orbitdatabase`.`user` (`user_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+CREATE INDEX `follower_id` ON `follower` (`follower_id`);
 
-SHOW WARNINGS;
-CREATE INDEX `follower_id` ON `orbitdatabase`.`follower` (`follower_id` ASC) VISIBLE;
+CREATE INDEX `like_ibfk_1` ON `like` (`user_id`);
 
-SHOW WARNINGS;
+CREATE INDEX `like_ibfk_2` ON `like` (`post_id`);
 
-CREATE TABLE IF NOT EXISTS `orbitdatabase`.`post` (
-  `post_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT UNSIGNED NOT NULL,
-  `post_content` LONGTEXT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `post_date` DATETIME NOT NULL,
-  `post_image_byte_type` LONGBLOB NULL DEFAULT NULL,
-  `post_video_byte_type` LONGBLOB NULL DEFAULT NULL,
-  `post_likes` INT UNSIGNED NOT NULL DEFAULT 0,
-  CONSTRAINT `post_ibfk_1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `orbitdatabase`.`user` (`user_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 0;
+CREATE INDEX `post_ibfk_1` ON `post` (`user_id`);
 
-SHOW WARNINGS;
+CREATE INDEX `post_preference_ibfk_1` ON `post_preference` (`PostId`);
 
-CREATE TABLE IF NOT EXISTS `orbitdatabase`.`likes` (
-	`user_id` INT UNSIGNED,
-	`post_id` INT UNSIGNED NOT NULL,
-	CONSTRAINT `like_ibfk_1`
-		FOREIGN KEY (`user_id`)
-		REFERENCES `orbitdatabase`.`user` (`user_id`)
-		ON DELETE SET NULL
-		ON UPDATE CASCADE,
-	CONSTRAINT `like_ibfk_2`
-		FOREIGN KEY (`post_id`)
-		REFERENCES `orbitdatabase`.`post` (`post_id`)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-);
+CREATE UNIQUE INDEX `user_email_UNIQUE` ON `user` (`user_email`);
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+CREATE UNIQUE INDEX `user_name_UNIQUE` ON `user` (`user_name`);
+
+CREATE INDEX `user_preference_ibfk_1` ON `user_preference` (`UserId`);
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20241128022707_InitialCreate', '8.0.6');
+
+COMMIT;
+
