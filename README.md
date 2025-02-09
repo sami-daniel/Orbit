@@ -1,52 +1,52 @@
-# Orbit - Rede Social para Profissionais de Tecnologia
+# Orbit - Social Network for Technology Professionals
 ![version](https://img.shields.io/badge/version-1_0_0-black.svg) <br>
 ![Orbit](https://img.shields.io/badge/Orbit-black.svg)
 
-**Versão: Orbit 1.0.0**
+**Version: Orbit 1.0.0**
 
-Bem-vindo ao Orbit, uma rede social inovadora projetada para conectar profissionais de tecnologia, incluindo programadores, designers, engenheiros de software, especialistas em TI e outros profissionais do setor. Nosso objetivo é proporcionar um espaço dinâmico e colaborativo onde esses profissionais possam interagir, compartilhar conhecimentos, trabalhar em projetos conjuntos e explorar novas oportunidades de carreira.
+Welcome to Orbit, an innovative social network designed to connect technology professionals, including programmers, designers, software engineers, IT specialists, and other industry professionals. Our goal is to provide a dynamic and collaborative space where these professionals can interact, share knowledge, work on joint projects, and explore new career opportunities.
 
-## Pré-requisitos
+## Prerequisites
 
-Antes de começar, você vai precisar ter instalado em sua máquina:
+Before you begin, you will need to have installed on your machine:
 
-- [ASP.NET Core SDK](https://dotnet.microsoft.com/download) (versão 8.0 ou superior)
+- [ASP.NET Core SDK](https://dotnet.microsoft.com/download) (version 8.0 or higher)
 - [Git](https://git-scm.com/downloads)
 - [MySql](https://dev.mysql.com/downloads/mysql/)
 
-## Instruções para Rodar o Projeto 
+## Instructions to Run the Project
 
-### Passo 1: Clonar o Repositório
+### Step 1: Clone the Repository
 
-Abra o terminal e execute o seguinte comando para clonar o repositório do projeto:
+Open the terminal and run the following command to clone the project repository:
 
 ``` sh
 git clone https://github.com/sami-daniel/Orbit.git
 cd Orbit
 ```
 
-### Passo 3: Restaurar Dependências 
-No terminal restaure as dependências do projeto:
+### Step 3: Restore Dependencies
+In the terminal, restore the project dependencies:
 ``` sh
 dotnet restore
 ```
 
-### Passo 4: Compilar o Projeto
-No terminal compile o projeto:
+### Step 4: Build the Project
+In the terminal, build the project:
 ``` sh
 dotnet build
 ```
 
-### Passo 5: Salvar string de conexão
-Salvar a 'Environment Variable' com a string de conexão do banco de dados. 
-Talvez seja nescessário reiniciar o computador para a variável entrar em vigor: 
+### Step 5: Save Connection String
+Save the 'Environment Variable' with the database connection string.
+You may need to restart your computer for the variable to take effect.
 ``` PowerSheel
 setx ConnectionStrings__OrbitConnection "server=localhost;database=orbitdatabase;uid={seuusuariodomysql};pwd={suasenhadomysql}" # Essa string pode ser sua string de conexão, desde que habilite conectar com o servidor e ter acesso ao banco
 setx ConnectionStrings__Firebase "https://orbit-f5fea-default-rtdb.firebaseio.com/"
 ```
 
-### Passo 6: Executar o código do banco de dados
-Execute o código a seguir no command line do MySql ou no Workbench
+### Step 6: Execute the database code
+Execute the following code in the MySql command line or in Workbench
 ``` MySqlCmd
 -- MySQL Workbench Forward Engineering
 
@@ -132,16 +132,14 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ```
 
-### Passo 7: Rodar o Projeto
+### Step 7: Run the Project
 ``` sh
 cd Orbit
 dotnet run
 ```
 
-### Passo 8: Abrir o projeto
-No CMD saídas semelhantes a essa abaixo aparecerão. Copie o link web, semelhante a
-esse e cole no navegador:
-http://localhost:5000/ 
+### Step 8: Open the project
+In CMD, similar outputs to the one below will appear. Copy the web link, similar to this, and paste it in the browser:
 ``` sh
 info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
       User profile is available. Using 'C:\Users\YourUser\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
